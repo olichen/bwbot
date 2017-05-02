@@ -14,17 +14,21 @@ Build::~Build()
 
 void Build::init()
 {
-	using clock = std::chrono::high_resolution_clock;
+	typedef std::chrono::milliseconds ms;
+	typedef std::chrono::nanoseconds ns;
+	typedef std::chrono::high_resolution_clock clock;
+
+	//framerate (16ms is 60fps, about 2.6x time)
+	const ns timestep = std::chrono::duration_cast<ns>(ms(16));
 
 	auto time_start = clock::now();
-	std::chrono::milliseconds lag(0);
-	constexpr std::chrono::milliseconds timestep(10);
+	ns lag(0);
 
 	while(true)
 	{
 		auto time_delta = clock::now() - time_start;
 		time_start = clock::now();
-		lag += std::chrono::duration_cast<std::chrono::milliseconds>(time_delta);
+		lag += std::chrono::duration_cast<ns>(time_delta);
 
 		while(lag >= timestep)
 		{

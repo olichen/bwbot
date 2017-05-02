@@ -1,8 +1,12 @@
 #pragma once
+#include <string>
 
-Class Unit
+class Unit
 {
+	public:
+		Unit();
 
 	private:
-		int mineralCost, gasCost, supplyCost, buildTime;
-}
+		int mMineralCost, mGasCost, mSupplyCost, mBuildTime;
+		std::string mName;
+};

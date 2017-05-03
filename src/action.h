@@ -6,8 +6,10 @@ class Action
 {
 	public:
 		Action(string nextAction = "IDLE", int nextTimer = -1, string idleAction = "IDLE", int idleTimer = -1);
+
 		string update();
 
+		bool isIdle() { return mTimer == -1; }
 		string getAction() { return mAction; }
 		int getTimer() { return mTimer; }
 

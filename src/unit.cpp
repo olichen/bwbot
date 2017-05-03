@@ -11,8 +11,3 @@ void Unit::init(Unit &prereq, Unit &buildsFrom)
 	pPrereq = &prereq;
 	pBuildsFrom = &buildsFrom;
 }
-
-string Unit::update()
-{
-	return mAction.update();
-}

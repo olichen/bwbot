@@ -1,4 +1,5 @@
 #pragma once
+#include "action.h"
 #include <string>
 using namespace std;
 
@@ -8,7 +9,7 @@ class Unit
 		Unit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided, string prereq, string buildsFrom);
 
 		void init(Unit &prereq, Unit &buildsFrom);
-		void update();
+		string update();
 
 		int getMineralCost() { return mMineralCost; }
 		int getGasCost() { return mGasCost; }
@@ -16,6 +17,8 @@ class Unit
 		int getSupplyProvided() { return mSupplyProvided; }
 		int getBuildTime() { return mBuildTime; }
 		string getName() { return mName; }
+		string getAction() { return mAction.getAction(); }
+		int getActionTimer() { return mAction.getTimer(); }
 		string findPrereq() { return mPrereq; }
 		string findBuildsFrom() { return mBuildsFrom; }
 		Unit* getPrereq() { return pPrereq; }
@@ -26,4 +29,5 @@ class Unit
 		string mName, mPrereq, mBuildsFrom;
 		Unit* pPrereq;
 		Unit* pBuildsFrom;
+		Action mAction;
 };

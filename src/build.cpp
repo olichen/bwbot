@@ -22,13 +22,13 @@ void Build::init()
 	typedef std::chrono::nanoseconds ns;
 	typedef std::chrono::high_resolution_clock clock;
 
-	//framerate (16ms is 60fps, about 2.6x time)
-	const ns timestep = std::chrono::duration_cast<ns>(ms(16));
+	//framerate (10ms is 100fps, about 4x time)
+	const ns timestep = std::chrono::duration_cast<ns>(ms(10));
 
 	auto time_start = clock::now();
 	ns lag(0);
 
-	while(true)
+	while(resources.getFrame() <= 1000)
 	{
 		auto time_delta = clock::now() - time_start;
 		time_start = clock::now();

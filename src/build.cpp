@@ -1,5 +1,5 @@
 #include "build.h"
-#include "object.h"
+#include "unittree.h"
 #include <iostream>
 #include <chrono>
 
@@ -17,8 +17,12 @@ Build::~Build()
 void Build::init()
 {
 	//testing stuff
-	Object test(50,0,300,1,0,"Terran SCV","Terran Command Center","Terran Command Center");
-	test.init(test, test);
+	//Unit test("Terran SCV",50,0,300,1,0,"Terran Command Center","Terran Command Center");
+	//test.init(test, test);
+	UnitTree test;
+	test.addUnit("Terran SCV",50,0,300,1,0,"Terran Command Center","Terran Command Center");
+	test.addUnit("Terran Command Center",400,0,1800,0,10,"Terran SCV","Terran SCV");
+	test.init();
 
 
 	typedef std::chrono::milliseconds ms;

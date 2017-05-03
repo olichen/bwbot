@@ -1,5 +1,4 @@
 #include "build.h"
-#include "unittree.h"
 #include <iostream>
 #include <chrono>
 
@@ -16,14 +15,8 @@ Build::~Build()
 //game loop
 void Build::init()
 {
-	//testing stuff
-	//Unit test("Terran SCV",50,0,300,1,0,"Terran Command Center","Terran Command Center");
-	//test.init(test, test);
-	UnitTree test;
-	test.addUnit("Terran SCV",50,0,300,1,0,"Terran Command Center","Terran Command Center");
-	test.addUnit("Terran Command Center",400,0,1800,0,10,"Terran SCV","Terran SCV");
-	test.init();
-
+	//load unit data
+	loadRace('t');
 
 	typedef std::chrono::milliseconds ms;
 	typedef std::chrono::nanoseconds ns;
@@ -57,6 +50,17 @@ void Build::init()
 void Build::update()
 {
 	resources.nextFrame();
+}
+
+//load unit data
+void Build::loadRace(char race)
+{
+	if (race == 't')
+	{
+		unitTree.addUnit("Terran SCV",50,0,300,1,0,"Terran Command Center","Terran Command Center");
+		unitTree.addUnit("Terran Command Center",400,0,1800,0,10,"Terran SCV","Terran SCV");
+	}
+	unitTree.init();
 }
 
 void Build::printResources()

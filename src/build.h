@@ -1,5 +1,6 @@
 #pragma once
 #include "resources.h"
+#include "unittree.h"
 
 class Build
 {
@@ -11,6 +12,8 @@ class Build
 
 	private:
 		Resources resources;
+		UnitTree unitTree;
 		void update();
+		void loadRace(char race);
 		void printResources();
 };

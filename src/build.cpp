@@ -1,4 +1,5 @@
 #include "build.h"
+#include "object.h"
 #include <iostream>
 #include <chrono>
 
@@ -12,8 +13,14 @@ Build::~Build()
 	//
 }
 
+//game loop
 void Build::init()
 {
+	//testing stuff
+	Object test(50,0,300,1,0,"Terran SCV","Terran Command Center","Terran Command Center");
+	test.init(test, test);
+
+
 	typedef std::chrono::milliseconds ms;
 	typedef std::chrono::nanoseconds ns;
 	typedef std::chrono::high_resolution_clock clock;
@@ -33,7 +40,11 @@ void Build::init()
 		while(lag >= timestep)
 		{
 			lag -= timestep;
+
+			//update
 			update();
+
+			//print
 			printResources();
 		}
 	}
@@ -41,7 +52,7 @@ void Build::init()
 
 void Build::update()
 {
-	resources.addFrame();
+	resources.nextFrame();
 }
 
 void Build::printResources()

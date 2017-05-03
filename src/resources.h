@@ -15,7 +15,7 @@ class Resources
 		void addMinerals(int minerals = 8) { mMinerals += minerals; }
 		void addGas(int gas = 8) { mGas += gas; }
 		void addSupplyMax(int supply = 8) { mSupply += supply; }
-		void addFrame(int frame = 1) { mFrame += frame; }
+		void nextFrame(int frame = 1) { mFrame += frame; }
 
 		void useMinerals(int minerals) { mMinerals -= minerals; }
 		void useGas(int gas) { mGas -= gas; }

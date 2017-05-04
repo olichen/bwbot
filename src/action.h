@@ -6,13 +6,14 @@ using namespace std;
 class Action
 {
 	public:
-		Action(string action, int timer);
+		Action(string actionName, int timer);
 
-		string getAction() { return mAction; }
-		int getTimer() { return mTimer; }
 		void setTimer(int timer) { mTimer = timer; }
 
+		string getActionName() { return mActionName; }
+		int getTimer() { return mTimer; }
+
 	private:
-		string mAction;
+		string mActionName;
 		int mTimer;
 };

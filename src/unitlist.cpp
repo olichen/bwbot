@@ -23,9 +23,9 @@ void UnitList::initUnit(Unit &unit, Action nextAction, Action idleAction, int nu
 
 vector<string>* UnitList::update()
 {
-	for (CurrentUnit &unit : vUnitList)
+	for (CurrentUnit &iUnit : vUnitList)
 	{
-		string action = unit.update();
+		string action = iUnit.update();
 		if (action != "")
 		{
 			vActionList->push_back(action);

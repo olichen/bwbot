@@ -19,21 +19,23 @@ void UnitTree::addUnit(string name, int mineralCost, int gasCost, int buildTime,
 
 void UnitTree::init()
 {
-	for (Unit &unit : vUnitList)
+	for (Unit &iUnit : vUnitList)
 	{
-		Unit *prereq, *buildsFrom;
-		for (Unit &findUnit : vUnitList)
+		Unit *prereq = NULL;
+		Unit *buildsFrom = NULL;
+
+		for (Unit &iFindUnit : vUnitList)
 		{
-			if (unit.findPrereq() == findUnit.getName())
+			if (iUnit.getPrereqName() == iFindUnit.getName())
 			{
-				prereq = &findUnit;
+				prereq = &iFindUnit;
 			}
-			if (unit.findBuildsFrom() == findUnit.getName())
+			if (iUnit.getBuildsFromName() == iFindUnit.getName())
 			{
-				buildsFrom = &findUnit;
+				buildsFrom = &iFindUnit;
 			}
 		}
-		unit.init(*prereq, *buildsFrom);
+		iUnit.init(*prereq, *buildsFrom);
 	}
 }
 

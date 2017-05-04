@@ -3,7 +3,7 @@
 #include "action.h"
 #include "unit.h"
 #include <string>
-#include <vector>
+#include <queue>
 using namespace std;
 
 class CurrentUnit
@@ -12,11 +12,17 @@ class CurrentUnit
 		CurrentUnit(Unit &unit, Action nextAction, Action idleAction);
 
 		string update();
+		void addNextAction(Action nextAction);
+		void gotoAction(Action nextAction);
 
-		//bool isIdle() { return mAction.isIdle(); }
+		bool isIdle() { return mTimer == -1; }
 
 	private:
+		void nextAction();
+
 		Unit *pUnit;
-		vector<Action> vNextAction;
+		string mCurrentAction;
+		int mTimer;
+		queue<Action> vNextAction;
 		Action cIdleAction;
 };

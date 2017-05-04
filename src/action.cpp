@@ -1,7 +1,7 @@
 #include "action.h"
 
-Action::Action(string action, int timer)
-	: mAction(action), mTimer(timer)
+Action::Action(string actionName, int timer)
+	: mActionName(actionName), mTimer(timer)
 {
 	//
 }

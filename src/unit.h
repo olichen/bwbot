@@ -17,14 +17,14 @@ class Unit
 		int getSupplyProvided() { return mSupplyProvided; }
 		int getBuildTime() { return mBuildTime; }
 		string getName() { return mName; }
-		string findPrereq() { return mPrereq; }
-		string findBuildsFrom() { return mBuildsFrom; }
-		Unit* getPrereq() { return pPrereq; }
-		Unit* getBuildsFrom() { return pBuildsFrom; }
+		string getPrereqName() { return mPrereq; }
+		string getBuildsFromName() { return mBuildsFrom; }
+		Unit *getPrereq() { return pPrereq; }
+		Unit *getBuildsFrom() { return pBuildsFrom; }
 
 	private:
 		int mMineralCost, mGasCost, mSupplyCost, mSupplyProvided, mBuildTime;
 		string mName, mPrereq, mBuildsFrom;
-		Unit* pPrereq;
-		Unit* pBuildsFrom;
+		Unit *pPrereq;
+		Unit *pBuildsFrom;
 };

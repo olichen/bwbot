@@ -10,9 +10,10 @@ class ActionList
 	public:
 		ActionList();
 
-		void updateAction(string action, int timer);
+		void addAction(string actionName, int timer);
+		void updateAction(string actionName, int timer);
 
-		Action findAction(string action);
+		Action &findAction(string actionName);
 
 	private:
 		vector<Action> vActionList;

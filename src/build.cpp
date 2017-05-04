@@ -13,12 +13,16 @@ Build::~Build()
 	//
 }
 
-//game loop
 void Build::init()
 {
 	//load initial units
 	loadRace('t');
+	run();
+}
 
+//game loop
+void Build::run()
+{
 	typedef std::chrono::milliseconds ms;
 	typedef std::chrono::nanoseconds ns;
 	typedef std::chrono::high_resolution_clock clock;
@@ -29,7 +33,7 @@ void Build::init()
 	auto time_start = clock::now();
 	ns lag(0);
 
-	while(cResources.getFrame() <= 1000)
+	while(cResources.getFrame() <= 400)
 	{
 		auto time_delta = clock::now() - time_start;
 		time_start = clock::now();
@@ -53,13 +57,17 @@ void Build::loadRace(char race)
 	cUnitTree.loadRace('t');
 	if (race == 't')
 	{
-		//load unit data
+		Unit &unit = cUnitTree.findUnit("Terran SCV");
+		cUnitList.initUnit(unit, 4);
+		unit = cUnitTree.findUnit("Terran Command Center");
+		cUnitList.initUnit(unit);
 	}
 }
 
 void Build::update()
 {
 	cResources.nextFrame();
+	cUnitList.update();
 }
 
 void Build::printResources()

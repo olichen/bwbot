@@ -11,6 +11,7 @@ class Build
 		~Build();
 
 		void init();
+		void run();
 
 	private:
 		void update();

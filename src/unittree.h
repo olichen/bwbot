@@ -1,3 +1,4 @@
+// unittree.h
 #pragma once
 #include "unit.h"
 #include <vector>
@@ -10,9 +11,12 @@ class UnitTree
 		UnitTree();
 		~UnitTree();
 
+		void loadRace(char race);
+		Unit &findUnit(string unitName);
+
+	private:
 		void addUnit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided, string prereq, string buildsFrom);
 		void init();
 
-	private:
 		vector<Unit> vUnitList;
 };

@@ -1,6 +1,8 @@
+// build.h
 #pragma once
 #include "resources.h"
 #include "unittree.h"
+#include "unitlist.h"
 
 class Build
 {
@@ -11,9 +13,11 @@ class Build
 		void init();
 
 	private:
-		Resources resources;
-		UnitTree unitTree;
 		void update();
-		void loadRace(char race);
 		void printResources();
+		void loadRace(char race = 't');
+
+		Resources cResources;
+		UnitTree cUnitTree;
+		UnitList cUnitList;
 };

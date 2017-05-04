@@ -1,3 +1,4 @@
+// action.cpp
 #include "action.h"
 
 Action::Action(string nextAction, int nextTimer, string idleAction, int idleTimer)
@@ -9,16 +10,19 @@ Action::Action(string nextAction, int nextTimer, string idleAction, int idleTime
 string Action::update()
 {
 	switch(mTimer){
+		//if idle
 		case(-1):
-			return NULL;
+			return "";
+		//if action completes
 		case(0):
 			mAction = mNextAction;
 			mTimer = mNextTimer;
 			mNextAction = mIdleAction;
 			mNextTimer = mIdleTimer;
 			return mAction;
+		//if no action completes, decrement timer
 		default:
 			mTimer--;
-			return NULL;
+			return "";
 	}
 }

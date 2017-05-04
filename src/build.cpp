@@ -86,6 +86,7 @@ void Build::executeActions()
 {
 	if (!pExecuteActions->empty())
 	{
+		printActions();
 		for (string &iActionName : *pExecuteActions)
 		{
 			if(iActionName=="MINE MINERALS")
@@ -100,10 +101,20 @@ void Build::executeActions()
 
 void Build::printResources()
 {
-	printf(" Frame |  Min  |  Gas  | Supply\n");
+	//printf(" Frame |  Min  |  Gas  | Supply\n");
 	printf("%6d |", cResources.getFrame());
 	printf("%5d  |", cResources.getMinerals());
 	printf("%5d  |", cResources.getGas());
 	printf("%4d/%d", cResources.getSupply(), cResources.getSupplyMax());
 	printf("\n");
+}
+
+//debug purposes
+void Build::printActions()
+{
+	for (string &iActionName : *pExecuteActions)
+	{
+		cout << iActionName << "//";
+	}
+	cout << "\n";
 }

@@ -19,6 +19,7 @@ class Build
 		void printResources();
 		void loadRace(char race = 't');
 		void executeActions();
+		void printActions();
 
 		Resources cResources;
 		UnitTree cUnitTree;

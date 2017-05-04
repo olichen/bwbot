@@ -15,7 +15,7 @@ string CurrentUnit::update()
 			nextAction();
 			return "";
 		//if action completes
-		case(0):
+		case(1):
 			{
 				string currentAction = mCurrentAction;
 				nextAction();

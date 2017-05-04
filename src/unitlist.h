@@ -12,7 +12,7 @@ class UnitList
 		UnitList();
 		~UnitList();
 
-		void initUnit(Unit &unit, int num = 1, string nextAction = "IDLE", int nextTimer = -1, string idleAction = "IDLE", int idleTimer = -1);
+		void initUnit(Unit &unit, Action nextAction, Action idleAction, int num = 1);
 		vector<string>* update();
 
 	private:

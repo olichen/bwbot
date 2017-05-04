@@ -12,11 +12,11 @@ UnitList::~UnitList()
 	vUnitList.clear();
 }
 
-void UnitList::initUnit(Unit &unit, int num, string nextAction, int nextTimer, string idleAction, int idleTimer)
+void UnitList::initUnit(Unit &unit, Action nextAction, Action idleAction, int num)
 {
 	for (int i=0; i<num; i++)
 	{
-		CurrentUnit newUnit(unit, nextAction, nextTimer, idleAction, idleTimer);
+		CurrentUnit newUnit(unit, nextAction, idleAction);
 		vUnitList.push_back(newUnit);
 	}
 }

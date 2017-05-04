@@ -1,14 +1,14 @@
 // currentunit.cpp
 #include "currentunit.h"
 
-CurrentUnit::CurrentUnit(Unit &unit, string nextAction, int nextTimer, string idleAction, int idleTimer)
-	: pUnit(&unit), mAction(nextAction, nextTimer, idleAction, idleTimer) 
+CurrentUnit::CurrentUnit(Unit &unit, Action nextAction, Action idleAction)
+	: pUnit(&unit), cIdleAction(idleAction)
 {
-	//
+	vNextAction.push_back(nextAction);
 }
 
 string CurrentUnit::update()
 {
-	return mAction.update();
+	//
 }
 

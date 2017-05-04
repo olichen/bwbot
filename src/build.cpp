@@ -58,9 +58,9 @@ void Build::loadRace(char race)
 	if (race == 't')
 	{
 		Unit &unit = cUnitTree.findUnit("Terran SCV");
-		cUnitList.initUnit(unit, 4);
+		//cUnitList.initUnit(unit, 4);
 		unit = cUnitTree.findUnit("Terran Command Center");
-		cUnitList.initUnit(unit);
+		//cUnitList.initUnit(unit);
 	}
 }
 

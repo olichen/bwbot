@@ -10,6 +10,7 @@ class ActionList
 	public:
 		ActionList();
 
+		void init();
 		void addAction(string actionName, int timer);
 		void updateAction(string actionName, int timer);
 

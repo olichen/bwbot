@@ -4,6 +4,7 @@
 #include <chrono>
 
 Build::Build()
+	: pExecuteActions(NULL)
 {
 	//
 }
@@ -17,6 +18,9 @@ void Build::init()
 {
 	//load initial units
 	loadRace('t');
+
+
+	//start running
 	run();
 }
 
@@ -54,20 +58,44 @@ void Build::run()
 
 void Build::loadRace(char race)
 {
-	cUnitTree.loadRace('t');
+	//load unit list
+	cUnitTree.loadRace(race);
+	//load actions
+	cActionList.init();
+
+	//load initial units
 	if (race == 't')
 	{
 		Unit &unit = cUnitTree.findUnit("Terran SCV");
-		//cUnitList.initUnit(unit, 4);
+		Action &mine = cActionList.findAction("MINE MINERALS");
+		Action &idle = cActionList.findAction("IDLE");
+		cUnitList.initUnit(unit, mine, mine, 4);
 		unit = cUnitTree.findUnit("Terran Command Center");
-		//cUnitList.initUnit(unit);
+		cUnitList.initUnit(unit, idle, idle, 1);
 	}
 }
 
 void Build::update()
 {
 	cResources.nextFrame();
-	cUnitList.update();
+	pExecuteActions = cUnitList.update();
+	executeActions();
+}
+
+void Build::executeActions()
+{
+	if (!pExecuteActions->empty())
+	{
+		for (string &iActionName : *pExecuteActions)
+		{
+			if(iActionName=="MINE MINERALS")
+			{
+				cResources.addMinerals();
+			}
+		}
+	}
+	delete pExecuteActions;
+	pExecuteActions = NULL;
 }
 
 void Build::printResources()

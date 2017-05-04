@@ -3,6 +3,7 @@
 #include "resources.h"
 #include "unittree.h"
 #include "unitlist.h"
+#include "actionlist.h"
 
 class Build
 {
@@ -17,8 +18,11 @@ class Build
 		void update();
 		void printResources();
 		void loadRace(char race = 't');
+		void executeActions();
 
 		Resources cResources;
 		UnitTree cUnitTree;
 		UnitList cUnitList;
+		ActionList cActionList;
+		vector<string> *pExecuteActions;
 };

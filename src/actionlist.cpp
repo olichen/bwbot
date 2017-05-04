@@ -6,6 +6,12 @@ ActionList::ActionList()
 	//
 }
 
+void ActionList::init()
+{
+	addAction("IDLE", -1);
+	addAction("MINE MINERALS", 176);
+}
+
 void ActionList::addAction(string actionName, int timer)
 {
 	vActionList.push_back(Action(actionName, timer));

@@ -32,7 +32,7 @@ vector<string>* UnitList::update()
 		}
 	}
 	
-	vector<string>* tempActionList = vActionList;
+	vector<string> *tempActionList = vActionList;
 	vActionList = new vector<string>;
 	return tempActionList;
 }

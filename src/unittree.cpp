@@ -42,11 +42,11 @@ void UnitTree::init()
 //return the unit
 Unit &UnitTree::findUnit(string unitName)
 {
-	for (Unit &unit : vUnitList)
+	for (Unit &iUnit : vUnitList)
 	{
-		if (unit.getName() == unitName)
+		if (iUnit.getName() == unitName)
 		{
-			return unit;
+			return iUnit;
 		}
 	}
 }

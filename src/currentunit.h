@@ -16,6 +16,8 @@ class CurrentUnit
 		void addNextAction(Action nextAction);
 		void gotoAction(Action nextAction);
 
+		string getActionName() { return mCurrentAction.getActionName(); }
+		int getTimer() { return mTimer; }
 		string getName() { return pUnit->getName(); }
 		bool isIdle() { return mTimer == -1; }
 

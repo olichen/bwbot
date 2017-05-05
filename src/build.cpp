@@ -43,11 +43,11 @@ void Build::loadRace(char race)
 	if (race == 't')
 	{
 		mResources.addMinerals(50);
-		vActionList.push_back(Action("SPAWN", mUnitTree.findUnit("Terran SCV")));
-		vActionList.push_back(Action("SPAWN", mUnitTree.findUnit("Terran SCV")));
-		vActionList.push_back(Action("SPAWN", mUnitTree.findUnit("Terran SCV")));
-		vActionList.push_back(Action("SPAWN", mUnitTree.findUnit("Terran SCV")));
-		vActionList.push_back(Action("SPAWN", mUnitTree.findUnit("Terran Command Center")));
+		vActionList.push_back(Action("CREATE", mUnitTree.findUnit("Terran SCV")));
+		vActionList.push_back(Action("CREATE", mUnitTree.findUnit("Terran SCV")));
+		vActionList.push_back(Action("CREATE", mUnitTree.findUnit("Terran SCV")));
+		vActionList.push_back(Action("CREATE", mUnitTree.findUnit("Terran SCV")));
+		vActionList.push_back(Action("CREATE", mUnitTree.findUnit("Terran Command Center")));
 	}
 }
 
@@ -59,15 +59,24 @@ void Build::loadBuildOrder()
 	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
 	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
 	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran Supply Depot"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran Barracks"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&mUnitTree.findUnit("Terran SCV"));
 }
 
 //game loop
 void Build::run()
 {
-	while(mResources.getFrame() <= 1000)
+	while(mResources.getFrame() <= 10000 && !qBuildOrder.empty())
 	{
 		update();
-		printResources();
 	}
 	//typedef std::chrono::milliseconds ms;
 	//typedef std::chrono::nanoseconds ns;
@@ -100,13 +109,13 @@ void Build::run()
 
 void Build::update()
 {
-	mResources.nextFrame();
 	handleActions();
 	tryToBuild();
 	for (CurrentUnit &iCurrentUnit : vUnitList)
 	{
 		iCurrentUnit.update(vActionList);
 	}
+	mResources.nextFrame();
 }
 
 void Build::tryToBuild()
@@ -122,13 +131,46 @@ void Build::tryToBuild()
 		if (buildUnit.getSupplyCost() > mResources.getAvailableSupply())
 			 return;
 
+		//if it is built by a worker, find one that is mining and use it
+		if (buildUnit.getBuildsFromName() == mUnitTree.getWorkerName())
+		{
+			CurrentUnit *workerPtr = NULL;
+			int workerFrame = 9999;
+			for (CurrentUnit &iCurrentUnit : vUnitList)
+			{
+				if (iCurrentUnit.getName() == mUnitTree.getWorkerName())
+				{
+					if (iCurrentUnit.getActionName() == "GATHER MINERALS")
+					{
+						if (iCurrentUnit.getTimer() < workerFrame)
+						{
+							workerPtr = &iCurrentUnit;
+							workerFrame = iCurrentUnit.getTimer();
+						}
+					}
+				}
+			}
+			if (workerPtr != NULL)
+			{
+				workerPtr->gotoAction(Action("PRODUCING", buildUnit));
+				vActionList.push_back(Action("CREATEUNIT", buildUnit));
+				qBuildOrder.pop();
+				return;
+			}
+		}
+
+		//find an idle production facility
 		for (CurrentUnit &iCurrentUnit : vUnitList)
 		{
-			if (iCurrentUnit.isIdle() && iCurrentUnit.getName() == buildUnit.getBuildsFromName())
+			if (iCurrentUnit.getName() == buildUnit.getBuildsFromName())
 			{
-				iCurrentUnit.addNextAction(Action("BUILDING", buildUnit.getBuildTime()));
-				vActionList.push_back(Action("BUILD", buildUnit));
-				qBuildOrder.pop();
+				if (iCurrentUnit.isIdle())
+				{
+					iCurrentUnit.addNextAction(Action("PRODUCING", buildUnit));
+					vActionList.push_back(Action("CREATEUNIT", buildUnit));
+					qBuildOrder.pop();
+					return;
+				}
 			}
 		}
 	}
@@ -152,13 +194,17 @@ void Build::handleActions()
 			{
 				mResources.addGas();
 			}
-			else if(iAction.getActionName()=="BUILD")
+			else if(iAction.getActionName()=="CREATEUNIT")
 			{
 				buildUnit(iAction.getTargetUnit());
 			}
-			else if(iAction.getActionName()=="SPAWN")
+			else if(iAction.getActionName()=="CREATE")
 			{
 				spawnUnit(iAction.getTargetUnit());
+			}
+			else if(iAction.getActionName()=="SPAWNING")
+			{
+				mResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
 			}
 		}
 	}
@@ -167,7 +213,7 @@ void Build::handleActions()
 
 void Build::spawnUnit(Unit &unit)
 {
-	if (unit.getName()=="Terran SCV")
+	if (unit.getName() == mUnitTree.getWorkerName())
 	{
 		vUnitList.push_back(CurrentUnit(unit, Action(), Action("GATHER MINERALS", 176)));
 	}
@@ -181,39 +227,44 @@ void Build::spawnUnit(Unit &unit)
 
 void Build::buildUnit(Unit &unit)
 {
-	if (unit.getName()=="Terran SCV")
+	if (unit.getName() == mUnitTree.getWorkerName())
 	{
-		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING",unit.getBuildTime()), Action("GATHER MINERALS", 176)));
+		vUnitList.push_back(CurrentUnit(unit, Action("SPAWNING",unit), Action("GATHER MINERALS", 176)));
 	}
 	else
 	{
-		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING",unit.getBuildTime())));
+		vUnitList.push_back(CurrentUnit(unit, Action("SPAWNING",unit)));
 	}
 	mResources.useMinerals(unit.getMineralCost());
 	mResources.useGas(unit.getGasCost());
 	mResources.useSupply(unit.getSupplyCost());
-	mResources.addSupplyMax(unit.getSupplyProvided());
 }
 ////END action handling
 
 ////START debug printing
 void Build::printResources()
 {
-	//printf(" Frame |  Min  |  Gas  | Supply\n");
+	//printf(" Frame |  Min  |  Gas  | Supply | Time\n");
 	printf("%6d |", mResources.getFrame());
 	printf("%5d  |", mResources.getMinerals());
 	printf("%5d  |", mResources.getGas());
-	printf("%4d/%d", mResources.getSupply(), mResources.getSupplyMax());
+	printf("%4d/%-3d|", mResources.getSupply(), mResources.getSupplyMax());
+	printf("%5d", mResources.getFrame()*42/1000);
 	printf("\n");
 }
 
-//debug purposes
 void Build::printActions()
 {
+	printResources();
 	for (Action &iAction : vActionList)
 	{
-		cout << iAction.getActionName() << "//";
+		cout << iAction.getActionName();
+		if (iAction.hasTargetUnit())
+		{
+			cout << " " << iAction.getTargetUnit().getName();
+		}
+		cout << "//";
 	}
-	cout << "\n";
+	cout << "\n\n";
 }
 ////END debug printing

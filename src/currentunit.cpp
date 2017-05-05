@@ -4,7 +4,10 @@
 CurrentUnit::CurrentUnit(Unit &unit, Action nextAction, Action idleAction)
 	: pUnit(&unit), mCurrentAction(Action()), mIdleAction(idleAction), mTimer(-1)
 {
-	vNextAction.push(nextAction);
+	if (nextAction.getActionName() != "IDLE")
+	{
+		vNextAction.push(nextAction);
+	}
 }
 
 void CurrentUnit::update(vector<Action> &actionList)

@@ -6,13 +6,10 @@ UnitList::UnitList()
 	//
 }
 
-void UnitList::initUnit(Unit &unit, Action nextAction, Action idleAction, int num)
+void UnitList::initUnit(Unit &unit, Action nextAction, Action idleAction)
 {
-	for (int i=0; i<num; i++)
-	{
-		CurrentUnit newUnit(unit, nextAction, idleAction);
-		vUnitList.push_back(newUnit);
-	}
+	CurrentUnit newUnit(unit, nextAction, idleAction);
+	vUnitList.push_back(newUnit);
 }
 
 void UnitList::update(vector<Action> &actionList)

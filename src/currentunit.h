@@ -10,12 +10,13 @@ using namespace std;
 class CurrentUnit
 {
 	public:
-		CurrentUnit(Unit &unit, Action nextAction, Action idleAction);
+		CurrentUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
 
 		void update(vector<Action> &actionList);
 		void addNextAction(Action nextAction);
 		void gotoAction(Action nextAction);
 
+		string getName() { return pUnit->getName(); }
 		bool isIdle() { return mTimer == -1; }
 
 	private:

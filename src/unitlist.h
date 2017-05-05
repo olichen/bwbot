@@ -12,7 +12,7 @@ class UnitList
 	public:
 		UnitList();
 
-		void initUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action(), int num = 1);
+		void initUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
 		void update(vector<Action> &actionList);
 
 	private:

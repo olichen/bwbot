@@ -4,6 +4,7 @@
 #include "unit.h"
 #include <string>
 #include <queue>
+#include <vector>
 using namespace std;
 
 class CurrentUnit
@@ -11,7 +12,7 @@ class CurrentUnit
 	public:
 		CurrentUnit(Unit &unit, Action nextAction, Action idleAction);
 
-		string update();
+		void update(vector<Action> &actionList);
 		void addNextAction(Action nextAction);
 		void gotoAction(Action nextAction);
 
@@ -21,8 +22,8 @@ class CurrentUnit
 		void nextAction();
 
 		Unit *pUnit;
-		string mCurrentAction;
+		Action mCurrentAction;
 		queue<Action> vNextAction;
-		Action cIdleAction;
+		Action mIdleAction;
 		int mTimer;
 };

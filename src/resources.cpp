@@ -2,7 +2,7 @@
 #include "resources.h"
 
 Resources::Resources()
-	: mMinerals(50), mGas(0), mSupply(0), mSupplyMax(10), mFrame(0)
+	: mMinerals(0), mGas(0), mSupply(0), mSupplyMax(0), mFrame(0)
 {
 	//
 }

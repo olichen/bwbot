@@ -3,13 +3,7 @@
 
 UnitList::UnitList()
 {
-	vActionList = new vector<string>;
-}
-
-UnitList::~UnitList()
-{
-	vActionList->clear();
-	vUnitList.clear();
+	//
 }
 
 void UnitList::initUnit(Unit &unit, Action nextAction, Action idleAction, int num)
@@ -21,18 +15,10 @@ void UnitList::initUnit(Unit &unit, Action nextAction, Action idleAction, int nu
 	}
 }
 
-vector<string>* UnitList::update()
+void UnitList::update(vector<Action> &actionList)
 {
 	for (CurrentUnit &iUnit : vUnitList)
 	{
-		string action = iUnit.update();
-		if (action != "")
-		{
-			vActionList->push_back(action);
-		}
+		iUnit.update(actionList);
 	}
-	
-	vector<string> *tempActionList = vActionList;
-	vActionList = new vector<string>;
-	return tempActionList;
 }

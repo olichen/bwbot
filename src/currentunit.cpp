@@ -2,29 +2,27 @@
 #include "currentunit.h"
 
 CurrentUnit::CurrentUnit(Unit &unit, Action nextAction, Action idleAction)
-	: pUnit(&unit), mCurrentAction("IDLE"), cIdleAction(idleAction), mTimer(-1)
+	: pUnit(&unit), mCurrentAction(Action()), mIdleAction(idleAction), mTimer(-1)
 {
 	vNextAction.push(nextAction);
 }
 
-string CurrentUnit::update()
+void CurrentUnit::update(vector<Action> &actionList)
 {
 	switch(mTimer){
 		//if currently idle
 		case(-1):
 			nextAction();
-			return "";
+			break;
 		//if action completes
 		case(1):
-			{
-				string currentAction = mCurrentAction;
-				nextAction();
-				return currentAction;
-			}
+			actionList.push_back(mCurrentAction);
+			nextAction();
+			break;
 		//if no action completes, decrement timer
 		default:
 			mTimer--;
-			return "";
+			break;
 	}
 }
 
@@ -36,7 +34,7 @@ void CurrentUnit::addNextAction(Action nextAction)
 //clear all actions and goto a specific one
 void CurrentUnit::gotoAction(Action nextAction)
 {
-	mCurrentAction = nextAction.getActionName();
+	mCurrentAction = nextAction;
 	mTimer = nextAction.getTimer();
 	vNextAction = queue<Action>();
 }
@@ -45,12 +43,12 @@ void CurrentUnit::nextAction()
 {
 	if (vNextAction.empty())
 	{
-		mCurrentAction = cIdleAction.getActionName();
-		mTimer = cIdleAction.getTimer();
+		mCurrentAction = mIdleAction;
+		mTimer = mIdleAction.getTimer();
 	}
 	else
 	{
-		mCurrentAction = vNextAction.front().getActionName();
+		mCurrentAction = vNextAction.front();
 		mTimer = vNextAction.front().getTimer();
 		vNextAction.pop();
 	}

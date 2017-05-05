@@ -1,6 +1,5 @@
 // unit.h
 #pragma once
-#include "action.h"
 #include <string>
 using namespace std;
 

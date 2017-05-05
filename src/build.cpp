@@ -4,7 +4,6 @@
 #include <chrono>
 
 Build::Build()
-	: pExecuteActions(NULL)
 {
 	//
 }
@@ -28,6 +27,23 @@ void Build::init()
 	{
 		cout << "EXCEPTION CAUGHT; PROGRAM TERMINATED\n";
 		cout << "" << ex << "\n";
+	}
+}
+
+//load up initial state
+void Build::loadRace(char race)
+{
+	//load unit list
+	cUnitTree.loadRace(race);
+
+	//load initial units
+	if (race == 't')
+	{
+		vActionList.push_back(Action("SPAWN", cUnitTree.findUnit("Terran SCV")));
+		vActionList.push_back(Action("SPAWN", cUnitTree.findUnit("Terran SCV")));
+		vActionList.push_back(Action("SPAWN", cUnitTree.findUnit("Terran SCV")));
+		vActionList.push_back(Action("SPAWN", cUnitTree.findUnit("Terran SCV")));
+		vActionList.push_back(Action("SPAWN", cUnitTree.findUnit("Terran Command Center")));
 	}
 }
 
@@ -57,55 +73,56 @@ void Build::run()
 			//update
 			update();
 
-			//print
+			//DEBUG: print resources as they change
 			printResources();
 		}
-	}
-}
-
-void Build::loadRace(char race)
-{
-	//load unit list
-	cUnitTree.loadRace(race);
-	//load actions
-	cActionList.init();
-
-	//load initial units
-	if (race == 't')
-	{
-		Unit &unit = cUnitTree.findUnit("Terran SCV");
-		Action &mine = cActionList.findAction("MINE MINERALS");
-		Action &idle = cActionList.findAction("IDLE");
-		cUnitList.initUnit(unit, mine, mine, 4);
-		unit = cUnitTree.findUnit("Terran Command Center");
-		cUnitList.initUnit(unit, idle, idle, 1);
 	}
 }
 
 void Build::update()
 {
 	cResources.nextFrame();
-	pExecuteActions = cUnitList.update();
-	executeActions();
+	cUnitList.update(vActionList);
+	handleActions();
 }
 
-void Build::executeActions()
+////START action handling
+void Build::handleActions()
 {
-	if (!pExecuteActions->empty())
+	if (!vActionList.empty())
 	{
+		//DEBUG: print actions as they happen
 		printActions();
-		for (string &iActionName : *pExecuteActions)
+
+		for (Action &iAction : vActionList)
 		{
-			if(iActionName=="MINE MINERALS")
+			if(iAction.getActionName()=="GATHER MINERALS")
 			{
 				cResources.addMinerals();
 			}
+			else if(iAction.getActionName()=="SPAWN")
+			{
+				spawnUnit(iAction.getTargetUnit());
+			}
 		}
 	}
-	delete pExecuteActions;
-	pExecuteActions = NULL;
+	vActionList.clear();
 }
 
+void Build::spawnUnit(Unit &unit)
+{
+	if (unit.getName()=="Terran SCV")
+	{
+		cUnitList.initUnit(unit, Action(), Action("GATHER MINERALS", 176));
+	}
+	else
+	{
+		cUnitList.initUnit(unit);
+	}
+}
+////END action handling
+
+////START debug printing
 void Build::printResources()
 {
 	//printf(" Frame |  Min  |  Gas  | Supply\n");
@@ -119,9 +136,10 @@ void Build::printResources()
 //debug purposes
 void Build::printActions()
 {
-	for (string &iActionName : *pExecuteActions)
+	for (Action &iAction : vActionList)
 	{
-		cout << iActionName << "//";
+		cout << iAction.getActionName() << "//";
 	}
 	cout << "\n";
 }
+////END debug printing

@@ -23,8 +23,9 @@ class Unit
 		Unit *getBuildsFrom() { return pBuildsFrom; }
 
 	private:
-		int mMineralCost, mGasCost, mSupplyCost, mSupplyProvided, mBuildTime;
-		string mName, mPrereq, mBuildsFrom;
+		string mName;
+		int mMineralCost, mGasCost, mBuildTime, mSupplyCost, mSupplyProvided;
+		string mPrereq, mBuildsFrom;
 		Unit *pPrereq;
 		Unit *pBuildsFrom;
 };

@@ -49,6 +49,7 @@ Unit &UnitTree::findUnit(string unitName)
 			return iUnit;
 		}
 	}
+	throw "Unit " + unitName + " not found.";
 }
 
 //load unit data

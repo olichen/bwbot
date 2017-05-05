@@ -22,7 +22,7 @@ class CurrentUnit
 
 		Unit *pUnit;
 		string mCurrentAction;
-		int mTimer;
 		queue<Action> vNextAction;
 		Action cIdleAction;
+		int mTimer;
 };

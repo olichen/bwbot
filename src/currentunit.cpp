@@ -2,7 +2,7 @@
 #include "currentunit.h"
 
 CurrentUnit::CurrentUnit(Unit &unit, Action nextAction, Action idleAction)
-	: pUnit(&unit), cIdleAction(idleAction), mCurrentAction("IDLE"), mTimer(-1)
+	: pUnit(&unit), mCurrentAction("IDLE"), cIdleAction(idleAction), mTimer(-1)
 {
 	vNextAction.push(nextAction);
 }

@@ -1,5 +1,6 @@
 // unittree.cpp
 #include "unittree.h"
+#include <exception>
 
 UnitTree::UnitTree()
 {

@@ -16,12 +16,19 @@ Build::~Build()
 
 void Build::init()
 {
-	//load initial units
-	loadRace('t');
+	try
+	{
+		//load initial units
+		loadRace('t');
 
-
-	//start running
-	run();
+		//start running
+		run();
+	}
+	catch (const string &ex)
+	{
+		cout << "EXCEPTION CAUGHT; PROGRAM TERMINATED\n";
+		cout << "" << ex << "\n";
+	}
 }
 
 //game loop

@@ -12,7 +12,7 @@ class UnitList
 	public:
 		UnitList();
 
-		void initUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
+		void addUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
 		void update(vector<Action> &actionList);
 
 		int minerCount();

@@ -6,7 +6,7 @@ UnitList::UnitList()
 	//
 }
 
-void UnitList::initUnit(Unit &unit, Action nextAction, Action idleAction)
+void UnitList::addUnit(Unit &unit, Action nextAction, Action idleAction)
 {
 	CurrentUnit newUnit(unit, nextAction, idleAction);
 	vUnitList.push_back(newUnit);

@@ -15,6 +15,9 @@ class UnitList
 		void initUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
 		void update(vector<Action> &actionList);
 
+		int minerCount();
+		int gasMinerCount();
+
 	private:
 		vector<CurrentUnit> vUnitList;
 };

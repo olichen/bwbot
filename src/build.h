@@ -27,11 +27,13 @@ class Build
 		void spawnUnit(Unit &unit);
 		void buildUnit(Unit &unit);
 
+		int getMineralRate();
+		int getGasRate();
 		void printResources();
 		void printActions();
 
-		Resources mResources;
-		UnitTree mUnitTree;
+		Resources cResources;
+		UnitTree cUnitTree;
 		vector<CurrentUnit> vUnitList;
 		vector<Action> vActionList;
 		queue<Unit*> qBuildOrder;

@@ -4,7 +4,7 @@
 class Resources
 {
 	public:
-		Resources(int mineralPatches = 9, int gasGeysers = 1);
+		Resources(int mineralPatches = 9, int gasGeysers = 1, char race = 't');
 
 		void addExpansion(int mineralPatches = 7, int gasGeysers = 1);
 
@@ -16,6 +16,8 @@ class Resources
 		int getFrame() { return mFrame; }
 		int getMineralPatches() { return mMineralPatches; }
 		int getGasGeysers() { return mGasGeysers; }
+		char getRace() { return mRace; }
+		int getBaseMineRate();
 
 		// increment minerals, gas, supply, frame
 		void addMinerals(int minerals = 8) { mMinerals += minerals; }
@@ -30,4 +32,5 @@ class Resources
 	private:
 		int mMinerals, mGas, mSupply, mSupplyMax, mFrame;
 		int mMineralPatches, mGasGeysers;
+		char mRace;
 };

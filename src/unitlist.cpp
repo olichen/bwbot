@@ -19,3 +19,29 @@ void UnitList::update(vector<Action> &actionList)
 		iUnit.update(actionList);
 	}
 }
+
+int UnitList::minerCount()
+{
+	int count = 0;
+	for (CurrentUnit &iUnit : vUnitList)
+	{
+		if (iUnit.getActionName() == "GATHER MINERALS")
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
+int UnitList::gasMinerCount()
+{
+	int count = 0;
+	for (CurrentUnit &iUnit : vUnitList)
+	{
+		if (iUnit.getActionName() == "GATHER GAS")
+		{
+			count++;
+		}
+	}
+	return count;
+}

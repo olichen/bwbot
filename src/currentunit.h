@@ -23,6 +23,7 @@ class CurrentUnit
 		bool isIdle() { return mTimer == -1; }
 
 		void setIdleActionTimer(int timer) { mIdleAction.setTimer(timer); }
+		void setIdleAction(Action action) { mIdleAction = action; }
 
 	private:
 		void nextAction();

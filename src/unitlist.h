@@ -16,10 +16,13 @@ class UnitList
 		void addUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
 		void update(vector<Action> &actionList);
 		bool tryToBuild(Unit &unit);
+		CurrentUnit *findWorker();
 		void buildUnit(Unit &unit);
 		void spawnUnit(Unit &unit);
+		void addGasWorker(int number);
 
 		void setMineralRate(int mineralRate);
+		void setGasRate(int mineralRate);
 
 		int minerCount();
 		int gasMinerCount();

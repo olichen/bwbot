@@ -28,6 +28,21 @@ void UnitList::setMineralRate(int mineralRate)
 	}
 }
 
+void UnitList::setGasRate(int gasRate)
+{
+	if (mMineralRate != gasRate)
+	{
+		for (CurrentUnit &iCurrentUnit : vUnitList)
+		{
+			if (iCurrentUnit.getIdleActionName() == "GATHER GAS")
+			{
+				iCurrentUnit.setIdleActionTimer(gasRate);
+				mGasRate = gasRate;
+			}
+		}
+	}
+}
+
 void UnitList::addUnit(Unit &unit, Action nextAction, Action idleAction)
 {
 	CurrentUnit newUnit(unit, nextAction, idleAction);
@@ -38,19 +53,7 @@ bool UnitList::tryToBuild(Unit &unit)
 {
 	if (unit.getBuildsFromName() == mWorkerName)
 	{
-		CurrentUnit *workerPtr = NULL;
-		int workerFrame = 9999;
-		for (CurrentUnit &iCurrentUnit : vUnitList)
-		{
-			if (iCurrentUnit.getActionName() == "GATHER MINERALS")
-			{
-				if (iCurrentUnit.getTimer() < workerFrame)
-				{
-					workerPtr = &iCurrentUnit;
-					workerFrame = iCurrentUnit.getTimer();
-				}
-			}
-		}
+		CurrentUnit *workerPtr = findWorker();
 		if (workerPtr != NULL)
 		{
 			workerPtr->gotoAction(Action("BUILDING", unit));
@@ -72,6 +75,37 @@ bool UnitList::tryToBuild(Unit &unit)
 		}
 	}
 	return false;
+}
+
+//find the most idle worker (whoever is most done with mining)
+CurrentUnit *UnitList::findWorker()
+{
+	CurrentUnit *workerPtr = NULL;
+	int workerFrame = 9999;
+	for (CurrentUnit &iCurrentUnit : vUnitList)
+	{
+		if (iCurrentUnit.getActionName() == "GATHER MINERALS")
+		{
+			if (iCurrentUnit.getTimer() < workerFrame)
+			{
+				workerPtr = &iCurrentUnit;
+				workerFrame = iCurrentUnit.getTimer();
+			}
+		}
+	}
+	return workerPtr;
+}
+
+void UnitList::addGasWorker(int number)
+{
+	int gasInit = 74;
+	for (int i=0; i<number; i++)
+	{
+		CurrentUnit *workerPtr = findWorker();
+		workerPtr->gotoAction(Action("GATHER GAS", gasInit));
+		workerPtr->setIdleAction(Action("GATHER GAS", mGasRate));
+		gasInit += 37;
+	}
 }
 
 void UnitList::buildUnit(Unit &unit)

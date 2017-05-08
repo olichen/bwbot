@@ -68,6 +68,7 @@ void Build::loadBuildOrder()
 	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
 	qBuildOrder.push(&cUnitTree.findUnit("Terran Barracks"));
 	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&cUnitTree.findUnit("Terran Refinery"));
 	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
 	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
 	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
@@ -113,10 +114,15 @@ void Build::run()
 
 void Build::update()
 {
+	//handle any thrown actions
 	handleActions();
+	//try to build based off build order
 	tryToBuild();
+	//refresh mining rate
 	updateMineralRate();
+	//update state of all units
 	cUnitList.update(vActionList);
+	//update frame number
 	cResources.nextFrame();
 }
 
@@ -126,7 +132,7 @@ void Build::tryToBuild()
 	{
 		Unit &buildUnit = *(qBuildOrder.front());
 
-		//if not enough resources (any of them)
+		//if not enough resources, give up
 		if (buildUnit.getMineralCost() > cResources.getMinerals())
 			 return;
 		if (buildUnit.getGasCost() > cResources.getGas())
@@ -153,13 +159,9 @@ void Build::handleActions()
 		for (Action &iAction : vActionList)
 		{
 			if(iAction.getActionName()=="GATHER MINERALS")
-			{
 				cResources.addMinerals();
-			}
 			else if(iAction.getActionName()=="GATHER GAS")
-			{
 				cResources.addGas();
-			}
 			else if(iAction.getActionName()=="STARTBUILDING")
 			{
 				cResources.useMinerals(iAction.getTargetUnit().getMineralCost());
@@ -176,6 +178,8 @@ void Build::handleActions()
 			else if(iAction.getActionName()=="CONSTRUCTING")
 			{
 				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
+				if(iAction.getTargetUnit().getName() == cUnitTree.getGasName())
+					cUnitList.addGasWorker(3);
 			}
 		}
 	}
@@ -217,6 +221,7 @@ void Build::printResources()
 void Build::printActions()
 {
 	printResources();
+	cout << "        ";
 	for (Action &iAction : vActionList)
 	{
 		cout << iAction.getActionName();
@@ -226,6 +231,6 @@ void Build::printActions()
 		}
 		cout << "//";
 	}
-	cout << "\n\n";
+	cout << "\n";
 }
 ////END debug printing

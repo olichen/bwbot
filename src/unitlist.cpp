@@ -65,12 +65,18 @@ bool UnitList::tryToBuild(Unit &unit)
 
 void UnitList::buildUnit(Unit &unit)
 {
-	vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit)));
+	if (unit.getName() == mWorkerName)
+		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit), Action("GATHER MINERALS", mMineralRate)));
+	else
+		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit)));
 }
 
 void UnitList::spawnUnit(Unit &unit)
 {
-	vUnitList.push_back(CurrentUnit(unit));
+	if (unit.getName() == mWorkerName)
+		vUnitList.push_back(CurrentUnit(unit, Action(), Action("GATHER MINERALS", mMineralRate)));
+	else
+		vUnitList.push_back(CurrentUnit(unit));
 }
 
 void UnitList::update(vector<Action> &actionList)

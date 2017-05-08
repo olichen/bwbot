@@ -7,9 +7,10 @@ UnitList::UnitList()
 	//
 }
 
-void UnitList::init(string workerName)
+void UnitList::init(string workerName, string gasName)
 {
 	mWorkerName = workerName;
+	mGasName = gasName;
 }
 
 void UnitList::setMineralRate(int mineralRate)

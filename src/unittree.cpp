@@ -54,13 +54,15 @@ Unit &UnitTree::findUnit(string unitName)
 }
 
 //load unit data
-//start each race with its worker unit first!!
+//start each race with its worker unit first, gas building second!!
 void UnitTree::loadRace(char race)
 {
 	if (race == 't')
 	{
-		//ground units
+		//resource stuff
 		addUnit("Terran SCV",50,0,300,1,0,"Terran Command Center","Terran Command Center");
+		addUnit("Terran Refinery",100,0,600,0,0,"Terran SCV","Terran SCV");
+		//ground units
 		addUnit("Terran Marine",50,0,360,1,0,"Terran Barracks","Terran Barracks");
 		addUnit("Terran Firebat",50,25,360,1,0,"Terran Academy","Terran Barracks");
 		//addUnit("Terran Ghost",25,75,750,1,0,"Terran Covert Ops","Terran Barracks");
@@ -77,7 +79,6 @@ void UnitTree::loadRace(char race)
 		//basic buildings
 		addUnit("Terran Command Center",400,0,1800,0,10,"Terran SCV","Terran SCV");
 		addUnit("Terran Supply Depot",100,0,600,0,8,"Terran SCV","Terran SCV");
-		addUnit("Terran Refinery",100,0,600,0,0,"Terran SCV","Terran SCV");
 		addUnit("Terran Barracks",150,0,1200,0,0,"Terran Command Center","Terran SCV");
 		addUnit("Terran Engineering Bay",125,0,900,0,0,"Terran Command Center","Terran SCV");
 		addUnit("Terran Academy",150,0,1200,0,0,"Terran Barracks","Terran SCV");

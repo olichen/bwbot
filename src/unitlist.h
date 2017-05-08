@@ -12,7 +12,7 @@ class UnitList
 	public:
 		UnitList();
 
-		void init(string workerName);
+		void init(string workerName, string gasName);
 		void addUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
 		void update(vector<Action> &actionList);
 		bool tryToBuild(Unit &unit);
@@ -26,6 +26,6 @@ class UnitList
 
 	private:
 		vector<CurrentUnit> vUnitList;
-		string mWorkerName;
+		string mWorkerName, mGasName;
 		int mMineralRate, mGasRate;
 };

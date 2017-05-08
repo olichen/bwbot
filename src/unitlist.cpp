@@ -14,7 +14,17 @@ void UnitList::init(string workerName)
 
 void UnitList::setMineralRate(int mineralRate)
 {
-	mMineralRate = mineralRate;
+	if (mMineralRate != mineralRate)
+	{
+		for (CurrentUnit &iCurrentUnit : vUnitList)
+		{
+			if (iCurrentUnit.getIdleActionName() == "GATHER MINERALS")
+			{
+				iCurrentUnit.setIdleActionTimer(mineralRate);
+				mMineralRate = mineralRate;
+			}
+		}
+	}
 }
 
 void UnitList::addUnit(Unit &unit, Action nextAction, Action idleAction)

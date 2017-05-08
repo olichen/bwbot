@@ -115,6 +115,7 @@ void Build::update()
 {
 	handleActions();
 	tryToBuild();
+	updateMineralRate();
 	cUnitList.update(vActionList);
 	cResources.nextFrame();
 }
@@ -191,7 +192,7 @@ void Build::updateMineralRate()
 	if (minerCount <= minPatches)
 		cUnitList.setMineralRate(baseRate);
 	else if (minerCount <= minPatches * 3)
-		cUnitList.setMineralRate((250 - baseRate) * minerCount / minPatches + baseRate);
+		cUnitList.setMineralRate((250 - baseRate) * minerCount / (minPatches * 3) + baseRate);
 	else
 		cUnitList.setMineralRate(250 * minerCount / minPatches * 3);
 }

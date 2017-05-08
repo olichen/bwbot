@@ -4,6 +4,7 @@
 #include "unit.h"
 #include "currentunit.h"
 #include "unittree.h"
+#include "unitlist.h"
 #include "action.h"
 #include <vector>
 #include <queue>
@@ -27,14 +28,14 @@ class Build
 		void spawnUnit(Unit &unit);
 		void buildUnit(Unit &unit);
 
-		int getMineralRate();
+		void updateMineralRate();
 		int getGasRate();
 		void printResources();
 		void printActions();
 
 		Resources cResources;
 		UnitTree cUnitTree;
-		vector<CurrentUnit> vUnitList;
+		UnitList cUnitList;
 		vector<Action> vActionList;
 		queue<Unit*> qBuildOrder;
 };

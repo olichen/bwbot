@@ -39,6 +39,10 @@ void Build::loadRace(char race)
 	//load unit list
 	cUnitTree.loadRace(race);
 
+	//load workers
+	cUnitList.init(cUnitTree.getWorkerName());
+	updateMineralRate();
+
 	//load initial units
 	if (race == 't')
 	{
@@ -111,10 +115,7 @@ void Build::update()
 {
 	handleActions();
 	tryToBuild();
-	for (CurrentUnit &iCurrentUnit : vUnitList)
-	{
-		iCurrentUnit.update(vActionList);
-	}
+	cUnitList.update(vActionList);
 	cResources.nextFrame();
 }
 
@@ -132,47 +133,10 @@ void Build::tryToBuild()
 		if (buildUnit.getSupplyCost() > cResources.getAvailableSupply())
 			 return;
 
-		//if it is built by a worker, find one that is mining and use it
-		if (buildUnit.getBuildsFromName() == cUnitTree.getWorkerName())
+		if (cUnitList.tryToBuild(buildUnit))
 		{
-			CurrentUnit *workerPtr = NULL;
-			int workerFrame = 9999;
-			for (CurrentUnit &iCurrentUnit : vUnitList)
-			{
-				if (iCurrentUnit.getName() == cUnitTree.getWorkerName())
-				{
-					if (iCurrentUnit.getActionName() == "GATHER MINERALS")
-					{
-						if (iCurrentUnit.getTimer() < workerFrame)
-						{
-							workerPtr = &iCurrentUnit;
-							workerFrame = iCurrentUnit.getTimer();
-						}
-					}
-				}
-			}
-			if (workerPtr != NULL)
-			{
-				workerPtr->gotoAction(Action("BUILDING", buildUnit));
-				vActionList.push_back(Action("STARTBUILDING", buildUnit));
-				qBuildOrder.pop();
-				return;
-			}
-		}
-
-		//find an idle production facility
-		for (CurrentUnit &iCurrentUnit : vUnitList)
-		{
-			if (iCurrentUnit.getName() == buildUnit.getBuildsFromName())
-			{
-				if (iCurrentUnit.isIdle())
-				{
-					iCurrentUnit.addNextAction(Action("BUILDING", buildUnit));
-					vActionList.push_back(Action("STARTBUILDING", buildUnit));
-					qBuildOrder.pop();
-					return;
-				}
-			}
+			vActionList.push_back(Action("STARTBUILDING", buildUnit));
+			qBuildOrder.pop();
 		}
 	}
 }
@@ -197,11 +161,16 @@ void Build::handleActions()
 			}
 			else if(iAction.getActionName()=="STARTBUILDING")
 			{
-				buildUnit(iAction.getTargetUnit());
+				cResources.useMinerals(iAction.getTargetUnit().getMineralCost());
+				cResources.useGas(iAction.getTargetUnit().getGasCost());
+				cResources.useSupply(iAction.getTargetUnit().getSupplyCost());
+				cUnitList.buildUnit(iAction.getTargetUnit());
 			}
 			else if(iAction.getActionName()=="CREATE")
 			{
-				spawnUnit(iAction.getTargetUnit());
+				cResources.useSupply(iAction.getTargetUnit().getSupplyCost());
+				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
+				cUnitList.spawnUnit(iAction.getTargetUnit());
 			}
 			else if(iAction.getActionName()=="CONSTRUCTING")
 			{
@@ -212,47 +181,19 @@ void Build::handleActions()
 	vActionList.clear();
 }
 
-void Build::spawnUnit(Unit &unit)
-{
-	if (unit.getName() == cUnitTree.getWorkerName())
-	{
-		vUnitList.push_back(CurrentUnit(unit, Action(), Action("GATHER MINERALS", getMineralRate())));
-	}
-	else
-	{
-		vUnitList.push_back(CurrentUnit(unit));
-	}
-	cResources.useSupply(unit.getSupplyCost());
-	cResources.addSupplyMax(unit.getSupplyProvided());
-}
-
-void Build::buildUnit(Unit &unit)
-{
-	if (unit.getName() == cUnitTree.getWorkerName())
-	{
-		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING",unit), Action("GATHER MINERALS", getMineralRate())));
-	}
-	else
-	{
-		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING",unit)));
-	}
-	cResources.useMinerals(unit.getMineralCost());
-	cResources.useGas(unit.getGasCost());
-	cResources.useSupply(unit.getSupplyCost());
-}
 ////END action handling
 
-int Build::getMineralRate()
+void Build::updateMineralRate()
 {
 	int baseRate = cResources.getBaseMineRate();
-	int minerCount = 9;
+	int minerCount = cUnitList.minerCount();
 	int minPatches = cResources.getMineralPatches();
 	if (minerCount <= minPatches)
-		return baseRate;
+		cUnitList.setMineralRate(baseRate);
 	else if (minerCount <= minPatches * 3)
-		return (250 - baseRate) * minerCount / minPatches + baseRate;
+		cUnitList.setMineralRate((250 - baseRate) * minerCount / minPatches + baseRate);
 	else
-		return 250 * minerCount / minPatches * 3;
+		cUnitList.setMineralRate(250 * minerCount / minPatches * 3);
 }
 
 int Build::getGasRate()

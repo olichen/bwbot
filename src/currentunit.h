@@ -21,7 +21,6 @@ class CurrentUnit
 		int getTimer() const { return mTimer; }
 		string getName() const { return pUnit->getName(); }
 		bool isIdle() const { return mTimer == -1; }
-		bool operator==(const CurrentUnit &unit) const { return pUnit->getName()==unit.getName(); }
 
 		void setIdleActionTimer(int timer) { mIdleAction.setTimer(timer); }
 		void setIdleAction(Action action) { mIdleAction = action; }

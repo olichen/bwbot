@@ -152,19 +152,22 @@ void Build::handleBuild()
 
 void Build::tryToBuild(string unitName)
 {
-	Unit &buildUnit = *(cUnitTree.findUnit(unitName));
+	Unit *buildUnitPtr = cUnitTree.findUnit(unitName);
+
+	if (buildUnitPtr == NULL)
+		throw "Unit " + unitName + " not found.";
 
 	//if not enough resources, give up
-	if (buildUnit.getMineralCost() > cResources.getMinerals())
+	if (buildUnitPtr->getMineralCost() > cResources.getMinerals())
 		 return;
-	if (buildUnit.getGasCost() > cResources.getGas())
+	if (buildUnitPtr->getGasCost() > cResources.getGas())
 		 return;
-	if (buildUnit.getSupplyCost() > cResources.getAvailableSupply())
+	if (buildUnitPtr->getSupplyCost() > cResources.getAvailableSupply())
 		 return;
 
-	if (cUnitList.tryToBuild(buildUnit))
+	if (cUnitList.tryToBuild(*(buildUnitPtr)))
 	{
-		vActionList.push_back(Action("STARTBUILDING", buildUnit));
+		vActionList.push_back(Action("STARTBUILDING", *(buildUnitPtr)));
 		qBuildOrder.pop();
 	}
 }
@@ -244,7 +247,7 @@ void Build::printResources()
 
 void Build::printActions()
 {
-	bool hideMining = false;
+	bool hideMining = true;
 	bool print = false;
 	for (Action &iAction : vActionList)
 	{

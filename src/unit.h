@@ -10,16 +10,18 @@ class Unit
 
 		void init(Unit &prereq, Unit &buildsFrom);
 
-		int getMineralCost() { return mMineralCost; }
-		int getGasCost() { return mGasCost; }
-		int getSupplyCost() { return mSupplyCost; }
-		int getSupplyProvided() { return mSupplyProvided; }
-		int getBuildTime() { return mBuildTime; }
-		string getName() { return mName; }
-		string getPrereqName() { return mPrereq; }
-		string getBuildsFromName() { return mBuildsFrom; }
+		int getMineralCost() const { return mMineralCost; }
+		int getGasCost() const { return mGasCost; }
+		int getSupplyCost() const { return mSupplyCost; }
+		int getSupplyProvided() const { return mSupplyProvided; }
+		int getBuildTime() const { return mBuildTime; }
+		string getName() const { return mName; }
+		string getPrereqName() const { return mPrereq; }
+		string getBuildsFromName() const { return mBuildsFrom; }
 		Unit *getPrereq() { return pPrereq; }
 		Unit *getBuildsFrom() { return pBuildsFrom; }
+
+		bool operator==(const Unit &unit) { return mName==unit.getName(); }
 
 	private:
 		string mName;

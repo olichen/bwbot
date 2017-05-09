@@ -169,17 +169,17 @@ void Build::handleActions()
 				cResources.useSupply(iAction.getTargetUnit().getSupplyCost());
 				cUnitList.buildUnit(iAction.getTargetUnit());
 			}
-			else if(iAction.getActionName()=="CREATE")
-			{
-				cResources.useSupply(iAction.getTargetUnit().getSupplyCost());
-				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
-				cUnitList.spawnUnit(iAction.getTargetUnit());
-			}
 			else if(iAction.getActionName()=="CONSTRUCTING")
 			{
 				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
 				if(iAction.getTargetUnit().getName() == cUnitTree.getGasName())
 					cUnitList.addGasWorker(3);
+			}
+			else if(iAction.getActionName()=="CREATE")
+			{
+				cResources.useSupply(iAction.getTargetUnit().getSupplyCost());
+				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
+				cUnitList.spawnUnit(iAction.getTargetUnit());
 			}
 		}
 	}

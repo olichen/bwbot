@@ -14,9 +14,9 @@ class Action
 
 		void setTimer(int timer) { mTimer = timer; }
 
-		string getActionName() { return mActionName; }
-		int getTimer() { return mTimer; }
-		bool hasTargetUnit() { return pTargetUnit != NULL; }
+		string getActionName() const { return mActionName; }
+		int getTimer() const { return mTimer; }
+		bool hasTargetUnit() const { return pTargetUnit != NULL; }
 		Unit &getTargetUnit(); 
 
 	private:

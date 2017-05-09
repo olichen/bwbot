@@ -16,11 +16,11 @@ class CurrentUnit
 		void addNextAction(Action nextAction);
 		void gotoAction(Action nextAction);
 
-		string getActionName() { return mCurrentAction.getActionName(); }
-		string getIdleActionName() { return mIdleAction.getActionName(); }
-		int getTimer() { return mTimer; }
-		string getName() { return pUnit->getName(); }
-		bool isIdle() { return mTimer == -1; }
+		string getActionName() const { return mCurrentAction.getActionName(); }
+		string getIdleActionName() const { return mIdleAction.getActionName(); }
+		int getTimer() const { return mTimer; }
+		string getName() const { return pUnit->getName(); }
+		bool isIdle() const { return mTimer == -1; }
 
 		void setIdleActionTimer(int timer) { mIdleAction.setTimer(timer); }
 		void setIdleAction(Action action) { mIdleAction = action; }

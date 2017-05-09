@@ -13,7 +13,7 @@ void Resources::addExpansion(int mineralPatches, int gasGeysers)
 	mGasGeysers += gasGeysers;
 }
 
-int Resources::getBaseMineRate()
+int Resources::getBaseMineRate() const
 {
 	if (mRace=='t')
 		return 176;

@@ -8,16 +8,16 @@ class Resources
 
 		void addExpansion(int mineralPatches = 7, int gasGeysers = 1);
 
-		int getMinerals() { return mMinerals; }
-		int getGas() { return mGas; }
-		int getSupply() { return mSupply; }
-		int getAvailableSupply() { return mSupplyMax - mSupply; }
-		int getSupplyMax() { return mSupplyMax; }
-		int getFrame() { return mFrame; }
-		int getMineralPatches() { return mMineralPatches; }
-		int getGasGeysers() { return mGasGeysers; }
-		char getRace() { return mRace; }
-		int getBaseMineRate();
+		int getMinerals() const { return mMinerals; }
+		int getGas() const { return mGas; }
+		int getSupply() const { return mSupply; }
+		int getAvailableSupply() const { return mSupplyMax - mSupply; }
+		int getSupplyMax() const { return mSupplyMax; }
+		int getFrame() const { return mFrame; }
+		int getMineralPatches() const { return mMineralPatches; }
+		int getGasGeysers() const { return mGasGeysers; }
+		char getRace() const { return mRace; }
+		int getBaseMineRate() const;
 
 		// increment minerals, gas, supply, frame
 		void addMinerals(int minerals = 8) { mMinerals += minerals; }

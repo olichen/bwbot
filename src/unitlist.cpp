@@ -127,33 +127,23 @@ void UnitList::spawnUnit(Unit &unit)
 void UnitList::update(vector<Action> &actionList)
 {
 	for (CurrentUnit &iUnit : vUnitList)
-	{
 		iUnit.update(actionList);
-	}
 }
 
-int UnitList::minerCount()
+int UnitList::minerCount() const
 {
 	int count = 0;
-	for (CurrentUnit &iUnit : vUnitList)
-	{
+	for (CurrentUnit iUnit : vUnitList)
 		if (iUnit.getActionName() == "GATHER MINERALS")
-		{
 			count++;
-		}
-	}
 	return count;
 }
 
-int UnitList::gasMinerCount()
+int UnitList::gasMinerCount() const
 {
 	int count = 0;
-	for (CurrentUnit &iUnit : vUnitList)
-	{
+	for (CurrentUnit iUnit : vUnitList)
 		if (iUnit.getActionName() == "GATHER GAS")
-		{
 			count++;
-		}
-	}
 	return count;
 }

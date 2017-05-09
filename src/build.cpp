@@ -46,11 +46,11 @@ void Build::loadRace(char race)
 	//load initial units
 	if (race == 't')
 	{
-		vActionList.push_back(Action("CREATE", cUnitTree.findUnit("Terran SCV")));
-		vActionList.push_back(Action("CREATE", cUnitTree.findUnit("Terran SCV")));
-		vActionList.push_back(Action("CREATE", cUnitTree.findUnit("Terran SCV")));
-		vActionList.push_back(Action("CREATE", cUnitTree.findUnit("Terran SCV")));
-		vActionList.push_back(Action("CREATE", cUnitTree.findUnit("Terran Command Center")));
+		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran SCV"))));
+		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran SCV"))));
+		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran SCV"))));
+		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran SCV"))));
+		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran Command Center"))));
 	}
 	cResources.addMinerals(50);
 }
@@ -58,29 +58,37 @@ void Build::loadRace(char race)
 //load up build order
 void Build::loadBuildOrder()
 {
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran Supply Depot"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran Barracks"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran Refinery"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran Factory"));
-	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
+	string buildOrder[] = {
+		"Terran SCV", //5
+		"Terran SCV", //6
+		"Terran SCV", //7
+		"Terran SCV", //8
+		"Terran SCV", //9
+		"Terran Supply Depot",
+		"Terran SCV", //10
+		"Terran SCV", //11
+		"SCOUT",
+		"Terran Barracks",
+		"Terran SCV", //12
+		"Terran Refinery",
+		"Terran SCV", //13
+		"Terran SCV", //14
+		"Terran SCV", //15
+		"Terran Marine", //16
+		"Terran SCV", //17
+		"Terran Factory",
+		"Terran Supply Depot",
+		"Terran SCV", //18
+		"Terran SCV" //LAST
+	};
+	for (string build : buildOrder)
+		qBuildOrder.push(build);
 }
 
 //game loop
 void Build::run()
 {
-	while(cResources.getFrame() <= 10000 && !qBuildOrder.empty())
+	while(cResources.getFrame() <= 10000) // && !qBuildOrder.empty())
 	{
 		update();
 	}
@@ -117,8 +125,8 @@ void Build::update()
 {
 	//update state of all units
 	cUnitList.update(vActionList);
-	//try to build based off build order
-	tryToBuild();
+	//try to do build order
+	handleBuild();
 	//handle any thrown actions
 	handleActions();
 	//refresh mining rate
@@ -127,25 +135,37 @@ void Build::update()
 	cResources.nextFrame();
 }
 
-void Build::tryToBuild()
+void Build::handleBuild()
 {
 	if (!qBuildOrder.empty())
 	{
-		Unit &buildUnit = *(qBuildOrder.front());
-
-		//if not enough resources, give up
-		if (buildUnit.getMineralCost() > cResources.getMinerals())
-			 return;
-		if (buildUnit.getGasCost() > cResources.getGas())
-			 return;
-		if (buildUnit.getSupplyCost() > cResources.getAvailableSupply())
-			 return;
-
-		if (cUnitList.tryToBuild(buildUnit))
+		if (qBuildOrder.front()=="SCOUT")
 		{
-			vActionList.push_back(Action("STARTBUILDING", buildUnit));
+			cUnitList.scout();
 			qBuildOrder.pop();
 		}
+		else
+			tryToBuild(qBuildOrder.front());
+	}
+
+}
+
+void Build::tryToBuild(string unitName)
+{
+	Unit &buildUnit = *(cUnitTree.findUnit(unitName));
+
+	//if not enough resources, give up
+	if (buildUnit.getMineralCost() > cResources.getMinerals())
+		 return;
+	if (buildUnit.getGasCost() > cResources.getGas())
+		 return;
+	if (buildUnit.getSupplyCost() > cResources.getAvailableSupply())
+		 return;
+
+	if (cUnitList.tryToBuild(buildUnit))
+	{
+		vActionList.push_back(Action("STARTBUILDING", buildUnit));
+		qBuildOrder.pop();
 	}
 }
 
@@ -176,6 +196,8 @@ void Build::handleActions()
 				if(iAction.getTargetUnit().getName() == cUnitTree.getGasName())
 					cUnitList.addGasWorker(3);
 			}
+			else if(iAction.getActionName()=="SCOUT")
+				cUnitList.scout();
 			else if(iAction.getActionName()=="CREATE")
 			{
 				cResources.useSupply(iAction.getTargetUnit().getSupplyCost());
@@ -210,12 +232,13 @@ int Build::getGasRate()
 ////START debug printing
 void Build::printResources()
 {
-	//printf(" Frame |  Min  |  Gas  | Supply | Time\n");
+	//printf(" Frame |  Min  |  Gas  | Supply | Time | Miners\n");
 	printf("%6d |", cResources.getFrame());
 	printf("%5d  |", cResources.getMinerals());
 	printf("%5d  |", cResources.getGas());
 	printf("%4d/%-3d|", cResources.getSupply(), cResources.getSupplyMax());
-	printf("%5d", cResources.getFrame()*42/1000);
+	printf("%5d |", cResources.getFrame()*42/1000);
+	printf("%5d", cUnitList.minerCount());
 	printf("\n");
 }
 

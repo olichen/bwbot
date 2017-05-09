@@ -24,16 +24,18 @@ void UnitTree::init()
 }
 
 //return the unit
-Unit &UnitTree::findUnit(string unitName)
+Unit *UnitTree::findUnit(string unitName)
 {
+	Unit *unitPtr = NULL;
 	for (Unit &iUnit : vUnitList)
 	{
 		if (iUnit.getName() == unitName)
 		{
-			return iUnit;
+			unitPtr = &iUnit;
+			break;
 		}
 	}
-	throw "Unit " + unitName + " not found.";
+	return unitPtr;
 }
 
 //load unit data

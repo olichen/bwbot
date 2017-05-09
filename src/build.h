@@ -22,7 +22,8 @@ class Build
 		void loadBuildOrder();
 		void run();
 		void update();
-		void tryToBuild();
+		void handleBuild();
+		void tryToBuild(string unitName);
 
 		void handleActions();
 		void spawnUnit(Unit &unit);
@@ -37,5 +38,5 @@ class Build
 		UnitTree cUnitTree;
 		UnitList cUnitList;
 		vector<Action> vActionList;
-		queue<Unit*> qBuildOrder;
+		queue<string> qBuildOrder;
 };

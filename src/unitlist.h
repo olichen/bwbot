@@ -19,6 +19,7 @@ class UnitList
 		void buildUnit(Unit &unit);
 		void spawnUnit(Unit &unit);
 		void addGasWorker(int number);
+		void scout();
 
 		void setMineralRate(int mineralRate);
 		void setGasRate(int mineralRate);

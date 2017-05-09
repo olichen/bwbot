@@ -101,12 +101,12 @@ bool UnitList::hasUnit(const string unitName) const
 CurrentUnit *UnitList::findWorker()
 {
 	CurrentUnit *workerPtr = NULL;
-	int workerFrame = 9999;
+	int workerFrame = 1;
 	for (CurrentUnit &iCurrentUnit : vUnitList)
 	{
 		if (iCurrentUnit.getActionName() == "GATHER MINERALS")
 		{
-			if (iCurrentUnit.getTimer() < workerFrame)
+			if (iCurrentUnit.getTimer() > workerFrame)
 			{
 				workerPtr = &iCurrentUnit;
 				workerFrame = iCurrentUnit.getTimer();
@@ -118,7 +118,7 @@ CurrentUnit *UnitList::findWorker()
 
 void UnitList::addGasWorker(int number)
 {
-	int gasInit = 74;
+	int gasInit = mGasRate;
 	for (int i=0; i<number; i++)
 	{
 		CurrentUnit *workerPtr = findWorker();
@@ -126,6 +126,11 @@ void UnitList::addGasWorker(int number)
 		workerPtr->setIdleAction(Action("GATHER GAS", mGasRate));
 		gasInit += 37;
 	}
+}
+
+void UnitList::scout()
+{
+	findWorker()->gotoAction(Action("SCOUT",999999));
 }
 
 void UnitList::buildUnit(Unit &unit)

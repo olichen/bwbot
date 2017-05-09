@@ -12,7 +12,7 @@ class UnitTree
 		~UnitTree();
 
 		void loadRace(char race);
-		Unit &findUnit(string unitName);
+		Unit *findUnit(string unitName);
 		string getWorkerName() const { return vUnitList.front().getName(); }
 		string getExpansionName() const { return vUnitList[1].getName(); }
 		string getGasName() const { return vUnitList[2].getName(); }

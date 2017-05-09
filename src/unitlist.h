@@ -12,7 +12,7 @@ class UnitList
 	public:
 		UnitList();
 
-		void init(string workerName, string gasName);
+		void init(string workerName);
 		void addUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
 		void update(vector<Action> &actionList);
 		bool tryToBuild(Unit &unit);

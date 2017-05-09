@@ -40,7 +40,7 @@ void Build::loadRace(char race)
 	cUnitTree.loadRace(race);
 
 	//load workers
-	cUnitList.init(cUnitTree.getWorkerName(), cUnitTree.getGasName());
+	cUnitList.init(cUnitTree.getWorkerName());
 	updateMineralRate();
 
 	//load initial units

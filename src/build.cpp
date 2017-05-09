@@ -196,7 +196,7 @@ void Build::updateMineralRate()
 	if (minerCount <= minPatches)
 		cUnitList.setMineralRate(baseRate);
 	else if (minerCount <= minPatches * 3)
-		cUnitList.setMineralRate((250 - baseRate) * minerCount / (minPatches * 3) + baseRate);
+		cUnitList.setMineralRate((250 - baseRate) * (minerCount - minPatches) / (minPatches * 2) + baseRate * (minPatches * 3 - minerCount) / (minPatches * 2));
 	else
 		cUnitList.setMineralRate(250 * minerCount / minPatches * 3);
 }
@@ -224,7 +224,7 @@ void Build::printActions()
 	cout << "        ";
 	for (Action &iAction : vActionList)
 	{
-		cout << iAction.getActionName();
+		cout << iAction.getActionName() << " " << iAction.getTimer();
 		if (iAction.hasTargetUnit())
 		{
 			cout << " " << iAction.getTargetUnit().getName();

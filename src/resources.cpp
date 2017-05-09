@@ -16,7 +16,7 @@ void Resources::addExpansion(int mineralPatches, int gasGeysers)
 int Resources::getBaseMineRate()
 {
 	if (mRace=='t')
-		return 177;
+		return 176;
 	if (mRace=='z')
 		return 172;
 	if (mRace=='p')

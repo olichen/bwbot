@@ -12,9 +12,11 @@ UnitTree::~UnitTree()
 	vUnitList.clear();
 }
 
-void UnitTree::addUnit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided, string prereq, string buildsFrom, bool isAddon)
+void UnitTree::addUnit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided,
+	string prereq, string buildsFrom, bool isAddon, bool reqAddon)
 {
-	Unit *newUnit = new Unit(name, mineralCost, gasCost, buildTime, supplyCost, supplyProvided, prereq, buildsFrom, isAddon);
+	Unit *newUnit = new Unit(name, mineralCost, gasCost, buildTime, supplyCost, supplyProvided,
+		prereq, buildsFrom, isAddon, reqAddon);
 	vUnitList.push_back(*newUnit);
 }
 

@@ -7,7 +7,7 @@ class Unit
 {
 	public:
 		Unit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided,
-				string prereq, string buildsFrom, bool isAddon = false);
+				string prereq, string buildsFrom, bool isAddon = false, bool reqAddon = false);
 
 		void init(Unit &prereq, Unit &buildsFrom);
 
@@ -20,6 +20,7 @@ class Unit
 		string getPrereqName() const { return mPrereq; }
 		string getBuildsFromName() const { return mBuildsFrom; }
 		bool isAddon() const { return mIsAddon; }
+		bool reqAddon() const { return mReqAddon; }
 
 		bool operator==(const Unit &unit) const { return mName==unit.getName(); }
 
@@ -27,5 +28,5 @@ class Unit
 		string mName;
 		int mMineralCost, mGasCost, mBuildTime, mSupplyCost, mSupplyProvided;
 		string mPrereq, mBuildsFrom;
-		bool mIsAddon;
+		bool mIsAddon, mReqAddon;
 };

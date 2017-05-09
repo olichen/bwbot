@@ -21,7 +21,7 @@ class Unit
 		Unit *getPrereq() { return pPrereq; }
 		Unit *getBuildsFrom() { return pBuildsFrom; }
 
-		bool operator==(const Unit &unit) { return mName==unit.getName(); }
+		bool operator==(const Unit &unit) const { return mName==unit.getName(); }
 
 	private:
 		string mName;

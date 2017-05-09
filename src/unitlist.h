@@ -28,6 +28,8 @@ class UnitList
 
 	private:
 		CurrentUnit *findWorker();
+		//bool hasUnit(const Unit unit) const;
+		bool hasUnit(const string unitName) const;
 
 		vector<CurrentUnit> vUnitList;
 		string mWorkerName, mGasName;

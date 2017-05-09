@@ -51,6 +51,8 @@ void UnitList::addUnit(Unit &unit, Action nextAction, Action idleAction)
 
 bool UnitList::tryToBuild(Unit &unit)
 {
+	if (!hasUnit(unit.getPrereqName()))
+		return false;
 	if (unit.getBuildsFromName() == mWorkerName)
 	{
 		CurrentUnit *workerPtr = findWorker();
@@ -74,6 +76,24 @@ bool UnitList::tryToBuild(Unit &unit)
 			}
 		}
 	}
+	return false;
+}
+
+//bool UnitList::hasUnit(const Unit unit) const
+//{
+//	for (CurrentUnit iCurrentUnit : vUnitList)
+//		if (iCurrentUnit.getName() == unit.getName())
+//			if (iCurrentUnit.getActionName() != "CONSTRUCTING")
+//				return true;
+//	return false;
+//}
+
+bool UnitList::hasUnit(const string unitName) const
+{
+	for (CurrentUnit iCurrentUnit : vUnitList)
+		if (iCurrentUnit.getName() == unitName)
+			if (iCurrentUnit.getActionName() != "CONSTRUCTING")
+				return true;
 	return false;
 }
 

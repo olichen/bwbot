@@ -12,32 +12,15 @@ UnitTree::~UnitTree()
 	vUnitList.clear();
 }
 
-void UnitTree::addUnit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided, string prereq, string buildsFrom)
+void UnitTree::addUnit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided, string prereq, string buildsFrom, bool isAddon)
 {
-	Unit *newUnit = new Unit(name, mineralCost, gasCost, buildTime, supplyCost, supplyProvided, prereq, buildsFrom);
+	Unit *newUnit = new Unit(name, mineralCost, gasCost, buildTime, supplyCost, supplyProvided, prereq, buildsFrom, isAddon);
 	vUnitList.push_back(*newUnit);
 }
 
 void UnitTree::init()
 {
-	for (Unit &iUnit : vUnitList)
-	{
-		Unit *prereq = NULL;
-		Unit *buildsFrom = NULL;
-
-		for (Unit &iFindUnit : vUnitList)
-		{
-			if (iUnit.getPrereqName() == iFindUnit.getName())
-			{
-				prereq = &iFindUnit;
-			}
-			if (iUnit.getBuildsFromName() == iFindUnit.getName())
-			{
-				buildsFrom = &iFindUnit;
-			}
-		}
-		iUnit.init(*prereq, *buildsFrom);
-	}
+	//
 }
 
 //return the unit
@@ -54,13 +37,14 @@ Unit &UnitTree::findUnit(string unitName)
 }
 
 //load unit data
-//start each race with its worker unit first, gas building second!!
+//start each race with its worker unit first, main building second, gas building third
 void UnitTree::loadRace(char race)
 {
 	if (race == 't')
 	{
 		//resource stuff
 		addUnit("Terran SCV",50,0,300,1,0,"Terran Command Center","Terran Command Center");
+		addUnit("Terran Command Center",400,0,1800,0,10,"Terran SCV","Terran SCV");
 		addUnit("Terran Refinery",100,0,600,0,0,"Terran SCV","Terran SCV");
 		//ground units
 		addUnit("Terran Marine",50,0,360,1,0,"Terran Barracks","Terran Barracks");
@@ -77,7 +61,6 @@ void UnitTree::loadRace(char race)
 		//addUnit("Terran Science Vessel",50,0,300,1,0,"Terran REPLACEMEPLS","Terran REPLACEMEPLS");
 		//addUnit("Terran Battlecruiser",50,0,300,1,0,"Terran REPLACEMEPLS","Terran REPLACEMEPLS");
 		//basic buildings
-		addUnit("Terran Command Center",400,0,1800,0,10,"Terran SCV","Terran SCV");
 		addUnit("Terran Supply Depot",100,0,600,0,8,"Terran SCV","Terran SCV");
 		addUnit("Terran Barracks",150,0,1200,0,0,"Terran Command Center","Terran SCV");
 		addUnit("Terran Engineering Bay",125,0,900,0,0,"Terran Command Center","Terran SCV");
@@ -85,7 +68,7 @@ void UnitTree::loadRace(char race)
 		addUnit("Terran Bunker",100,0,450,0,0,"Terran Barracks","Terran SCV");
 		addUnit("Terran Missile Turret",75,0,450,0,0,"Terran Engineering Bay","Terran SCV");
 		//advanced buildings
-		//addUnit("Terran REPLACEMEPLS",100,0,600,0,0,"Terran REPLACEMEPLS","Terran SCV");
+		addUnit("Terran Factory",200,100,1200,0,0,"Terran Barracks","Terran SCV");
 		//addUnit("Terran REPLACEMEPLS",100,0,600,0,0,"Terran REPLACEMEPLS","Terran SCV");
 	}
 	init();

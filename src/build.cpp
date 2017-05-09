@@ -73,6 +73,7 @@ void Build::loadBuildOrder()
 	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
 	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
 	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
+	qBuildOrder.push(&cUnitTree.findUnit("Terran Factory"));
 	qBuildOrder.push(&cUnitTree.findUnit("Terran SCV"));
 }
 
@@ -114,14 +115,14 @@ void Build::run()
 
 void Build::update()
 {
-	//handle any thrown actions
-	handleActions();
-	//try to build based off build order
-	tryToBuild();
-	//refresh mining rate
-	updateMineralRate();
 	//update state of all units
 	cUnitList.update(vActionList);
+	//try to build based off build order
+	tryToBuild();
+	//handle any thrown actions
+	handleActions();
+	//refresh mining rate
+	updateMineralRate();
 	//update frame number
 	cResources.nextFrame();
 }
@@ -196,9 +197,9 @@ void Build::updateMineralRate()
 	if (minerCount <= minPatches)
 		cUnitList.setMineralRate(baseRate);
 	else if (minerCount <= minPatches * 3)
-		cUnitList.setMineralRate((250 - baseRate) * (minerCount - minPatches) / (minPatches * 2) + baseRate * (minPatches * 3 - minerCount) / (minPatches * 2));
+		cUnitList.setMineralRate((240) * (minerCount - minPatches) / (minPatches * 2) + baseRate * (minPatches * 3 - minerCount) / (minPatches * 2));
 	else
-		cUnitList.setMineralRate(250 * minerCount / minPatches * 3);
+		cUnitList.setMineralRate(240 * minerCount / minPatches * 3);
 }
 
 int Build::getGasRate()
@@ -220,17 +221,24 @@ void Build::printResources()
 
 void Build::printActions()
 {
-	printResources();
-	cout << "        ";
+	bool hideMining = false;
+	bool print = false;
 	for (Action &iAction : vActionList)
 	{
+		if (iAction.getActionName().at(0) == 'G' && hideMining)
+			continue;
 		cout << iAction.getActionName() << " " << iAction.getTimer();
 		if (iAction.hasTargetUnit())
 		{
 			cout << " " << iAction.getTargetUnit().getName();
 		}
 		cout << "//";
+		print = true;
 	}
-	cout << "\n";
+	if(print)
+	{
+		cout << "\n";
+		printResources();
+	}
 }
 ////END debug printing

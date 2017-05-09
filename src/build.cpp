@@ -79,6 +79,9 @@ void Build::loadBuildOrder()
 		"Terran Factory",
 		"Terran Supply Depot",
 		"Terran SCV", //18
+		"Terran Machine Shop",
+		"Terran Siege Tank", //20
+		"Terran Vulture", //22
 		"Terran SCV" //LAST
 	};
 	for (string build : buildOrder)

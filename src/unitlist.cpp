@@ -67,9 +67,14 @@ bool UnitList::tryToBuild(Unit &unit)
 		{
 			if (iCurrentUnit.getName() == unit.getBuildsFromName())
 			{
+				if (unit.reqAddon())
+					if (!iCurrentUnit.hasAddon())
+						return false;
 				if (iCurrentUnit.isIdle())
 				{
 					iCurrentUnit.addNextAction(Action("BUILDING", unit));
+					if (unit.isAddon())
+						iCurrentUnit.addAddon();
 					return true;
 				}
 			}

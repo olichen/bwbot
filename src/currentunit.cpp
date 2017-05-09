@@ -2,7 +2,7 @@
 #include "currentunit.h"
 
 CurrentUnit::CurrentUnit(Unit &unit, Action nextAction, Action idleAction)
-	: pUnit(&unit), mCurrentAction(Action()), mIdleAction(idleAction), mTimer(-1)
+	: pUnit(&unit), mCurrentAction(Action()), mIdleAction(idleAction), mTimer(-1), mHasAddon(false)
 {
 	if (nextAction.getActionName() != "IDLE")
 	{

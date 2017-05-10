@@ -1,4 +1,5 @@
 #include "build.h"
+#include "string_alg.hpp"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -14,7 +15,6 @@ int main()
 	{
 		cout << "Enter something (LOAD file, DELETE last entry, QUIT program, RACE select): ";
 		getline(cin, input);
-		buildOrder.push_back(input);
 
 		//input aliases
 		char inputChar = tolower(input.at(0));
@@ -23,7 +23,7 @@ int main()
 		if (inputChar == 'q')
 			break;
 		//change race
-		if (inputChar == 'r')
+		else if (inputChar == 'r')
 		{
 			cout << "Enter race name (Terran, Protoss, Zerg): ";
 			getline(cin, input);
@@ -31,7 +31,7 @@ int main()
 			continue;
 		}
 		//load file
-		if (inputChar == 'l')
+		else if (inputChar == 'l')
 		{
 			cout << "Enter file name (must be in '/buildorders' directory): ";
 			getline(cin, input);
@@ -39,12 +39,13 @@ int main()
 			buildOrderFile.open("/buildorders/" + input);
 		}
 		//delete last entry
-		if (inputChar == 'd')
+		else if (inputChar == 'd')
 		{
-			buildOrder.pop_back();
 			if (!buildOrder.empty())
 				buildOrder.pop_back();
 		}
+		else
+			buildOrder.push_back(string_alg::titleize(input));
 
 		try
 		{

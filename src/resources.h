@@ -31,4 +31,5 @@ class Resources
 	private:
 		int mMinerals, mGas, mSupply, mSupplyMax, mFrame;
 		int mMineralPatches, mGasGeysers;
+		char mRace;
 };

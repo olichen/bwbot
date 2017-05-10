@@ -7,7 +7,6 @@
 #include "unitlist.h"
 #include "action.h"
 #include <vector>
-#include <queue>
 
 class Build
 {
@@ -32,13 +31,14 @@ class Build
 		void buildUnit(Unit &unit);
 
 		void updateMineralRate();
-		int getGasRate();
-		void printResources();
-		void printActions();
+		//void updateGasRate();
+		void printBuildOrder() const;
+		void printResources() const;
+		void printActions(bool hideMining = true) const;
 
 		Resources cResources;
 		UnitTree cUnitTree;
 		UnitList cUnitList;
 		vector<Action> vActionList;
-		queue<string> qBuildOrder;
+		vector<string> vBuildOrder;
 };

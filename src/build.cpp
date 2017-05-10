@@ -22,6 +22,7 @@ void Build::init()
 
 		//load a build order
 		loadBuildOrder();
+		printBuildOrder();
 
 		//start running
 		run();
@@ -81,13 +82,13 @@ void Build::loadBuildOrder()
 		"Terran SCV" //LAST
 	};
 	for (string build : buildOrder)
-		qBuildOrder.push(build);
+		vBuildOrder.push_back(build);
 }
 
 //game loop
 void Build::run()
 {
-	while(cResources.getFrame() <= 10000) // && !qBuildOrder.empty())
+	while(cResources.getFrame() <= 10000) // && !vBuildOrder.empty())
 	{
 		update();
 	}
@@ -136,15 +137,15 @@ void Build::update()
 
 void Build::handleBuild()
 {
-	if (!qBuildOrder.empty())
+	if (!vBuildOrder.empty())
 	{
-		if (qBuildOrder.front()=="SCOUT")
+		if (vBuildOrder.front()=="SCOUT")
 		{
 			cUnitList.scout();
-			qBuildOrder.pop();
+			vBuildOrder.erase(vBuildOrder.begin());
 		}
 		else
-			tryToBuild(qBuildOrder.front());
+			tryToBuild(vBuildOrder.front());
 	}
 
 }
@@ -167,7 +168,7 @@ void Build::tryToBuild(string unitName)
 	if (cUnitList.tryToBuild(*(buildUnitPtr)))
 	{
 		vActionList.push_back(Action("STARTBUILDING", *(buildUnitPtr)));
-		qBuildOrder.pop();
+		vBuildOrder.erase(vBuildOrder.begin());
 	}
 }
 
@@ -231,13 +232,26 @@ void Build::updateMineralRate()
 		cUnitList.setMineralRate(250 * minerCount / minPatches * 3);
 }
 
-int Build::getGasRate()
-{
-	return 111;
-}
+//void Build::updateGasRate()
+//{
+//	//
+//}
 
 ////START debug printing
-void Build::printResources()
+void Build::printBuildOrder() const
+{
+	int count = 1;
+	for (string buildorder : vBuildOrder)
+	{
+		cout << buildorder << ", ";
+		if (count%5 == 0)
+			cout << "\n";
+		count++;
+	}
+	cout << "\n\n";
+}
+
+void Build::printResources() const
 {
 	//printf(" Frame |  Min  |  Gas  | Supply | Time | Miners\n");
 	printf("%6d |", cResources.getFrame());
@@ -249,11 +263,10 @@ void Build::printResources()
 	printf("\n");
 }
 
-void Build::printActions()
+void Build::printActions(bool hideMining) const
 {
-	bool hideMining = true;
 	bool print = false;
-	for (Action &iAction : vActionList)
+	for (Action iAction : vActionList)
 	{
 		if (iAction.getActionName().at(0) == 'G' && hideMining)
 			continue;

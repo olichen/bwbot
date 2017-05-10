@@ -171,6 +171,11 @@ void Build::tryToBuild(string unitName)
 	}
 }
 
+void Build::interactiveMode()
+{
+
+}
+
 ////START action handling
 void Build::handleActions()
 {
@@ -263,6 +268,7 @@ void Build::printActions()
 	if(print)
 	{
 		cout << "\n";
+		cUnitList.printUnitStatus();
 		printResources();
 	}
 }

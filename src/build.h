@@ -25,6 +25,8 @@ class Build
 		void handleBuild();
 		void tryToBuild(string unitName);
 
+		void interactiveMode();
+
 		void handleActions();
 		void spawnUnit(Unit &unit);
 		void buildUnit(Unit &unit);

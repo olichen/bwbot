@@ -176,3 +176,19 @@ int UnitList::gasMinerCount() const
 			count++;
 	return count;
 }
+
+void UnitList::printUnitStatus() const
+{
+	bool hideMining = true;
+	bool print = false;
+	for (CurrentUnit iUnit : vUnitList)
+	{
+		if (hideMining && iUnit.getActionName().at(0) == 'G')
+			continue;
+		printf("%s: %d %s//", iUnit.getName().c_str(), iUnit.getTimer(), iUnit.getActionName().c_str());
+		print = true;
+	}
+	if(print)
+		printf("\n");
+}
+

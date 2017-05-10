@@ -15,23 +15,20 @@ class Build
 		~Build();
 
 		void init();
+		void run();
+		void loadBuildOrder(vector<string> buildOrder);
 
 	private:
 		void loadRace(char race = 't');
-		void loadBuildOrder();
-		void run();
 		void update();
 		void handleBuild();
 		void tryToBuild(string unitName);
-
-		void interactiveMode();
 
 		void handleActions();
 		void spawnUnit(Unit &unit);
 		void buildUnit(Unit &unit);
 
 		void updateMineralRate();
-		//void updateGasRate();
 		void printBuildOrder() const;
 		void printResources() const;
 		void printActions(bool hideMining = true) const;

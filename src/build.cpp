@@ -15,23 +15,7 @@ Build::~Build()
 
 void Build::init()
 {
-	try
-	{
-		//load initial units
-		loadRace(cResources.getRace());
-
-		//load a build order
-		loadBuildOrder();
-		printBuildOrder();
-
-		//start running
-		run();
-	}
-	catch (const string &ex)
-	{
-		cout << "EXCEPTION CAUGHT; PROGRAM TERMINATED\n";
-		cout << "" << ex << "\n";
-	}
+	loadRace(cResources.getRace());
 }
 
 //load up initial state
@@ -53,45 +37,18 @@ void Build::loadRace(char race)
 }
 
 //load up build order
-void Build::loadBuildOrder()
+void Build::loadBuildOrder(vector<string> buildOrder)
 {
-	string buildOrder[] = {
-		"Terran SCV", //5
-		"Terran SCV", //6
-		"Terran SCV", //7
-		"Terran SCV", //8
-		"Terran SCV", //9
-		"Terran Supply Depot",
-		"Terran SCV", //10
-		"Terran SCV", //11
-		"SCOUT",
-		"Terran Barracks",
-		"Terran SCV", //12
-		"Terran Refinery",
-		"Terran SCV", //13
-		"Terran SCV", //14
-		"Terran SCV", //15
-		"Terran Marine", //16
-		"Terran SCV", //17
-		"Terran Factory",
-		"Terran Supply Depot",
-		"Terran SCV", //18
-		"Terran Machine Shop",
-		"Terran Siege Tank", //20
-		"Terran Vulture", //22
-		"Terran SCV" //LAST
-	};
-	for (string build : buildOrder)
-		vBuildOrder.push_back(build);
+	vBuildOrder = buildOrder;
+	// DEBUG: print build order
+	printBuildOrder();
 }
 
-//game loop
 void Build::run()
 {
 	while(cResources.getFrame() <= 10000) // && !vBuildOrder.empty())
-	{
 		update();
-	}
+	//game loop commented out
 	//typedef std::chrono::milliseconds ms;
 	//typedef std::chrono::nanoseconds ns;
 	//typedef std::chrono::high_resolution_clock clock;
@@ -114,9 +71,6 @@ void Build::run()
 
 	//		//update
 	//		update();
-
-	//		//DEBUG: print resources as they change
-	//		printResources();
 	//	}
 	//}
 }
@@ -128,6 +82,7 @@ void Build::update()
 	//try to do build order
 	handleBuild();
 	//handle any thrown actions
+	printActions();
 	handleActions();
 	//refresh mining rate
 	updateMineralRate();
@@ -172,19 +127,11 @@ void Build::tryToBuild(string unitName)
 	}
 }
 
-void Build::interactiveMode()
-{
-
-}
-
 ////START action handling
 void Build::handleActions()
 {
 	if (!vActionList.empty())
 	{
-		//DEBUG: print actions as they happen
-		printActions();
-
 		for (Action &iAction : vActionList)
 		{
 			if(iAction.getActionName()=="GATHER MINERALS")
@@ -231,11 +178,6 @@ void Build::updateMineralRate()
 	else
 		cUnitList.setMineralRate(250 * minerCount / minPatches * 3);
 }
-
-//void Build::updateGasRate()
-//{
-//	//
-//}
 
 ////START debug printing
 void Build::printBuildOrder() const

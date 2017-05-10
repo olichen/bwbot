@@ -19,7 +19,7 @@ class UnitTree
 
 	private:
 		void addUnit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided,
-			string prereq, string buildsFrom, bool isAddon = false, bool reqAddon = false);
+			string prereq, string buildsFrom, bool isAddon = false, bool reqAddon = false, bool morph = false);
 		void init();
 
 		vector<Unit> vUnitList;

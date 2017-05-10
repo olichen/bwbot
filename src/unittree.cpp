@@ -13,7 +13,7 @@ UnitTree::~UnitTree()
 }
 
 void UnitTree::addUnit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided,
-	string prereq, string buildsFrom, bool isAddon, bool reqAddon)
+	string prereq, string buildsFrom, bool isAddon, bool reqAddon, bool morph)
 {
 	Unit *newUnit = new Unit(name, mineralCost, gasCost, buildTime, supplyCost, supplyProvided,
 		prereq, buildsFrom, isAddon, reqAddon);

@@ -7,7 +7,7 @@ class Unit
 {
 	public:
 		Unit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided,
-				string prereq, string buildsFrom, bool isAddon = false, bool reqAddon = false);
+				string prereq, string buildsFrom, bool isAddon = false, bool reqAddon = false, bool morph = false);
 
 		void init(Unit &prereq, Unit &buildsFrom);
 
@@ -28,5 +28,5 @@ class Unit
 		string mName;
 		int mMineralCost, mGasCost, mBuildTime, mSupplyCost, mSupplyProvided;
 		string mPrereq, mBuildsFrom;
-		bool mIsAddon, mReqAddon;
+		bool mIsAddon, mReqAddon, mMorph;
 };

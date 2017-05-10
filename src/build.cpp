@@ -44,14 +44,10 @@ void Build::loadRace(char race)
 	updateMineralRate();
 
 	//load initial units
-	if (race == 't')
-	{
-		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran SCV"))));
-		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran SCV"))));
-		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran SCV"))));
-		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran SCV"))));
-		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit("Terran Command Center"))));
-	}
+	for (int i=0; i<4; i++)
+		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit(cUnitTree.getWorkerName()))));
+	vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit(cUnitTree.getExpansionName()))));
+
 	cResources.addMinerals(50);
 }
 
@@ -225,9 +221,9 @@ void Build::updateMineralRate()
 	if (minerCount <= minPatches)
 		cUnitList.setMineralRate(baseRate);
 	else if (minerCount <= minPatches * 3)
-		cUnitList.setMineralRate((240) * (minerCount - minPatches) / (minPatches * 2) + baseRate * (minPatches * 3 - minerCount) / (minPatches * 2));
+		cUnitList.setMineralRate((250) * (minerCount - minPatches) / (minPatches * 2) + baseRate * (minPatches * 3 - minerCount) / (minPatches * 2));
 	else
-		cUnitList.setMineralRate(240 * minerCount / minPatches * 3);
+		cUnitList.setMineralRate(250 * minerCount / minPatches * 3);
 }
 
 int Build::getGasRate()

@@ -14,12 +14,12 @@ class Build
 		Build();
 		~Build();
 
-		void init();
+		void init(char race = 't');
 		void run();
 		void loadBuildOrder(vector<string> buildOrder);
 
 	private:
-		void loadRace(char race = 't');
+		void loadRace(char race);
 		void update();
 		void handleBuild();
 		void tryToBuild(string unitName);

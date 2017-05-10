@@ -16,7 +16,6 @@ class Resources
 		int getFrame() const { return mFrame; }
 		int getMineralPatches() const { return mMineralPatches; }
 		int getGasGeysers() const { return mGasGeysers; }
-		char getRace() const { return mRace; }
 		int getBaseMineRate() const;
 
 		// increment minerals, gas, supply, frame
@@ -32,5 +31,4 @@ class Resources
 	private:
 		int mMinerals, mGas, mSupply, mSupplyMax, mFrame;
 		int mMineralPatches, mGasGeysers;
-		char mRace;
 };

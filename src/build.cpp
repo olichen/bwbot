@@ -1,7 +1,7 @@
 // build.cpp
 #include "build.h"
 #include <iostream>
-#include <chrono>
+//#include <chrono>
 
 Build::Build()
 {
@@ -13,9 +13,11 @@ Build::~Build()
 	//
 }
 
-void Build::init()
+void Build::init(char race)
 {
-	loadRace(cResources.getRace());
+	if (race != 'z' && race != 't' && race != 'p')
+		throw "Race '" + string(1, race) + "' not found.";
+	loadRace(race);
 }
 
 //load up initial state
@@ -110,7 +112,7 @@ void Build::tryToBuild(string unitName)
 	Unit *buildUnitPtr = cUnitTree.findUnit(unitName);
 
 	if (buildUnitPtr == NULL)
-		throw "Unit " + unitName + " not found.";
+		throw "Unit '" + unitName + "' not found.";
 
 	//if not enough resources, give up
 	if (buildUnitPtr->getMineralCost() > cResources.getMinerals())

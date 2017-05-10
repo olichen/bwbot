@@ -1,6 +1,7 @@
 // unittree.cpp
 #include "unittree.h"
 #include <exception>
+#include <algorithm>
 
 UnitTree::UnitTree()
 {
@@ -28,10 +29,13 @@ void UnitTree::init()
 //return the unit
 Unit *UnitTree::findUnit(string unitName)
 {
+	transform(unitName.begin(), unitName.end(), unitName.begin(), ::tolower);
 	Unit *unitPtr = NULL;
 	for (Unit &iUnit : vUnitList)
 	{
-		if (iUnit.getName() == unitName)
+		string iUnitName = iUnit.getName();
+		transform(iUnitName.begin(), iUnitName.end(), iUnitName.begin(), ::tolower);
+		if (iUnitName == unitName)
 		{
 			unitPtr = &iUnit;
 			break;

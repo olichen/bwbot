@@ -48,7 +48,9 @@ string string_alg::to_lower(string s1)
 
 string string_alg::add_race(char race, string s1)
 {
-	if (race == 't')
+	if (s1 == "scout")
+	{}
+	else if (race == 't')
 	{
 		if (!lower_eq(s1.substr(0,6), "terran"))
 			return "Terran " + s1;

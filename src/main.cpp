@@ -54,11 +54,10 @@ int main()
 				cout << "Loading build order '" + input + "'\n";
 				buildOrder.clear();
 				string line = "";
+				getline(buildOrderFile, line);
+				race = tolower(line.at(0));
 				while (getline(buildOrderFile, line))
-				{
-					cout << line;
-					buildOrder.push_back(string_alg::titleize(input));
-				}
+					buildOrder.push_back(string_alg::titleize(string_alg::add_race(race,line)));
 				buildOrderFile.close();
 			}
 			else
@@ -76,6 +75,7 @@ int main()
 			if (!buildOrder.empty())
 				buildOrder.pop_back();
 		}
+		//add unit
 		else
 		{
 			input = string_alg::add_race(race, input);

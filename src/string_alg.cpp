@@ -39,6 +39,13 @@ bool string_alg::lower_eq(string s1, string s2)
 	return true;
 }
 
+string string_alg::to_lower(string s1)
+{
+	for (unsigned int i=0; i<s1.length(); i++)
+		s1[i] = tolower(s1[i]);
+	return s1;
+}
+
 string string_alg::add_race(char race, string s1)
 {
 	if (race == 't')

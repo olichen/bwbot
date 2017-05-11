@@ -13,21 +13,34 @@ int main()
 	vector<string> buildOrder;
 	while (true)
 	{
-		cout << "Enter something ([l]oad file, [c]lear build order, [d]elete last entry, select [r]ace, [q]uit program, unit name): ";
+		cout << "Enter a unit name, or hit 'm' for menu': ";
 		getline(cin, input);
 
 		//trim input
 		input = string_alg::trim(input);
+		input = string_alg::to_lower(input);
 
+		if (input == "m")
+		{
+			cout << " - [R]ace select\n - [D]elete last entry\n - [C]lear build order\n - [L]oad file\n - [Q]uit program\n";
+			continue;
+		}
 		//quit program
-		if (input == "q")
+		else if (input == "q")
 			break;
 		//change race
 		else if (input == "r")
 		{
-			cout << "Enter race name (Terran, Protoss, Zerg): ";
+			cout << "Enter race name ([T]erran, [P]rotoss, [Z]erg): ";
 			getline(cin, input);
-			race = tolower(input.at(0));
+			char raceChar = tolower(input.at(0));
+			if (raceChar == 't' || raceChar == 'p' || raceChar == 'z')
+			{
+				race = raceChar;
+				cout << "Race set\n";
+			}
+			else
+				cout << "Invalid race\n";
 			continue;
 		}
 		//load file

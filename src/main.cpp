@@ -13,17 +13,17 @@ int main()
 	vector<string> buildOrder;
 	while (true)
 	{
-		cout << "Enter something (LOAD file, DELETE last entry, QUIT program, RACE select): ";
+		cout << "Enter something ([l]oad file, [c]lear build order, [d]elete last entry, select [r]ace, [q]uit program, unit name): ";
 		getline(cin, input);
 
-		//input aliases
-		char inputChar = tolower(input.at(0));
+		//trim input
+		input = string_alg::trim(input);
 
 		//quit program
-		if (inputChar == 'q')
+		if (input == "q")
 			break;
 		//change race
-		else if (inputChar == 'r')
+		else if (input == "r")
 		{
 			cout << "Enter race name (Terran, Protoss, Zerg): ";
 			getline(cin, input);
@@ -31,21 +31,43 @@ int main()
 			continue;
 		}
 		//load file
-		else if (inputChar == 'l')
+		else if (input == "l")
 		{
-			cout << "Enter file name (must be in '/buildorders' directory): ";
+			cout << "Enter file name (must be in 'buildorders/' directory): ";
 			getline(cin, input);
-			ofstream buildOrderFile;
-			buildOrderFile.open("/buildorders/" + input);
+			ifstream buildOrderFile("buildorders/" + input);
+			if(buildOrderFile.is_open())
+			{
+				cout << "Loading build order '" + input + "'\n";
+				buildOrder.clear();
+				string line = "";
+				while (getline(buildOrderFile, line))
+				{
+					cout << line;
+					buildOrder.push_back(string_alg::titleize(input));
+				}
+				buildOrderFile.close();
+			}
+			else
+			{
+				cout << "Unable to open file 'buildorders/" + input + "'\n";
+				continue;
+			}
 		}
+		//clear build order
+		else if (input == "c")
+			buildOrder.clear();
 		//delete last entry
-		else if (inputChar == 'd')
+		else if (input == "d")
 		{
 			if (!buildOrder.empty())
 				buildOrder.pop_back();
 		}
 		else
+		{
+			input = string_alg::add_race(race, input);
 			buildOrder.push_back(string_alg::titleize(input));
+		}
 
 		try
 		{

@@ -50,31 +50,6 @@ void Build::run()
 {
 	while(cResources.getFrame() <= 10000) // && !vBuildOrder.empty())
 		update();
-	//game loop commented out
-	//typedef std::chrono::milliseconds ms;
-	//typedef std::chrono::nanoseconds ns;
-	//typedef std::chrono::high_resolution_clock clock;
-
-	////framerate (10ms is 100fps, about 4x time)
-	//const ns timestep = std::chrono::duration_cast<ns>(ms(10));
-
-	//auto time_start = clock::now();
-	//ns lag(0);
-
-	//while(cResources.getFrame() <= 400)
-	//{
-	//	auto time_delta = clock::now() - time_start;
-	//	time_start = clock::now();
-	//	lag += std::chrono::duration_cast<ns>(time_delta);
-
-	//	while(lag >= timestep)
-	//	{
-	//		lag -= timestep;
-
-	//		//update
-	//		update();
-	//	}
-	//}
 }
 
 void Build::update()
@@ -82,6 +57,7 @@ void Build::update()
 	//update state of all units
 	cUnitList.update(vActionList);
 	//try to do build order
+	printActions();
 	handleBuild();
 	//handle any thrown actions
 	printActions();
@@ -94,20 +70,20 @@ void Build::update()
 
 void Build::handleBuild()
 {
-	if (!vBuildOrder.empty())
+	while (!vBuildOrder.empty())
 	{
 		if (vBuildOrder.front()=="SCOUT")
 		{
 			cUnitList.scout();
 			vBuildOrder.erase(vBuildOrder.begin());
 		}
-		else
-			tryToBuild(vBuildOrder.front());
+		else if (tryToBuild(vBuildOrder.front()));
+		else break;
 	}
 
 }
 
-void Build::tryToBuild(string unitName)
+bool Build::tryToBuild(string unitName)
 {
 	Unit *buildUnitPtr = cUnitTree.findUnit(unitName);
 
@@ -116,17 +92,23 @@ void Build::tryToBuild(string unitName)
 
 	//if not enough resources, give up
 	if (buildUnitPtr->getMineralCost() > cResources.getMinerals())
-		 return;
+		 return false;
 	if (buildUnitPtr->getGasCost() > cResources.getGas())
-		 return;
+		 return false;
 	if (buildUnitPtr->getSupplyCost() > cResources.getAvailableSupply())
-		 return;
+		 return false;
 
 	if (cUnitList.tryToBuild(*(buildUnitPtr)))
 	{
 		vActionList.push_back(Action("STARTBUILDING", *(buildUnitPtr)));
+		cResources.useMinerals(buildUnitPtr->getMineralCost());
+		cResources.useGas(buildUnitPtr->getGasCost());
+		cResources.useSupply(buildUnitPtr->getSupplyCost());
+		cUnitList.buildUnit(*(buildUnitPtr));
 		vBuildOrder.erase(vBuildOrder.begin());
+		return true;
 	}
+	return false;
 }
 
 ////START action handling
@@ -140,14 +122,7 @@ void Build::handleActions()
 				cResources.addMinerals();
 			else if(iAction.getActionName()=="GATHER GAS")
 				cResources.addGas();
-			else if(iAction.getActionName()=="STARTBUILDING")
-			{
-				cResources.useMinerals(iAction.getTargetUnit().getMineralCost());
-				cResources.useGas(iAction.getTargetUnit().getGasCost());
-				cResources.useSupply(iAction.getTargetUnit().getSupplyCost());
-				cUnitList.buildUnit(iAction.getTargetUnit());
-			}
-			else if(iAction.getActionName()=="CONSTRUCTING")
+			else if(iAction.getActionName()=="LOADING")
 			{
 				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
 				if(iAction.getTargetUnit().getName() == cUnitTree.getGasName())
@@ -192,7 +167,7 @@ void Build::printBuildOrder() const
 			cout << "\n";
 		count++;
 	}
-	cout << "\n\n";
+	cout << "\n";
 }
 
 void Build::printResources() const

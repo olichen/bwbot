@@ -17,12 +17,13 @@ class Build
 		void init(char race = 't');
 		void run();
 		void loadBuildOrder(vector<string> buildOrder);
+		void loadFile(string fileName);
 
 	private:
 		void loadRace(char race);
 		void update();
 		void handleBuild();
-		void tryToBuild(string unitName);
+		bool tryToBuild(string unitName);
 
 		void handleActions();
 		void spawnUnit(Unit &unit);

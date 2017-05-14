@@ -52,6 +52,8 @@ bool UnitList::tryToBuild(Unit &unit)
 {
 	if (!hasUnit(unit.getPrereqName()))
 		return false;
+	if (unit.reqAddon())
+		return false;
 	if (unit.getBuildsFromName() == mWorkerName)
 	{
 		CurrentUnit *workerPtr = findWorker();
@@ -83,20 +85,11 @@ bool UnitList::tryToBuild(Unit &unit)
 	return false;
 }
 
-//bool UnitList::hasUnit(const Unit unit) const
-//{
-//	for (CurrentUnit iCurrentUnit : vUnitList)
-//		if (iCurrentUnit.getName() == unit.getName())
-//			if (iCurrentUnit.getActionName() != "CONSTRUCTING")
-//				return true;
-//	return false;
-//}
-
 bool UnitList::hasUnit(const string unitName) const
 {
 	for (CurrentUnit iCurrentUnit : vUnitList)
 		if (iCurrentUnit.getName() == unitName)
-			if (iCurrentUnit.getActionName() != "CONSTRUCTING")
+			if (iCurrentUnit.getActionName() != "LOADING")
 				return true;
 	return false;
 }
@@ -140,9 +133,9 @@ void UnitList::scout()
 void UnitList::buildUnit(Unit &unit)
 {
 	if (unit.getName() == mWorkerName)
-		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit), Action("GATHER MINERALS", mMineralRate)));
+		vUnitList.push_back(CurrentUnit(unit, Action("LOADING", unit), Action("GATHER MINERALS", mMineralRate)));
 	else
-		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit)));
+		vUnitList.push_back(CurrentUnit(unit, Action("LOADING", unit)));
 }
 
 void UnitList::spawnUnit(Unit &unit)
@@ -186,7 +179,7 @@ void UnitList::printUnitStatus(bool hideMining, bool hideIdle) const
 			continue;
 		if (hideMining && iUnit.getActionName().at(0) == 'I')
 			continue;
-		printf("%s: %d %s//", iUnit.getName().c_str(), iUnit.getTimer(), iUnit.getActionName().c_str());
+		printf("  %s: %d %s", iUnit.getName().c_str(), iUnit.getTimer(), iUnit.getActionName().c_str());
 		print = true;
 	}
 	if(print)

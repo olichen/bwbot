@@ -18,6 +18,7 @@ class UnitTree
 		string getGasName() const { return vUnitList.at(2).getName(); }
 
 	private:
+		void clear() { vUnitList.clear(); }
 		void addUnit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided,
 			string prereq, string buildsFrom, string prereq2 = "", bool isAddon = false, bool reqAddon = false, bool morph = false);
 

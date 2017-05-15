@@ -6,6 +6,8 @@
 #include "unittree.h"
 #include "unitlist.h"
 #include "action.h"
+#include "string_alg.hpp"
+#include "buildorder.hpp"
 #include <vector>
 
 class Build
@@ -15,12 +17,15 @@ class Build
 		~Build();
 
 		void init(char race = 't');
+		void reset();
+		void loadRace(char race);
 		void run();
-		void loadBuildOrder(vector<string> buildOrder);
+		//void loadBuildOrder(vector<string> buildOrder);
 		void loadFile(string fileName);
 
+		void addToBuildOrder(string build) { cBuildOrder.addToBuildOrder(build); }
+
 	private:
-		void loadRace(char race);
 		void update();
 		void handleBuild();
 		bool tryToBuild(string unitName);
@@ -30,7 +35,6 @@ class Build
 		void buildUnit(Unit &unit);
 
 		void updateMineralRate();
-		void printBuildOrder() const;
 		void printResources() const;
 		void printActions(bool hideMining = true) const;
 
@@ -38,5 +42,5 @@ class Build
 		UnitTree cUnitTree;
 		UnitList cUnitList;
 		vector<Action> vActionList;
-		vector<string> vBuildOrder;
+		BuildOrder cBuildOrder;
 };

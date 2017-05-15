@@ -40,6 +40,7 @@ Unit *UnitTree::findUnit(string unitName)
 //start each race with its worker unit first, main building second, gas building third
 void UnitTree::loadRace(char race)
 {
+	clear();
 	if (race == 't')
 	{
 		//economy

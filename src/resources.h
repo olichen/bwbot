@@ -17,12 +17,15 @@ class Resources
 		int getMineralPatches() const { return mMineralPatches; }
 		int getGasGeysers() const { return mGasGeysers; }
 		int getBaseMineRate() const;
+		char getRace() const { return mRace; }
+		void clear() { mMinerals = 0; mGas = 0; mSupply = 0; mSupplyMax = 0; mFrame = 0; }
 
 		// increment minerals, gas, supply, frame
 		void addMinerals(int minerals = 8) { mMinerals += minerals; }
 		void addGas(int gas = 8) { mGas += gas; }
 		void addSupplyMax(int supply = 8) { mSupplyMax += supply; }
 		void nextFrame(int frame = 1) { mFrame += frame; }
+		void setRace(char race = 't') { mRace = race; }
 
 		void useMinerals(int minerals) { mMinerals -= minerals; }
 		void useGas(int gas) { mGas -= gas; }

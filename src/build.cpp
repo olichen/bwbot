@@ -4,7 +4,7 @@
 
 Build::Build()
 {
-	//
+	init();
 }
 
 Build::~Build()
@@ -14,48 +14,70 @@ Build::~Build()
 
 void Build::init(char race)
 {
-	if (race != 'z' && race != 't' && race != 'p')
-		throw "Race '" + string(1, race) + "' not found.";
+	//load up initial state
 	loadRace(race);
+}
+
+void Build::reset()
+{
+	//initialize starting units and resources
+	cUnitList.clear();
+	for (int i=0; i<4; i++)
+		cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getWorkerName())));
+	cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getExpansionName())));
+
+	//reset resources
+	cResources.clear();
+	updateMineralRate();
+	cResources.useSupply(4);
+	cResources.addSupplyMax(cUnitTree.findUnit(cUnitTree.getExpansionName())->getSupplyProvided());
+	cResources.addMinerals(50);
+
+	cBuildOrder.reset();
 }
 
 //load up initial state
 void Build::loadRace(char race)
 {
+	if (race != 'z' && race != 't' && race != 'p')
+		throw "Race '" + string(1, race) + "' not found.";
+	//clear old data
+	cBuildOrder.clear();
 	//load unit list
 	cUnitTree.loadRace(race);
-
+	cResources.setRace(race);
 	//load worker name
 	cUnitList.init(cUnitTree.getWorkerName());
-	updateMineralRate();
-
-	//initialize starting units and resources
-	for (int i=0; i<4; i++)
-		cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getWorkerName())));
-	cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getExpansionName())));
-	cResources.useSupply(4);
-	cResources.addSupplyMax(cUnitTree.findUnit(cUnitTree.getExpansionName())->getSupplyProvided());
-	cResources.addMinerals(50);
+	reset();
 }
 
-//load up build order
-void Build::loadBuildOrder(vector<string> buildOrder)
-{
-	vBuildOrder = buildOrder;
-	// DEBUG: print build order
-	printBuildOrder();
-}
+////load up build order
+//void Build::loadBuildOrder(vector<string> buildOrder)
+//{
+//	vBuildOrder = buildOrder;
+//}
 
 void Build::run()
 {
+	reset();
+	// DEBUG: print build order
+	cBuildOrder.printBuildOrder();
 	while(cResources.getFrame() <= 10000) // && !vBuildOrder.empty())
 		update();
 }
 
 void Build::update()
 {
-	//try to do build
-	handleBuild();
+	//try to build
+	try
+	{
+		handleBuild();
+	}
+	catch (const string &ex)
+	{
+		cout << "Error: " << ex << "\n";
+		cBuildOrder.setLength();
+	}
 	//update state of all units
 	cUnitList.update(vActionList);
 	//handle any thrown actions
@@ -70,20 +92,22 @@ void Build::update()
 
 void Build::handleBuild()
 {
-	while (!vBuildOrder.empty())
+	while (!cBuildOrder.atEnd())
 	{
-		if (vBuildOrder.front()=="SCOUT")
+		if (cBuildOrder.getNext()=="SCOUT")
 		{
+			printResources();
+			cUnitList.scout();
+			cBuildOrder.next();
+
+			//DEBUG: print stuff
 			cout << "Sending one worker to scout. Constructing:";
 			cUnitList.printBuilding();
 			cUnitList.printUnits();
 			cout << endl;
 			printResources();
-			cUnitList.scout();
-			vBuildOrder.erase(vBuildOrder.begin());
-			printResources();
 		}
-		else if (tryToBuild(vBuildOrder.front()));
+		else if (tryToBuild(cBuildOrder.getNext()));
 		else break;
 	}
 
@@ -94,7 +118,9 @@ bool Build::tryToBuild(string unitName)
 	Unit *buildUnitPtr = cUnitTree.findUnit(unitName);
 
 	if (buildUnitPtr == NULL)
+	{
 		throw "Unit '" + unitName + "' not found.";
+	}
 
 	//if not enough resources, give up
 	if (buildUnitPtr->getMineralCost() > cResources.getMinerals())
@@ -106,15 +132,17 @@ bool Build::tryToBuild(string unitName)
 
 	if (cUnitList.tryToBuild(*(buildUnitPtr)))
 	{
-		cout << "Starting to build: " << buildUnitPtr->getName() << " (" << buildUnitPtr->getBuildTime() << "). Constructing:";
-		cUnitList.printBuilding();
-		cUnitList.printUnits();
-		cout << "\n";
 		cResources.useMinerals(buildUnitPtr->getMineralCost());
 		cResources.useGas(buildUnitPtr->getGasCost());
 		cResources.useSupply(buildUnitPtr->getSupplyCost());
 		cUnitList.buildUnit(*(buildUnitPtr));
-		vBuildOrder.erase(vBuildOrder.begin());
+		cBuildOrder.next();
+
+		//DEBUG PRINTING
+		cout << "Starting to build: " << buildUnitPtr->getName() << " (" << buildUnitPtr->getBuildTime() << "). Constructing:";
+		cUnitList.printBuilding();
+		cUnitList.printUnits();
+		cout << "\n";
 		printResources();
 		return true;
 	}
@@ -153,20 +181,6 @@ void Build::updateMineralRate()
 		cUnitList.setMineralRate((250) * (minerCount - minPatches) / (minPatches * 2) + baseRate * (minPatches * 3 - minerCount) / (minPatches * 2));
 	else
 		cUnitList.setMineralRate(250 * minerCount / minPatches * 3);
-}
-
-////START debug printing
-void Build::printBuildOrder() const
-{
-	int count = 1;
-	for (string buildorder : vBuildOrder)
-	{
-		cout << buildorder << ", ";
-		if (count%5 == 0)
-			cout << "\n";
-		count++;
-	}
-	cout << "\n";
 }
 
 void Build::printResources() const

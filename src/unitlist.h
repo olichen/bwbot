@@ -23,6 +23,7 @@ class UnitList
 
 		void setMineralRate(int mineralRate);
 		void setGasRate(int gasRate);
+		void clear() { vUnitList.clear(); };
 
 		int minerCount() const;
 		int gasMinerCount() const;

@@ -43,6 +43,7 @@ void Build::loadRace(char race)
 		throw "Race '" + string(1, race) + "' not found.";
 	//clear old data
 	cBuildOrder.clear();
+	cBuildOrder.setRace(race);
 	//load unit list
 	cUnitTree.loadRace(race);
 	cResources.setRace(race);
@@ -51,11 +52,22 @@ void Build::loadRace(char race)
 	reset();
 }
 
-////load up build order
-//void Build::loadBuildOrder(vector<string> buildOrder)
-//{
-//	vBuildOrder = buildOrder;
-//}
+void Build::loadFile(string fileName)
+{
+	ifstream buildOrderFile("buildorders/" + fileName);
+	if(buildOrderFile.is_open())
+	{
+		cBuildOrder.clear();
+		string line = "";
+		getline(buildOrderFile, line);
+		loadRace(tolower(line.at(0)));
+		while (getline(buildOrderFile, line))
+			cBuildOrder.addToBuildOrder(line);
+		buildOrderFile.close();
+	}
+	else
+		throw "Unable to open file 'buildorders/" + fileName + "'";
+}
 
 void Build::run()
 {
@@ -96,12 +108,11 @@ void Build::handleBuild()
 	{
 		if (cBuildOrder.getNext()=="SCOUT")
 		{
-			printResources();
 			cUnitList.scout();
 			cBuildOrder.next();
 
 			//DEBUG: print stuff
-			cout << "Sending one worker to scout. Constructing:";
+			cout << "Sending one worker to scout\n Constructing:";
 			cUnitList.printBuilding();
 			cUnitList.printUnits();
 			cout << endl;
@@ -139,7 +150,7 @@ bool Build::tryToBuild(string unitName)
 		cBuildOrder.next();
 
 		//DEBUG PRINTING
-		cout << "Starting to build: " << buildUnitPtr->getName() << " (" << buildUnitPtr->getBuildTime() << "). Constructing:";
+		cout << "Starting to build: " << buildUnitPtr->getName() << " (" << buildUnitPtr->getBuildTime() << " frames)\n Constructing:";
 		cUnitList.printBuilding();
 		cUnitList.printUnits();
 		cout << "\n";
@@ -185,7 +196,7 @@ void Build::updateMineralRate()
 
 void Build::printResources() const
 {
-	//printf(" Frame |  Min  |  Gas  | Supply | Time | Miners\n");
+	printf(" Frame |  Min  |  Gas  | Supply | Time | Miners\n");
 	printf("%6d |", cResources.getFrame());
 	printf("%5d  |", cResources.getMinerals());
 	printf("%5d  |", cResources.getGas());

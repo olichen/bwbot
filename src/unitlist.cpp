@@ -212,14 +212,14 @@ void UnitList::printUnits() const
 			}
 		}
 	}
-	printf(" /// ");
+	printf(" /// Units:");
 	for (unsigned int i=0; i<unitNames.size(); i++)
-		printf("%s %i ", unitNames[i].c_str(), unitCount[i]);
+		printf("%i %s, ", unitCount[i], unitNames[i].c_str());
 }
 
 void UnitList::printBuilding() const
 {
 	for (CurrentUnit iUnit : vUnitList)
-		if (iUnit.getActionName() == "CONSTRUCTING")
+		if (iUnit.getActionName() == "CONSTRUCTING" && iUnit.getTimer() != 0)
 			printf(" %s: %d,", iUnit.getName().c_str(), iUnit.getTimer());
 }

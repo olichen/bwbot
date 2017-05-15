@@ -1,8 +1,5 @@
 #include "build.h"
-#include "string_alg.hpp"
 #include <iostream>
-#include <fstream>
-#include <vector>
 #include <string>
 using namespace std;
 
@@ -25,26 +22,34 @@ int main( int argc, char *argv[] )
 		else if (input == "q")
 			break;
 		//change race
-		//else if (input == "r")
-		//{
-		//	cout << "Enter race name ([T]erran, [P]rotoss, [Z]erg): ";
-		//	getline(cin, input);
-		//	char raceChar = tolower(input.at(0));
-		//	try
-		//	{
-		//		build.init(raceChar);
-		//	}
-		//	catch (const string &ex)
-		//	{
-		//		cout << "Error: " << ex << "\n";
-		//	}
-		//	continue;
-		//}
+		else if (input == "r")
+		{
+			cout << "Enter race name ([T]erran, [P]rotoss, [Z]erg): ";
+			getline(cin, input);
+			char raceChar = tolower(input.at(0));
+			try
+			{
+				build.init(raceChar);
+			}
+			catch (const string &ex)
+			{
+				cout << "Error: " << ex << "\n";
+			}
+			continue;
+		}
 		////load file
-		//else if (input == "l")
-		//{
-		//	cout << "Enter file name (must be in 'buildorders/' directory): ";
-		//	getline(cin, input);
+		else if (input == "l")
+		{
+			cout << "Enter file name (must be in 'buildorders/' directory): ";
+			getline(cin, input);
+			try
+			{
+				build.loadFile(input);
+			}
+			catch (const string &ex)
+			{
+				cout << "Error: " << ex << "\n";
+			}
 		//	ifstream buildOrderFile("buildorders/" + input);
 		//	if(buildOrderFile.is_open())
 		//	{
@@ -62,7 +67,7 @@ int main( int argc, char *argv[] )
 		//		cout << "Unable to open file 'buildorders/" + input + "'\n";
 		//		continue;
 		//	}
-		//}
+		}
 		////clear build order
 		////else if (input == "c")
 		//	//

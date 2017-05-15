@@ -1,13 +1,14 @@
 // currentunit.cpp
 #include "currentunit.h"
 
-CurrentUnit::CurrentUnit(Unit &unit, Action nextAction, Action idleAction)
+CurrentUnit::CurrentUnit(Unit &unit, Action curAction, Action idleAction)
 	: pUnit(&unit), mCurrentAction(Action()), mIdleAction(idleAction), mTimer(-1), mHasAddon(false)
 {
-	if (nextAction.getActionName() != "IDLE")
+	if (curAction.getActionName() != "IDLE")
 	{
-		vNextAction.push(nextAction);
+		vNextAction.push(curAction);
 	}
+	nextAction();
 }
 
 void CurrentUnit::update(vector<Action> &actionList)

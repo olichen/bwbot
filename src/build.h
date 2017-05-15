@@ -8,6 +8,7 @@
 #include "action.h"
 #include "string_alg.hpp"
 #include "buildorder.hpp"
+#include <fstream>
 #include <vector>
 
 class Build

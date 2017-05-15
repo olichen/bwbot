@@ -89,7 +89,7 @@ bool UnitList::hasUnit(const string unitName) const
 {
 	for (CurrentUnit iCurrentUnit : vUnitList)
 		if (iCurrentUnit.getName() == unitName)
-			if (iCurrentUnit.getActionName() != "LOADING")
+			if (iCurrentUnit.getActionName() != "CONSTRUCTING")
 				return true;
 	return false;
 }
@@ -133,9 +133,9 @@ void UnitList::scout()
 void UnitList::buildUnit(Unit &unit)
 {
 	if (unit.getName() == mWorkerName)
-		vUnitList.push_back(CurrentUnit(unit, Action("LOADING", unit), Action("GATHER MINERALS", mMineralRate)));
+		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit), Action("GATHER MINERALS", mMineralRate)));
 	else
-		vUnitList.push_back(CurrentUnit(unit, Action("LOADING", unit)));
+		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit)));
 }
 
 void UnitList::spawnUnit(Unit &unit)
@@ -186,3 +186,9 @@ void UnitList::printUnitStatus(bool hideMining, bool hideIdle) const
 		printf("\n");
 }
 
+void UnitList::printBuilding() const
+{
+	for (CurrentUnit iUnit : vUnitList)
+		if (iUnit.getActionName() == "CONSTRUCTING")
+			printf(" %s: %d,", iUnit.getName().c_str(), iUnit.getTimer());
+}

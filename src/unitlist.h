@@ -28,6 +28,7 @@ class UnitList
 		int gasMinerCount() const;
 
 		void printUnitStatus(bool hideMining = true, bool hideIdle = true) const;
+		void printBuilding() const;
 
 	private:
 		CurrentUnit *findWorker();

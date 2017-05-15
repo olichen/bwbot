@@ -1,7 +1,6 @@
 // build.cpp
 #include "build.h"
 #include <iostream>
-//#include <chrono>
 
 Build::Build()
 {
@@ -26,15 +25,16 @@ void Build::loadRace(char race)
 	//load unit list
 	cUnitTree.loadRace(race);
 
-	//load workers
+	//load worker name
 	cUnitList.init(cUnitTree.getWorkerName());
 	updateMineralRate();
 
-	//load initial units
+	//initialize starting units and resources
 	for (int i=0; i<4; i++)
-		vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit(cUnitTree.getWorkerName()))));
-	vActionList.push_back(Action("CREATE", *(cUnitTree.findUnit(cUnitTree.getExpansionName()))));
-
+		cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getWorkerName())));
+	cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getExpansionName())));
+	cResources.useSupply(4);
+	cResources.addSupplyMax(cUnitTree.findUnit(cUnitTree.getExpansionName())->getSupplyProvided());
 	cResources.addMinerals(50);
 }
 
@@ -54,13 +54,13 @@ void Build::run()
 
 void Build::update()
 {
+	//try to do build
+	handleBuild();
 	//update state of all units
 	cUnitList.update(vActionList);
-	//try to do build order
-	printActions();
-	handleBuild();
+	//DEBUG: print out actions
+	//printActions();
 	//handle any thrown actions
-	printActions();
 	handleActions();
 	//refresh mining rate
 	updateMineralRate();
@@ -74,8 +74,11 @@ void Build::handleBuild()
 	{
 		if (vBuildOrder.front()=="SCOUT")
 		{
+			cout << "Sending one worker to scout" << endl;
+			printResources();
 			cUnitList.scout();
 			vBuildOrder.erase(vBuildOrder.begin());
+			printResources();
 		}
 		else if (tryToBuild(vBuildOrder.front()));
 		else break;
@@ -100,18 +103,21 @@ bool Build::tryToBuild(string unitName)
 
 	if (cUnitList.tryToBuild(*(buildUnitPtr)))
 	{
-		vActionList.push_back(Action("STARTBUILDING", *(buildUnitPtr)));
+		cout << "Starting to build: (" << buildUnitPtr->getName() << " (" << buildUnitPtr->getBuildTime() << ") (constructing:";
+		cUnitList.printBuilding();
+		cout << ")\n";
+		printResources();
 		cResources.useMinerals(buildUnitPtr->getMineralCost());
 		cResources.useGas(buildUnitPtr->getGasCost());
 		cResources.useSupply(buildUnitPtr->getSupplyCost());
 		cUnitList.buildUnit(*(buildUnitPtr));
 		vBuildOrder.erase(vBuildOrder.begin());
+		printResources();
 		return true;
 	}
 	return false;
 }
 
-////START action handling
 void Build::handleActions()
 {
 	if (!vActionList.empty())
@@ -122,26 +128,16 @@ void Build::handleActions()
 				cResources.addMinerals();
 			else if(iAction.getActionName()=="GATHER GAS")
 				cResources.addGas();
-			else if(iAction.getActionName()=="LOADING")
+			else if(iAction.getActionName()=="CONSTRUCTING")
 			{
 				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
 				if(iAction.getTargetUnit().getName() == cUnitTree.getGasName())
 					cUnitList.addGasWorker(3);
 			}
-			else if(iAction.getActionName()=="SCOUT")
-				cUnitList.scout();
-			else if(iAction.getActionName()=="CREATE")
-			{
-				cResources.useSupply(iAction.getTargetUnit().getSupplyCost());
-				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
-				cUnitList.spawnUnit(iAction.getTargetUnit());
-			}
 		}
 	}
 	vActionList.clear();
 }
-
-////END action handling
 
 void Build::updateMineralRate()
 {
@@ -189,7 +185,7 @@ void Build::printActions(bool hideMining) const
 	{
 		if (iAction.getActionName().at(0) == 'G' && hideMining)
 			continue;
-		cout << iAction.getActionName() << " " << iAction.getTimer();
+		cout << " "<<  iAction.getActionName() << " " << iAction.getTimer();
 		if (iAction.hasTargetUnit())
 		{
 			cout << " " << iAction.getTargetUnit().getName();

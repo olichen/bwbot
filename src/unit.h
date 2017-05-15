@@ -17,6 +17,7 @@ class Unit
 		string getName() const { return mName; }
 		string getPrereqName() const { return mPrereq; }
 		string getPrereq2Name() const { return mPrereq2; }
+		bool hasPrereq2() const { return !(mPrereq2==""); }
 		string getBuildsFromName() const { return mBuildsFrom; }
 		bool isAddon() const { return mIsAddon; }
 		bool reqAddon() const { return mReqAddon; }
@@ -26,6 +27,6 @@ class Unit
 	private:
 		string mName;
 		int mMineralCost, mGasCost, mBuildTime, mSupplyCost, mSupplyProvided;
-		string mPrereq, mPrereq2, mBuildsFrom;
+		string mPrereq, mBuildsFrom, mPrereq2;
 		bool mIsAddon, mReqAddon, mMorph;
 };

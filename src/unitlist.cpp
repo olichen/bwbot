@@ -52,6 +52,8 @@ bool UnitList::tryToBuild(Unit &unit)
 {
 	if (!hasUnit(unit.getPrereqName()))
 		return false;
+	if (unit.hasPrereq2() && !hasUnit(unit.getPrereq2Name()))
+		return false;
 	if (unit.getBuildsFromName() == mWorkerName)
 	{
 		CurrentUnit *workerPtr = findWorker();

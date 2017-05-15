@@ -52,8 +52,6 @@ bool UnitList::tryToBuild(Unit &unit)
 {
 	if (!hasUnit(unit.getPrereqName()))
 		return false;
-	if (unit.reqAddon())
-		return false;
 	if (unit.getBuildsFromName() == mWorkerName)
 	{
 		CurrentUnit *workerPtr = findWorker();
@@ -74,7 +72,7 @@ bool UnitList::tryToBuild(Unit &unit)
 						return false;
 				if (iCurrentUnit.isIdle())
 				{
-					iCurrentUnit.addNextAction(Action("BUILDING", unit));
+					iCurrentUnit.gotoAction(Action("BUILDING", unit));
 					if (unit.isAddon())
 						iCurrentUnit.addAddon();
 					return true;

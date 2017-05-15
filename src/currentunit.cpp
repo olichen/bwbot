@@ -18,7 +18,7 @@ void CurrentUnit::update(vector<Action> &actionList)
 			nextAction();
 			break;
 		//if action completes
-		case(1):
+		case(0):
 			actionList.push_back(mCurrentAction);
 			nextAction();
 			break;

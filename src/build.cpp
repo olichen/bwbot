@@ -58,10 +58,10 @@ void Build::update()
 	handleBuild();
 	//update state of all units
 	cUnitList.update(vActionList);
-	//DEBUG: print out actions
-	//printActions();
 	//handle any thrown actions
 	handleActions();
+	//DEBUG: print out actions
+	//printActions();
 	//refresh mining rate
 	updateMineralRate();
 	//update frame number
@@ -74,7 +74,9 @@ void Build::handleBuild()
 	{
 		if (vBuildOrder.front()=="SCOUT")
 		{
-			cout << "Sending one worker to scout" << endl;
+			cout << "Sending one worker to scout. Constructing:";
+			cUnitList.printBuilding();
+			cout << endl;
 			printResources();
 			cUnitList.scout();
 			vBuildOrder.erase(vBuildOrder.begin());
@@ -103,7 +105,7 @@ bool Build::tryToBuild(string unitName)
 
 	if (cUnitList.tryToBuild(*(buildUnitPtr)))
 	{
-		cout << "Starting to build: (" << buildUnitPtr->getName() << " (" << buildUnitPtr->getBuildTime() << ") (constructing:";
+		cout << "Starting to build: (" << buildUnitPtr->getName() << " (" << buildUnitPtr->getBuildTime() << "). Constructing:";
 		cUnitList.printBuilding();
 		cout << ")\n";
 		printResources();

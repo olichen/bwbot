@@ -22,7 +22,7 @@ class UnitList
 		void scout();
 
 		void setMineralRate(int mineralRate);
-		void setGasRate(int mineralRate);
+		void setGasRate(int gasRate);
 
 		int minerCount() const;
 		int gasMinerCount() const;

@@ -186,6 +186,37 @@ void UnitList::printUnitStatus(bool hideMining, bool hideIdle) const
 		printf("\n");
 }
 
+void UnitList::printUnits() const
+{
+	vector<string> unitNames;
+	vector<unsigned int> unitCount;
+	for (CurrentUnit iUnit : vUnitList)
+	{
+		if (iUnit.getActionName() != "CONSTRUCTING" || iUnit.getTimer() == 0)
+		{
+			int hasUnit = -1;
+			for (unsigned int i=0; i<unitNames.size(); i++)
+			{
+				if (unitNames[i] == iUnit.getName())
+				{
+					hasUnit = i;
+					break;
+				}
+			}
+			if (hasUnit != -1)
+				unitCount[hasUnit] += 1;
+			else
+			{
+				unitNames.push_back(iUnit.getName());
+				unitCount.push_back(1);
+			}
+		}
+	}
+	printf(" /// ");
+	for (unsigned int i=0; i<unitNames.size(); i++)
+		printf("%s %i ", unitNames[i].c_str(), unitCount[i]);
+}
+
 void UnitList::printBuilding() const
 {
 	for (CurrentUnit iUnit : vUnitList)

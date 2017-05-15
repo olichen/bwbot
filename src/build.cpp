@@ -107,6 +107,7 @@ bool Build::tryToBuild(string unitName)
 	{
 		cout << "Starting to build: " << buildUnitPtr->getName() << " (" << buildUnitPtr->getBuildTime() << "). Constructing:";
 		cUnitList.printBuilding();
+		cUnitList.printUnits();
 		cout << "\n";
 		printResources();
 		cResources.useMinerals(buildUnitPtr->getMineralCost());

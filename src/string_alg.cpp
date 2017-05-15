@@ -26,8 +26,6 @@ string string_alg::titleize(string s1)
 	}
 	if (s1 == "Terran Scv")
 		return "Terran SCV";
-	if (s1 == "Scout")
-		return "SCOUT";
 	return s1;
 }
 
@@ -51,23 +49,26 @@ string string_alg::to_lower(string s1)
 string string_alg::add_race(char race, string s1)
 {
 	if (lower_eq("scout", s1))
-	{
 		return "SCOUT";
-	}
 	else if (race == 't')
 	{
 		if (!lower_eq(s1.substr(0,6), "terran"))
-			return "Terran " + s1;
+			return titleize("Terran " + s1);
 	}
 	else if (race == 'z')
 	{
 		if (!lower_eq(s1.substr(0,4), "zerg"))
-			return "Zerg " + s1;
+			return titleize("Zerg " + s1);
 	}
 	else if (race == 'p')
 	{
 		if (!lower_eq(s1.substr(0,7), "protoss"))
-			return "Protoss " + s1;
+			return titleize("Protoss " + s1);
 	}
 	return s1;
+}
+
+string string_alg::cleanup_input(char race, string s1)
+{
+	return add_race(race, titleize(trim(s1)));
 }

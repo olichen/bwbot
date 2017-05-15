@@ -9,4 +9,5 @@ namespace string_alg
 	bool lower_eq(string s1, string s2);
 	string add_race(char race, string s1);
 	string to_lower(string s1);
+	string cleanup_input(char race, string s1);
 }

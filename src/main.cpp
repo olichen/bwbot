@@ -57,7 +57,7 @@ int main( int argc, char *argv[] )
 				getline(buildOrderFile, line);
 				race = tolower(line.at(0));
 				while (getline(buildOrderFile, line))
-					buildOrder.push_back(string_alg::titleize(string_alg::add_race(race,line)));
+					buildOrder.push_back(string_alg::cleanup_input(race,line));
 				buildOrderFile.close();
 			}
 			else
@@ -78,8 +78,7 @@ int main( int argc, char *argv[] )
 		//add unit
 		else
 		{
-			input = string_alg::add_race(race, input);
-			buildOrder.push_back(string_alg::titleize(input));
+			buildOrder.push_back(string_alg::cleanup_input(race,input));
 		}
 
 		try

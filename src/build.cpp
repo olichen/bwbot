@@ -76,6 +76,7 @@ void Build::handleBuild()
 		{
 			cout << "Sending one worker to scout. Constructing:";
 			cUnitList.printBuilding();
+			cUnitList.printUnits();
 			cout << endl;
 			printResources();
 			cUnitList.scout();
@@ -109,7 +110,6 @@ bool Build::tryToBuild(string unitName)
 		cUnitList.printBuilding();
 		cUnitList.printUnits();
 		cout << "\n";
-		printResources();
 		cResources.useMinerals(buildUnitPtr->getMineralCost());
 		cResources.useGas(buildUnitPtr->getGasCost());
 		cResources.useSupply(buildUnitPtr->getSupplyCost());

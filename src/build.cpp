@@ -111,7 +111,7 @@ void Build::handleBuild()
 {
 	while (!cBuildOrder.atEnd())
 	{
-		if (cBuildOrder.getNext()=="SCOUT")
+		if (cBuildOrder.getNext()=="SEARCH")
 		{
 			cUnitList.scout();
 			cBuildOrder.next();

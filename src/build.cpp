@@ -36,20 +36,25 @@ void Build::reset()
 	cBuildOrder.reset();
 }
 
+void Build::clear()
+{
+	cBuildOrder.clear();
+	reset();
+}
+
 //load up initial state
 void Build::loadRace(char race)
 {
 	if (race != 'z' && race != 't' && race != 'p')
 		throw "Race '" + string(1, race) + "' not found.";
 	//clear old data
-	cBuildOrder.clear();
 	cBuildOrder.setRace(race);
 	//load unit list
 	cUnitTree.loadRace(race);
 	cResources.setRace(race);
 	//load worker name
 	cUnitList.init(cUnitTree.getWorkerName());
-	reset();
+	clear();
 }
 
 void Build::loadFile(string fileName)
@@ -62,7 +67,7 @@ void Build::loadFile(string fileName)
 		getline(buildOrderFile, line);
 		loadRace(tolower(line.at(0)));
 		while (getline(buildOrderFile, line))
-			cBuildOrder.addToBuildOrder(line);
+			cBuildOrder.push_back(line);
 		buildOrderFile.close();
 	}
 	else

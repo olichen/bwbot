@@ -5,11 +5,26 @@ using namespace std;
 
 int main( int argc, char *argv[] )
 {
-	string input = "";
+	bool interactive = (argc == 2 ? false : true);
+
 	Build build;
 
-	while (true)
+	if (!interactive)
 	{
+		try
+		{
+			build.loadFile(argv[1]);
+			build.run();
+		}
+		catch (const string &ex)
+		{
+			cout << "Error: " << ex << "\n";
+		}
+	}
+
+	while (interactive)
+	{
+		string input = "";
 		cout << "Enter a unit name, or hit 'm' for menu': ";
 		getline(cin, input);
 
@@ -50,33 +65,16 @@ int main( int argc, char *argv[] )
 			{
 				cout << "Error: " << ex << "\n";
 			}
-		//	ifstream buildOrderFile("buildorders/" + input);
-		//	if(buildOrderFile.is_open())
-		//	{
-		//		cout << "Loading build order '" + input + "'\n";
-		//		buildOrder.clear();
-		//		string line = "";
-		//		getline(buildOrderFile, line);
-		//		race = tolower(line.at(0));
-		//		while (getline(buildOrderFile, line))
-		//			buildOrder.push_back(string_alg::cleanup_input(race,line));
-		//		buildOrderFile.close();
-		//	}
-		//	else
-		//	{
-		//		cout << "Unable to open file 'buildorders/" + input + "'\n";
-		//		continue;
-		//	}
 		}
-		////clear build order
-		////else if (input == "c")
-		//	//
-		////delete last entry
-		////else if (input == "d")
-		//	//
-		////add unit
+		//clear build order
+		else if (input == "c")
+			build.clear();
+		//delete last entry
+		else if (input == "d")
+			build.popBuildOrder();
+		//add unit
 		else
-			build.addToBuildOrder(input);
+			build.pushBuildOrder(input);
 
 		build.run();
 	}

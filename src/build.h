@@ -17,14 +17,16 @@ class Build
 		Build();
 		~Build();
 
-		void init(char race = 't');
-		void reset();
-		void loadRace(char race);
-		void run();
+		void init(char race = 't'); //loads up race
+		void reset(); //resets build to frame 0
+		void clear(); //clears build order and resets build
+		void loadRace(char race); //loads up race
+		void run(); //runs build order
 		//void loadBuildOrder(vector<string> buildOrder);
-		void loadFile(string fileName);
+		void loadFile(string fileName); //load file (race, build)
 
-		void addToBuildOrder(string build) { cBuildOrder.addToBuildOrder(build); }
+		void pushBuildOrder(string build) { cBuildOrder.push_back(build); }
+		void popBuildOrder() { cBuildOrder.pop(); }
 
 	private:
 		void update();

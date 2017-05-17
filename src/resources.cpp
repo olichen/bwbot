@@ -20,6 +20,6 @@ int Resources::getBaseMineRate() const
 	if (mRace=='z')
 		return 172;
 	if (mRace=='p')
-		return 169;
+		return 168;
 	throw "Race  not found.";
 }

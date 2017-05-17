@@ -205,7 +205,7 @@ void UnitList::printUnits() const
 	vector<unsigned int> unitCount;
 	for (CurrentUnit iUnit : vUnitList)
 	{
-		if (iUnit.getActionName() != "CONSTRUCTING" || iUnit.getTimer() == 0)
+		if (iUnit.getActionName() != "CONSTRUCTING")
 		{
 			int hasUnit = -1;
 			for (unsigned int i=0; i<unitNames.size(); i++)
@@ -233,6 +233,6 @@ void UnitList::printUnits() const
 void UnitList::printBuilding() const
 {
 	for (CurrentUnit iUnit : vUnitList)
-		if (iUnit.getActionName() == "CONSTRUCTING" && iUnit.getTimer() != 0)
+		if (iUnit.getActionName() == "CONSTRUCTING")
 			printf(" %s: %d,", iUnit.getName().c_str(), iUnit.getTimer());
 }

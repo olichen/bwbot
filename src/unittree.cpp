@@ -127,21 +127,78 @@ void UnitTree::loadRace(char race)
 		//economy
 		addUnit("Protoss Probe",50,0,300,1,0,"Protoss Nexus","Protoss Nexus");
 		addUnit("Protoss Nexus",400,0,1800,0,9,"Protoss Probe","Protoss Probe");
-		addUnit("Protoss Assimilator",100,0,600,0,0,"Protoss Nexus","Protoss Nexus");
+		addUnit("Protoss Assimilator",100,0,600,0,0,"Protoss Nexus","Protoss Probe");
 		//ground units
-		//addUnit("Protoss Zealot",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss Dragoon",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss High Templar",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss Archon",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss Dark Templar",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss Dark Archon",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss Reaver",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		addUnit("Protoss Zealot",100,0,600,2,0,"Protoss Gateway","Protoss Gateway");
+		addUnit("Protoss Dragoon",125,50,750,2,0,"Protoss Cybernetics Core","Protoss Gateway");
+		addUnit("Protoss High Templar",50,150,750,2,0,"Protoss Templar Archives","Protoss Gateway");
+		addUnit("Protoss Dark Templar",125,100,750,2,0,"Protoss Templar Archives","Protoss Gateway");
+		//addUnit("Protoss Archon",0,0,300,4,0,"Protoss High Templar","Protoss High Templar");
+		//addUnit("Protoss Dark Archon",0,0,300,4,0,"Protoss Dark Templar","Protoss Dark Templar");
+		addUnit("Protoss Reaver",200,100,1050,4,0,"Protoss Robotics Support Bay","Protoss Robotics Facility");
+		//addUnit("Protoss Scarab",15,0,105,0,0,"Protoss Reaver","Protoss Reaver");
 		//air units
-		//addUnit("Protoss Scout",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss Corsair",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss Carrier",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss Interceptor",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
-		//addUnit("Protoss Arbiter",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		addUnit("Protoss Scout",275,125,1200,3,0,"Protoss Stargate","Protoss Stargate");
+		addUnit("Protoss Corsair",150,100,600,2,0,"Protoss Stargate","Protoss Stargate");
+		addUnit("Protoss Arbiter",100,350,2400,4,0,"Protoss Arbiter Tribunal","Protoss Stargate");
+		addUnit("Protoss Carrier",350,200,2100,6,0,"Protoss Fleet Beacon","Protoss Stargate");
+		//addUnit("Protoss Interceptor",25,0,300,3,0,"Protoss Carrier","Protoss Carrier");
+		addUnit("Protoss Observer",25,75,600,1,0,"Protoss Observatory","Protoss Robotics Facility");
+		addUnit("Protoss Shuttle",200,0,900,2,0,"Protoss Robotics Facility","Protoss Robotics Facility");
+		//basic buildings
+		addUnit("Protoss Pylon",100,0,450,0,8,"Protoss Probe","Protoss Probe");
+		addUnit("Protoss Gateway",150,0,900,0,0,"Protoss Nexus","Protoss Probe", "Protoss Pylon");
+		addUnit("Protoss Forge",150,0,600,0,0,"Protoss Nexus","Protoss Probe");
+		addUnit("Protoss Photon Cannon",150,0,750,0,0,"Protoss Forge","Protoss Probe");
+		addUnit("Protoss Cybernetics Core",200,0,900,0,0,"Protoss Gateway","Protoss Probe");
+		addUnit("Protoss Shield Battery",100,0,450,0,0,"Protoss Gateway","Protoss Probe");
+		//advanced buildings
+		addUnit("Protoss Robotics Facility",200,200,1200,0,0,"Protoss Cybernetics Core","Protoss Probe");
+		addUnit("Protoss Robotics Support Bay",150,100,450,0,0,"Protoss Robotics Facility","Protoss Probe");
+		addUnit("Protoss Observatory",50,100,450,0,0,"Protoss Robotics Facility","Protoss Probe");
+		addUnit("Protoss Stargate",150,150,1050,0,0,"Protoss Cybernetics Core","Protoss Probe");
+		addUnit("Protoss Fleet Beacon",300,200,900,0,0,"Protoss Stargate","Protoss Probe");
+		addUnit("Protoss Arbiter Tribunal",200,150,900,0,0,"Protoss Stargate","Protoss Probe","Protoss Templar Archives");
+		addUnit("Protoss Citadel Of Adun",150,100,900,0,0,"Protoss Cybernetics Core","Protoss Probe");
+		addUnit("Protoss Templar Archives",150,200,900,0,0,"Protoss Citadel Of Adun","Protoss Probe");
+		//upgrades/tech
+		addUnit("Protoss Singularity Charge",150,150,2500,0,0,"Protoss Cybernetics Core","Protoss Cybernetics Core");
+		addUnit("Protoss Leg Enhancements",150,150,2000,0,0,"Protoss Citadel Of Adun","Protoss Citadel Of Adun");
+		addUnit("Protoss Scarab Damage",200,200,2500,0,0,"Protoss Robotics Support Bay","Protoss Robotics Support Bay");
+		addUnit("Protoss Reaver Capacity",200,200,2500,0,0,"Protoss Robotics Support Bay","Protoss Robotics Support Bay");
+		addUnit("Protoss Gravitic Drive",200,200,2500,0,0,"Protoss Robotics Support Bay","Protoss Robotics Support Bay");
+		addUnit("Protoss Sensor Array",150,150,2000,0,0,"Protoss Fleet Beacon","Protoss Fleet Beacon");
+		addUnit("Protoss Gravitic Boosters",150,150,2000,0,0,"Protoss Fleet Beacon","Protoss Fleet Beacon");
+		addUnit("Protoss Apial Sensors",100,100,2500,0,0,"Protoss Fleet Beacon","Protoss Fleet Beacon");
+		addUnit("Protoss Gravitic Thrusters",200,200,2500,0,0,"Protoss Fleet Beacon","Protoss Fleet Beacon");
+		addUnit("Protoss Carrier Capacity",100,100,1500,0,0,"Protoss Fleet Beacon","Protoss Fleet Beacon");
+		addUnit("Protoss Disruption Web",200,200,1200,0,0,"Protoss Fleet Beacon","Protoss Fleet Beacon");
+		addUnit("Protoss Argus Jewel",100,100,2500,0,0,"Protoss Fleet Beacon","Protoss Fleet Beacon");
+		addUnit("Protoss Recall",150,150,1800,0,0,"Protoss Arbiter Tribunal","Protoss Arbiter Tribunal");
+		addUnit("Protoss Stasis Field",150,150,1500,0,0,"Protoss Arbiter Tribunal","Protoss Arbiter Tribunal");
+		addUnit("Protoss Khaydarin Core",150,150,2500,0,0,"Protoss Arbiter Tribunal","Protoss Arbiter Tribunal");
+		addUnit("Protoss Psionic Storm",200,200,1800,0,0,"Protoss Templar Archives","Protoss Templar Archives");
+		addUnit("Protoss Hallucination",150,150,1200,0,0,"Protoss Templar Archives","Protoss Templar Archives");
+		addUnit("Protoss Khaydarin Amulet",150,150,2500,0,0,"Protoss Templar Archives","Protoss Templar Archives");
+		addUnit("Protoss Maelstrom",100,100,1500,0,0,"Protoss Templar Archives","Protoss Templar Archives");
+		addUnit("Protoss Mind Control",200,200,1800,0,0,"Protoss Templar Archives","Protoss Templar Archives");
+		addUnit("Protoss Argus Talisman",150,150,2500,0,0,"Protoss Templar Archives","Protoss Templar Archives");
+		//numerical upgrades
+		addUnit("Protoss Ground Weapons 1",100,100,4000,0,0,"Protoss Forge","Protoss Forge");
+		addUnit("Protoss Ground Weapons 2",175,175,4480,0,0,"Protoss Ground Weapons 1","Protoss Forge","Protoss Templar Archives");
+		addUnit("Protoss Ground Weapons 3",250,250,4960,0,0,"Protoss Ground Weapons 2","Protoss Forge","Protoss Templar Archives");
+		addUnit("Protoss Ground Armor 1",100,100,4000,0,0,"Protoss Forge","Protoss Forge");
+		addUnit("Protoss Ground Armor 2",175,175,4480,0,0,"Protoss Ground Armor 1","Protoss Forge","Protoss Templar Archives");
+		addUnit("Protoss Ground Armor 3",250,250,4960,0,0,"Protoss Ground Armor 2","Protoss Forge","Protoss Templar Archives");
+		addUnit("Protoss Plasma Shields 1",200,200,4000,0,0,"Protoss Forge","Protoss Forge");
+		addUnit("Protoss Plasma Shields 2",300,300,4480,0,0,"Protoss Plasma Shields 1","Protoss Forge","Protoss Cybernetics Core");
+		addUnit("Protoss Plasma Shields 3",400,400,4960,0,0,"Protoss Plasma Shields 2","Protoss Forge","Protoss Cybernetics Core");
+		addUnit("Protoss Air Weapons 1",100,100,4000,0,0,"Protoss Cybernetics Core","Protoss Cybernetics Core");
+		addUnit("Protoss Air Weapons 2",175,175,4480,0,0,"Protoss Air Weapons 1","Protoss Cybernetics Core","Protoss Fleet Beacon");
+		addUnit("Protoss Air Weapons 3",250,250,4960,0,0,"Protoss Air Weapons 2","Protoss Cybernetics Core","Protoss Fleet Beacon");
+		addUnit("Protoss Air Armor 1",100,100,4000,0,0,"Protoss Cybernetics Core","Protoss Cybernetics Core");
+		addUnit("Protoss Air Armor 2",175,175,4480,0,0,"Protoss Air Armor 1","Protoss Cybernetics Core","Protoss Fleet Beacon");
+		addUnit("Protoss Air Armor 3",250,250,4960,0,0,"Protoss Air Armor 2","Protoss Cybernetics Core","Protoss Fleet Beacon");
 	}
 	if (race == 'z')
 	{

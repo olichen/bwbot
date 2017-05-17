@@ -80,7 +80,7 @@ void Build::run()
 	// DEBUG: print build order
 	cout << "Build Order: ";
 	cBuildOrder.printBuildOrder();
-	while(cResources.getFrame() <= 10000) // && !vBuildOrder.empty())
+	while(cResources.getFrame() <= 10000 && !cBuildOrder.atEnd())
 		update();
 }
 
@@ -98,10 +98,10 @@ void Build::update()
 	}
 	//update state of all units
 	cUnitList.update(vActionList);
+	//DEBUG: print out actions
+	//printActions(false);
 	//handle any thrown actions
 	handleActions();
-	//DEBUG: print out actions
-	//printActions();
 	//refresh mining rate
 	updateMineralRate();
 	//update frame number
@@ -202,7 +202,7 @@ void Build::updateMineralRate()
 
 void Build::printResources() const
 {
-	printf(" Frame |  Min  |  Gas  | Supply | Time | Miners\n");
+	//printf(" Frame |  Min  |  Gas  | Supply | Time | Miners\n");
 	printf("%6d |", cResources.getFrame());
 	printf("%5d  |", cResources.getMinerals());
 	printf("%5d  |", cResources.getGas());

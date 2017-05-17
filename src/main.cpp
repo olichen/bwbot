@@ -28,7 +28,9 @@ int main( int argc, char *argv[] )
 		cout << "Enter a unit name, or hit 'm' for menu': ";
 		getline(cin, input);
 
-		if (input == "m")
+		if (input == "")
+			continue;
+		else if (input == "m")
 		{
 			cout << " - [R]ace select\n - [D]elete last entry\n - [C]lear build order\n - [L]oad file\n - [Q]uit program\n";
 			continue;
@@ -41,10 +43,13 @@ int main( int argc, char *argv[] )
 		{
 			cout << "Enter race name ([T]erran, [P]rotoss, [Z]erg): ";
 			getline(cin, input);
+			if (input == "")
+				continue;
 			char raceChar = tolower(input.at(0));
 			try
 			{
 				build.loadRace(raceChar);
+				cout << "Race set" << endl;
 			}
 			catch (const string &ex)
 			{

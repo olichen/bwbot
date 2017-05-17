@@ -18,7 +18,7 @@ class BuildOrder
 		void clear() { mi = 0; vBuildOrder.clear(); }
 		void setLength();
 		void setRace(char race) { mRace = race; }
-		void push_back(string build) { vBuildOrder.push_back(string_alg::cleanup_input(mRace,build)); }
+		void push_back(string build);
 		void pop() { vBuildOrder.pop_back(); }
 
 		void printBuildOrder() const;

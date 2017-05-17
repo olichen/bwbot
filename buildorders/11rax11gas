@@ -1,9 +1,5 @@
 terran
-scv
-scv
-scv
-scv
-scv
+5 scv
 supply depot
 scv
 scv
@@ -11,7 +7,7 @@ barracks
 refinery
 scv
 scv
-scout
+search
 scv
 marine
 scv

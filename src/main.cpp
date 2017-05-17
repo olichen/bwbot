@@ -44,7 +44,7 @@ int main( int argc, char *argv[] )
 			char raceChar = tolower(input.at(0));
 			try
 			{
-				build.init(raceChar);
+				build.loadRace(raceChar);
 			}
 			catch (const string &ex)
 			{

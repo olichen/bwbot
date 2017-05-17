@@ -50,12 +50,21 @@ void UnitList::addUnit(Unit &unit, Action nextAction, Action idleAction)
 
 bool UnitList::tryToBuild(Unit &unit)
 {
+	//check prerequisites
 	if (!hasUnit(unit.getPrereqName()))
 		return false;
 	if (unit.hasPrereq2() && !hasUnit(unit.getPrereq2Name()))
 		return false;
+
+
+	//if unit builds from worker
 	if (unit.getBuildsFromName() == mWorkerName)
 	{
+		//warp it in if builds from probe
+		if (unit.getBuildsFromName() == "Protoss Probe")
+			return true;
+
+		//otherwise find an idle worker
 		CurrentUnit *workerPtr = findWorker();
 		if (workerPtr != NULL)
 		{
@@ -63,15 +72,19 @@ bool UnitList::tryToBuild(Unit &unit)
 			return true;
 		}
 	}
+	//if unit builds from building
 	else
 	{
+		//find an idle building
 		for (CurrentUnit &iCurrentUnit : vUnitList)
 		{
 			if (iCurrentUnit.getName() == unit.getBuildsFromName())
 			{
-				if (unit.reqAddon())
-					if (!iCurrentUnit.hasAddon())
-						return false;
+				//continue if unit requires addon but building does not have one
+				if (unit.reqAddon() && !iCurrentUnit.hasAddon())
+					continue;
+				if (unit.isAddon() && iCurrentUnit.hasAddon())
+					continue;
 				if (iCurrentUnit.isIdle())
 				{
 					iCurrentUnit.gotoAction(Action("BUILDING", unit));
@@ -212,7 +225,7 @@ void UnitList::printUnits() const
 			}
 		}
 	}
-	printf(" /// Units:");
+	printf(" // Units: ");
 	for (unsigned int i=0; i<unitNames.size(); i++)
 		printf("%i %s, ", unitCount[i], unitNames[i].c_str());
 }

@@ -78,6 +78,7 @@ void Build::run()
 {
 	reset();
 	// DEBUG: print build order
+	cout << "Build Order: ";
 	cBuildOrder.printBuildOrder();
 	while(cResources.getFrame() <= 10000) // && !vBuildOrder.empty())
 		update();

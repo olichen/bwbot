@@ -122,6 +122,27 @@ void UnitTree::loadRace(char race)
 		addUnit("Terran Ship Plating 2",175,175,4480,0,0,"Terran Ship Plating 1","Terran Armory","Terran Science Facility");
 		addUnit("Terran Ship Plating 3",250,250,4960,0,0,"Terran Ship Plating 2","Terran Armory","Terran Science Facility");
 	}
+	if (race == 'p')
+	{
+		//economy
+		addUnit("Protoss Probe",50,0,300,1,0,"Protoss Nexus","Protoss Nexus");
+		addUnit("Protoss Nexus",400,0,1800,0,9,"Protoss Probe","Protoss Probe");
+		addUnit("Protoss Assimilator",100,0,600,0,0,"Protoss Nexus","Protoss Nexus");
+		//ground units
+		//addUnit("Protoss Zealot",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss Dragoon",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss High Templar",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss Archon",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss Dark Templar",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss Dark Archon",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss Reaver",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//air units
+		//addUnit("Protoss Scout",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss Corsair",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss Carrier",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss Interceptor",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+		//addUnit("Protoss Arbiter",MINERALS,0,BUILDTIME,0,0,"Protoss REPLACE","Protoss REPLACE");
+	}
 	if (race == 'z')
 	{
 		//economy buildings

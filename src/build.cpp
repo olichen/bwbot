@@ -53,7 +53,7 @@ void Build::loadRace(char race)
 	cUnitTree.loadRace(race);
 	cResources.setRace(race);
 	//load worker name
-	cUnitList.init(cUnitTree.getWorkerName());
+	cUnitList.init(cUnitTree.getWorkerName(), cUnitTree.getExpansionName(), cUnitTree.getGasName());
 	clear();
 }
 
@@ -76,10 +76,11 @@ void Build::loadFile(string fileName)
 
 void Build::run()
 {
-	reset();
 	// DEBUG: print build order
 	cout << "Build Order: ";
 	cBuildOrder.printBuildOrder();
+
+	reset();
 	while(cResources.getFrame() <= 10000 && !cBuildOrder.atEnd())
 		update();
 }
@@ -115,7 +116,6 @@ void Build::handleBuild()
 		if (cBuildOrder.getNext()=="SEARCH")
 		{
 			cUnitList.scout();
-			cBuildOrder.next();
 
 			//DEBUG: print stuff
 			cout << "Sending one worker to scout\n Constructing:";
@@ -124,8 +124,23 @@ void Build::handleBuild()
 			cout << endl;
 			printResources();
 		}
-		else if (tryToBuild(cBuildOrder.getNext()));
+		else if (cBuildOrder.getNext()=="OFF GAS")
+			cUnitList.removeGasWorker();
+		else if (cBuildOrder.getNext()=="ON GAS")
+			cUnitList.addGasWorker();
+		else if (tryToBuild(cBuildOrder.getNext()))
+		{
+			//DEBUG PRINTING
+			cout << "Starting to build: " << cBuildOrder.getNext() << " (" << cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime() << " frames)\n Constructing:";
+			cUnitList.printBuilding();
+			cUnitList.printUnits();
+			cout << "\n";
+			printResources();
+			//
+		}
 		else break;
+
+		cBuildOrder.next();
 	}
 
 }
@@ -135,9 +150,7 @@ bool Build::tryToBuild(string unitName)
 	Unit *buildUnitPtr = cUnitTree.findUnit(unitName);
 
 	if (buildUnitPtr == NULL)
-	{
 		throw "Unit '" + unitName + "' not found.";
-	}
 
 	//if not enough resources, give up
 	if (buildUnitPtr->getMineralCost() > cResources.getMinerals())
@@ -153,14 +166,6 @@ bool Build::tryToBuild(string unitName)
 		cResources.useGas(buildUnitPtr->getGasCost());
 		cResources.useSupply(buildUnitPtr->getSupplyCost());
 		cUnitList.buildUnit(*(buildUnitPtr));
-		cBuildOrder.next();
-
-		//DEBUG PRINTING
-		cout << "Starting to build: " << buildUnitPtr->getName() << " (" << buildUnitPtr->getBuildTime() << " frames)\n Constructing:";
-		cUnitList.printBuilding();
-		cUnitList.printUnits();
-		cout << "\n";
-		printResources();
 		return true;
 	}
 	return false;
@@ -180,7 +185,8 @@ void Build::handleActions()
 			{
 				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
 				if(iAction.getTargetUnit().getName() == cUnitTree.getGasName())
-					cUnitList.addGasWorker(3);
+					for (int i=0; i<3; i++)
+						cUnitList.addGasWorker();
 			}
 		}
 	}
@@ -195,9 +201,9 @@ void Build::updateMineralRate()
 	if (minerCount <= minPatches)
 		cUnitList.setMineralRate(baseRate);
 	else if (minerCount <= minPatches * 3)
-		cUnitList.setMineralRate((250) * (minerCount - minPatches) / (minPatches * 2) + baseRate * (minPatches * 3 - minerCount) / (minPatches * 2));
+		cUnitList.setMineralRate((240) * (minerCount - minPatches) / (minPatches * 2) + baseRate * (minPatches * 3 - minerCount) / (minPatches * 2));
 	else
-		cUnitList.setMineralRate(250 * minerCount / minPatches * 3);
+		cUnitList.setMineralRate(240 * minerCount / minPatches * 3);
 }
 
 void Build::printResources() const

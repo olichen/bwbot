@@ -28,9 +28,7 @@ int main( int argc, char *argv[] )
 		cout << "Enter a unit name, or hit 'm' for menu': ";
 		getline(cin, input);
 
-		if (input == "")
-			continue;
-		else if (input == "m")
+		if (input == "m")
 		{
 			cout << " - [R]ace select\n - [D]elete last entry\n - [C]lear build order\n - [L]oad file\n - [Q]uit program\n";
 			continue;

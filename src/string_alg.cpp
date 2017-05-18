@@ -1,5 +1,14 @@
 #include "string_alg.hpp"
 
+bool string_alg::is_empty(string s1)
+{
+	if (s1=="")
+		return true;
+	if (trim(s1)=="")
+		return true;
+	return false;
+}
+
 string string_alg::trim(string s1)
 {
 	int first_char, last_char;
@@ -50,6 +59,10 @@ string string_alg::add_race(char race, string s1)
 {
 	if (lower_eq("search", s1))
 		return "SEARCH";
+	if (lower_eq("off gas", s1))
+		return "OFF GAS";
+	if (lower_eq("on gas", s1))
+		return "ON GAS";
 	else if (race == 't')
 	{
 		if (!lower_eq(s1.substr(0,6), "terran"))

@@ -12,17 +12,17 @@ class UnitList
 	public:
 		UnitList();
 
-		void init(string workerName);
+		void init(string workerName, string gasName, string expansionName);
 		void addUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
 		void update(vector<Action> &actionList);
 		bool tryToBuild(Unit &unit);
 		void buildUnit(Unit &unit);
 		void spawnUnit(Unit &unit);
-		void addGasWorker(int number);
+		void addGasWorker();
+		void removeGasWorker();
 		void scout();
 
 		void setMineralRate(int mineralRate);
-		void setGasRate(int gasRate);
 		void clear() { vUnitList.clear(); };
 
 		int minerCount() const;
@@ -33,11 +33,13 @@ class UnitList
 		void printBuilding() const;
 
 	private:
-		CurrentUnit *findWorker();
+		CurrentUnit *findWorker(string action = "GATHER MINERALS");
 		//bool hasUnit(const Unit unit) const;
-		bool hasUnit(const string unitName) const;
+		bool hasUnit(string unitName) const;
+		int countUnit(string unitName) const;
+		void updateGasRate();
 
 		vector<CurrentUnit> vUnitList;
-		string mWorkerName, mGasName;
+		string mWorkerName, mGasName, mExpansionName;
 		int mMineralRate, mGasRate;
 };

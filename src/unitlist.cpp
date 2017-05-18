@@ -7,9 +7,11 @@ UnitList::UnitList()
 	//
 }
 
-void UnitList::init(string workerName)
+void UnitList::init(string workerName, string expansionName, string gasName)
 {
 	mWorkerName = workerName;
+	mExpansionName = expansionName;
+	mGasName = gasName;
 }
 
 void UnitList::setMineralRate(int mineralRate)
@@ -27,19 +29,15 @@ void UnitList::setMineralRate(int mineralRate)
 	}
 }
 
-void UnitList::setGasRate(int gasRate)
+void UnitList::updateGasRate()
 {
-	if (mMineralRate != gasRate)
-	{
-		for (CurrentUnit &iCurrentUnit : vUnitList)
-		{
-			if (iCurrentUnit.getIdleActionName() == "GATHER GAS")
-			{
-				iCurrentUnit.setIdleActionTimer(gasRate);
-				mGasRate = gasRate;
-			}
-		}
-	}
+	if (gasMinerCount() >= 3 * countUnit(mGasName))
+		mGasRate = 111 * gasMinerCount() / (3 * countUnit(mGasName));
+	else
+		mGasRate = 111;
+	for (CurrentUnit &iCurrentUnit : vUnitList)
+		if (iCurrentUnit.getIdleActionName() == "GATHER GAS")
+			iCurrentUnit.setIdleActionTimer(mGasRate);
 }
 
 void UnitList::addUnit(Unit &unit, Action nextAction, Action idleAction)
@@ -98,7 +96,7 @@ bool UnitList::tryToBuild(Unit &unit)
 	return false;
 }
 
-bool UnitList::hasUnit(const string unitName) const
+bool UnitList::hasUnit(string unitName) const
 {
 	for (CurrentUnit iCurrentUnit : vUnitList)
 		if (iCurrentUnit.getName() == unitName)
@@ -107,14 +105,23 @@ bool UnitList::hasUnit(const string unitName) const
 	return false;
 }
 
+int UnitList::countUnit(string unitName) const
+{
+	int count = 0;
+	for (CurrentUnit iCurrentUnit : vUnitList)
+		if (iCurrentUnit.getName() == unitName)
+			count++;
+	return count;
+}
+
 //find the most idle worker (whoever is most done with mining)
-CurrentUnit *UnitList::findWorker()
+CurrentUnit *UnitList::findWorker(string action)
 {
 	CurrentUnit *workerPtr = NULL;
-	int workerFrame = 1;
+	int workerFrame = -1;
 	for (CurrentUnit &iCurrentUnit : vUnitList)
 	{
-		if (iCurrentUnit.getActionName() == "GATHER MINERALS")
+		if (iCurrentUnit.getActionName() == action)
 		{
 			if (iCurrentUnit.getTimer() > workerFrame)
 			{
@@ -126,16 +133,24 @@ CurrentUnit *UnitList::findWorker()
 	return workerPtr;
 }
 
-void UnitList::addGasWorker(int number)
+void UnitList::addGasWorker()
 {
-	int gasInit = mGasRate;
-	for (int i=0; i<number; i++)
-	{
-		CurrentUnit *workerPtr = findWorker();
-		workerPtr->gotoAction(Action("GATHER GAS", gasInit));
-		workerPtr->setIdleAction(Action("GATHER GAS", mGasRate));
-		gasInit += 37;
-	}
+	CurrentUnit *workerPtr = findWorker();
+	int gasInit = mGasRate-37;
+	CurrentUnit *gasWorkerPtr = findWorker("GATHER GAS");
+	if (gasWorkerPtr != NULL)
+		gasInit = gasWorkerPtr->getTimer();
+	workerPtr->gotoAction(Action("GATHER GAS", gasInit+37));
+	workerPtr->setIdleAction(Action("GATHER GAS", mGasRate));
+	updateGasRate();
+}
+
+void UnitList::removeGasWorker()
+{
+	CurrentUnit *workerPtr = findWorker("GATHER GAS");
+	workerPtr->gotoAction(Action("GATHER MINERALS", mMineralRate));
+	workerPtr->setIdleAction(Action("GATHER MINERALS", mMineralRate));
+	updateGasRate();
 }
 
 void UnitList::scout()

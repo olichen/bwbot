@@ -4,6 +4,7 @@ using namespace std;
 
 namespace string_alg
 {
+	bool is_empty(string sq);
 	string trim(string s1);
 	string titleize(string s1);
 	bool lower_eq(string s1, string s2);

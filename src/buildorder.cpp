@@ -21,6 +21,9 @@ void BuildOrder::setLength()
 
 void BuildOrder::push_back(string build)
 {
+	if (string_alg::is_empty(build))
+		return;
+
 	//check if prefaced with a digit
 	int digitcount = 0;
 	for ( ; isdigit(build[digitcount]); digitcount++);

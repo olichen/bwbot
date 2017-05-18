@@ -120,7 +120,7 @@ void Build::handleBuild()
 			cUnitList.addGasWorker();
 		else if (tryToBuild(cBuildOrder.getNext()))
 		{
-			if (false || cBuildOrder.getNext() != cUnitTree.getWorkerName())
+			if (true || cBuildOrder.getNext() != cUnitTree.getWorkerName())
 			{
 				//DEBUG PRINTING
 				cout << "Starting to build: " << cBuildOrder.getNext() << " (" << cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime() << " frames)\n Constructing:";

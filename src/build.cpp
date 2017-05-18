@@ -104,7 +104,6 @@ void Build::update()
 	//handle any thrown actions
 	handleActions();
 	//refresh mining rate
-	updateMineralRate();
 	//update frame number
 	cResources.nextFrame();
 }
@@ -134,6 +133,7 @@ void Build::handleBuild()
 		}
 		else break;
 
+		updateMineralRate();
 		cBuildOrder.next();
 	}
 

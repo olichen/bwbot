@@ -166,7 +166,6 @@ void UnitList::addGasWorker()
 	CurrentUnit *gasWorkerPtr = findWorker("GATHER GAS");
 	if (gasWorkerPtr != NULL)
 		gasInit = gasWorkerPtr->getTimer() + 37;
-	printf(">> %i %i ",workerPtr->getTimer(), gasInit);
 	workerPtr->gotoAction(Action("GATHER GAS", gasInit));
 	workerPtr->setIdleAction(Action("GATHER GAS", mGasRate));
 	updateGasRate();
@@ -175,7 +174,6 @@ void UnitList::addGasWorker()
 void UnitList::removeGasWorker()
 {
 	CurrentUnit *workerPtr = findWorker("GATHER GAS");
-	printf(">> %i ", workerPtr->getTimer());
 	workerPtr->gotoAction(Action("GATHER MINERALS", mMineralRate - mGasRate + workerPtr->getTimer()));
 	workerPtr->setIdleAction(Action("GATHER MINERALS", mMineralRate));
 	updateGasRate();

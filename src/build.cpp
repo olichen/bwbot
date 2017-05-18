@@ -81,7 +81,7 @@ void Build::run()
 	cBuildOrder.printBuildOrder();
 
 	reset();
-	while(cResources.getFrame() <= 10000 && !cBuildOrder.atEnd())
+	while(cResources.getFrame() <= 20000 && !cBuildOrder.atEnd())
 		update();
 }
 
@@ -114,29 +114,23 @@ void Build::handleBuild()
 	while (!cBuildOrder.atEnd())
 	{
 		if (cBuildOrder.getNext()=="SEARCH")
-		{
 			cUnitList.scout();
-
-			//DEBUG: print stuff
-			cout << "Sending one worker to scout\n Constructing:";
-			cUnitList.printBuilding();
-			cUnitList.printUnits();
-			cout << endl;
-			printResources();
-		}
 		else if (cBuildOrder.getNext()=="OFF GAS")
 			cUnitList.removeGasWorker();
 		else if (cBuildOrder.getNext()=="ON GAS")
 			cUnitList.addGasWorker();
 		else if (tryToBuild(cBuildOrder.getNext()))
 		{
-			//DEBUG PRINTING
-			cout << "Starting to build: " << cBuildOrder.getNext() << " (" << cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime() << " frames)\n Constructing:";
-			cUnitList.printBuilding();
-			cUnitList.printUnits();
-			cout << "\n";
-			printResources();
-			//
+			if (false || cBuildOrder.getNext() != cUnitTree.getWorkerName())
+			{
+				//DEBUG PRINTING
+				cout << "Starting to build: " << cBuildOrder.getNext() << " (" << cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime() << " frames)\n Constructing:";
+				cUnitList.printBuilding();
+				cUnitList.printUnits();
+				cout << "\n";
+				printResources();
+				//
+			}
 		}
 		else break;
 

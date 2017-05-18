@@ -70,10 +70,12 @@ bool UnitList::tryToBuild(Unit &unit)
 			return true;
 		}
 	}
-	//if unit builds from building
+	else if (unit.getName() == "Protoss Archon" || unit.getName() == "Protoss Dark Archon")
+		return mergeArchon(unit);
+	//if unit builds from something else
 	else
 	{
-		//find an idle building
+		//find an idle production facility
 		for (CurrentUnit &iCurrentUnit : vUnitList)
 		{
 			if (iCurrentUnit.getName() == unit.getBuildsFromName())
@@ -93,6 +95,30 @@ bool UnitList::tryToBuild(Unit &unit)
 			}
 		}
 	}
+	return false;
+}
+
+bool UnitList::mergeArchon(Unit &unit)
+{
+	int temp1 = -1;
+	int temp2 = -1;
+	for (int i=0; i < (int) vUnitList.size(); i++)
+	{
+		if (vUnitList[i].getName() == unit.getBuildsFromName() && vUnitList[i].isIdle())
+		{
+			if (temp1 == -1)
+				temp1 = i;
+			else
+				temp2 = i;
+		}
+	}
+	if (temp1 != -1 && temp2 != -1)
+	{
+		vUnitList.erase(vUnitList.begin() + temp2);
+		vUnitList.erase(vUnitList.begin() + temp1);
+		return true;
+	}
+
 	return false;
 }
 

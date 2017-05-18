@@ -33,6 +33,7 @@ class UnitList
 		void printBuilding() const;
 
 	private:
+		bool mergeArchon(Unit &unit);
 		CurrentUnit *findWorker(string action = "GATHER MINERALS");
 		//bool hasUnit(const Unit unit) const;
 		bool hasUnit(string unitName) const;

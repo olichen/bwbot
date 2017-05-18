@@ -133,16 +133,16 @@ void UnitTree::loadRace(char race)
 		addUnit("Protoss Dragoon",125,50,750,2,0,"Protoss Cybernetics Core","Protoss Gateway");
 		addUnit("Protoss High Templar",50,150,750,2,0,"Protoss Templar Archives","Protoss Gateway");
 		addUnit("Protoss Dark Templar",125,100,750,2,0,"Protoss Templar Archives","Protoss Gateway");
-		//addUnit("Protoss Archon",0,0,300,4,0,"Protoss High Templar","Protoss High Templar");
-		//addUnit("Protoss Dark Archon",0,0,300,4,0,"Protoss Dark Templar","Protoss Dark Templar");
+		addUnit("Protoss Archon",0,0,300,0,0,"Protoss High Templar","Protoss High Templar");
+		addUnit("Protoss Dark Archon",0,0,300,0,0,"Protoss Dark Templar","Protoss Dark Templar");
 		addUnit("Protoss Reaver",200,100,1050,4,0,"Protoss Robotics Support Bay","Protoss Robotics Facility");
-		//addUnit("Protoss Scarab",15,0,105,0,0,"Protoss Reaver","Protoss Reaver");
+		addUnit("Protoss Scarab",15,0,105,0,0,"Protoss Reaver","Protoss Reaver");
 		//air units
 		addUnit("Protoss Scout",275,125,1200,3,0,"Protoss Stargate","Protoss Stargate");
 		addUnit("Protoss Corsair",150,100,600,2,0,"Protoss Stargate","Protoss Stargate");
 		addUnit("Protoss Arbiter",100,350,2400,4,0,"Protoss Arbiter Tribunal","Protoss Stargate");
 		addUnit("Protoss Carrier",350,200,2100,6,0,"Protoss Fleet Beacon","Protoss Stargate");
-		//addUnit("Protoss Interceptor",25,0,300,3,0,"Protoss Carrier","Protoss Carrier");
+		addUnit("Protoss Interceptor",25,0,300,3,0,"Protoss Carrier","Protoss Carrier");
 		addUnit("Protoss Observer",25,75,600,1,0,"Protoss Observatory","Protoss Robotics Facility");
 		addUnit("Protoss Shuttle",200,0,900,2,0,"Protoss Robotics Facility","Protoss Robotics Facility");
 		//basic buildings

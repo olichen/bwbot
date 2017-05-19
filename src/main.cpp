@@ -22,11 +22,15 @@ int main( int argc, char *argv[] )
 		}
 	}
 
+	string input = "r";
+
 	while (interactive)
 	{
-		string input = "";
-		cout << "Enter a unit name, or hit 'm' for menu': ";
-		getline(cin, input);
+		if (input != "r")
+		{
+			cout << "Enter a unit name, or hit 'm' for menu': ";
+			getline(cin, input);
+		}
 
 		if (input == "m")
 		{

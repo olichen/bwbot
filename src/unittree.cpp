@@ -203,17 +203,73 @@ void UnitTree::loadRace(char race)
 	if (race == 'z')
 	{
 		//economy buildings
-		addUnit("Zerg Drone",50,0,300,1,0,"Zerg Larva","Zerg Larva", "", false, false, true);
-		addUnit("Zerg Hatchery",300,0,1800,0,1,"Zerg Drone","Zerg Drone", "", false, false, true);
-		addUnit("Zerg Extractor",50,0,600,0,0,"Zerg Hatchery","Zerg Drone", "", false, false, true);
+		addUnit("Zerg Drone",50,0,300,1,0,"Zerg Larva","Zerg Larva","",false,false,true);
+		addUnit("Zerg Hatchery",300,0,1800,0,1,"Zerg Drone","Zerg Drone","",false,false,true);
+		addUnit("Zerg Extractor",50,0,600,0,0,"Zerg Hatchery","Zerg Drone","",false,false,true);
 		addUnit("Zerg Larva Spawner",0,0,0,0,0,"Zerg Hatchery","Zerg Hatchery");
-		////ground units
-		//addUnit("Zerg Larva",50,0,300,1,0,"Zerg Larva Spawner","Zerg Larva Spawner");
-		//addUnit("Zerg Overlord",50,0,300,0,8,"Zerg Larva","Zerg Larva", false, false, true);
-		//addUnit("Zerg Zergling",50,0,300,1,0,"Zerg Spawning Pool","Zerg Larva", false, false, true);
-		//addUnit("Zerg Hydralisk",50,0,300,1,0,"Zerg Hydralisk Den","Zerg Larva", false, false, true);
-		//addUnit("Zerg Lurker",50,0,300,1,0,"Zerg Hydralisk Den","Zerg Hydralisk", false, false, true);
-		//addUnit("Zerg Mutalisk",50,0,300,1,0,"Zerg Hydralisk Den","Zerg Hydralisk", false, false, true);
-		//addUnit("Zerg Lurker",50,0,300,1,0,"Zerg Hydralisk Den","Zerg Hydralisk", false, false, true);
+		//ground units
+		addUnit("Zerg Larva",0,0,342,0,0,"Zerg Larva Spawner","Zerg Larva Spawner");
+		addUnit("Zerg Zergling",50,0,420,1,0,"Zerg Spawning Pool","Zerg Larva","",false,false,true);
+		addUnit("Zerg Hydralisk",75,25,420,1,0,"Zerg Hydralisk Den","Zerg Larva","",false,false,true);
+		addUnit("Zerg Lurker",50,100,600,2,0,"Zerg Lurker Aspect","Zerg Hydralisk","",false,false,true);
+		addUnit("Zerg Ultralisk",200,200,900,4,0,"Zerg Ultralisk Cavern","Zerg Larva","",false,false,true);
+		addUnit("Zerg Defiler",50,150,750,2,0,"Zerg Defiler Mound","Zerg Larva","",false,false,true);
+		//air units
+		addUnit("Zerg Overlord",100,0,600,0,8,"Zerg Larva","Zerg Larva","",false,false,true);
+		addUnit("Zerg Mutalisk",100,100,600,2,0,"Zerg Spire","Zerg Larva","",false,false,true);
+		addUnit("Zerg Scourge",25,75,450,1,0,"Zerg Spire","Zerg Larva","",false,false,true);
+		addUnit("Zerg Queen",100,100,750,2,0,"Zerg Queen's Nest","Zerg Larva","",false,false,true);
+		addUnit("Zerg Guardian",50,100,600,2,0,"Zerg Greater Spire","Zerg Mutalisk","",false,false,true);
+		addUnit("Zerg Devourer",150,50,600,2,0,"Zerg Greater Spire","Zerg Mutalisk","",false,false,true);
+		//basic buildings
+		addUnit("Zerg Lair",150,100,1500,0,1,"Zerg Spawning Pool","Zerg Hatchery","",true);
+		addUnit("Zerg Hive",200,150,1800,0,1,"Zerg Queen's Nest","Zerg Lair","",true);
+		addUnit("Zerg Spawning Pool",200,0,1200,2,0,"Zerg Hatchery","Zerg Drone","",false,false,true);
+		addUnit("Zerg Evolution Chamber",75,0,600,2,0,"Zerg Hatchery","Zerg Drone","",false,false,true);
+		addUnit("Zerg Hydralisk Den",100,50,600,2,0,"Zerg Spawning Pool","Zerg Drone","",false,false,true);
+		addUnit("Zerg Creep Colony",75,0,300,2,0,"Zerg Hatchery","Zerg Drone","",false,false,true);
+		addUnit("Zerg Sunken Colony",50,0,300,2,0,"Zerg Spawning Pool","Zerg Creep Colony","",false,false,true);
+		addUnit("Zerg Spore Colony",50,0,300,2,0,"Zerg Evolution Chamber","Zerg Creep Colony","",false,false,true);
+		//advanced buildings
+		addUnit("Zerg Spire",200,150,1800,2,0,"Zerg Lair","Zerg Drone","",false,false,true);
+		addUnit("Zerg Greater Spire",100,150,1800,2,0,"Zerg Hive","Zerg Spire","",true);
+		addUnit("Zerg Queen's Nest",150,100,900,2,0,"Zerg Lair","Zerg Drone","",false,false,true);
+		addUnit("Zerg Ultralisk Cavern",150,200,1200,2,0,"Zerg Hive","Zerg Drone","",false,false,true);
+		addUnit("Zerg Defiler Mound",100,100,900,2,0,"Zerg Hive","Zerg Drone","",false,false,true);
+		addUnit("Zerg Nydus Canal",150,0,600,2,0,"Zerg Hive","Zerg Drone","",false,false,true);
+		//upgrades/tech
+		addUnit("Zerg Burrowing",100,100,1200,0,0,"Zerg Hatchery","Zerg Hatchery");
+		addUnit("Zerg Ventral Sacs",200,200,2400,0,0,"Zerg Lair","Zerg Hatchery");
+		addUnit("Zerg Antennae",150,150,2000,0,0,"Zerg Lair","Zerg Hatchery");
+		addUnit("Zerg Pneumatized Carapace",150,150,2000,0,0,"Zerg Lair","Zerg Hatchery");
+		addUnit("Zerg Metabolic Boost",100,100,1500,0,0,"Zerg Spawning Pool","Zerg Spawning Pool");
+		addUnit("Zerg Adrenal Glands",200,200,1500,0,0,"Zerg Hive","Zerg Spawning Pool");
+		addUnit("Zerg Muscular Augments",150,150,1500,0,0,"Zerg Hydralisk Den","Zerg Hydralisk Den");
+		addUnit("Zerg Grooved Spines",150,150,1500,0,0,"Zerg Hydralisk Den","Zerg Hydralisk Den");
+		addUnit("Zerg Lurker Aspect",200,200,1800,0,0,"Zerg Lair","Zerg Hydralisk Den");
+		addUnit("Zerg Ensnare",100,100,1200,0,0,"Zerg Queen's Nest","Zerg Queen's Nest");
+		addUnit("Zerg Spawn Broodling",150,150,1200,0,0,"Zerg Queen's Nest","Zerg Queen's Nest");
+		addUnit("Zerg Gamete Meiosis",100,100,2500,0,0,"Zerg Queen's Nest","Zerg Queen's Nest");
+		addUnit("Zerg Anabolic Synthesis",200,200,2000,0,0,"Zerg Ultralisk Cavern","Zerg Ultralisk Cavern");
+		addUnit("Zerg Chitinous Plating",150,150,2000,0,0,"Zerg Ultralisk Cavern","Zerg Ultralisk Cavern");
+		addUnit("Zerg Consume",100,100,1500,0,0,"Zerg Defiler Mound","Zerg Defiler Mound");
+		addUnit("Zerg Plague",200,200,1500,0,0,"Zerg Defiler Mound","Zerg Defiler Mound");
+		addUnit("Zerg Metasynaptic Node",150,150,2500,0,0,"Zerg Defiler Mound","Zerg Defiler Mound");
+		//numerical upgrades
+		addUnit("Zerg Melee Attacks 1",100,100,4000,0,0,"Zerg Evolution Chamber","Zerg Evolution Chamber");
+		addUnit("Zerg Melee Attacks 2",150,150,4480,0,0,"Zerg Melee Attacks 1","Zerg Evolution Chamber","Zerg Lair");
+		addUnit("Zerg Melee Attacks 3",200,200,4960,0,0,"Zerg Melee Attacks 2","Zerg Evolution Chamber","Zerg Hive");
+		addUnit("Zerg Missile Attacks 1",100,100,4000,0,0,"Zerg Evolution Chamber","Zerg Evolution Chamber");
+		addUnit("Zerg Missile Attacks 2",150,150,4480,0,0,"Zerg Missile Attacks 1","Zerg Evolution Chamber","Zerg Lair");
+		addUnit("Zerg Missile Attacks 3",200,200,4960,0,0,"Zerg Missile Attacks 2","Zerg Evolution Chamber","Zerg Hive");
+		addUnit("Zerg Carapace 1",150,150,4000,0,0,"Zerg Evolution Chamber","Zerg Evolution Chamber");
+		addUnit("Zerg Carapace 2",225,225,4480,0,0,"Zerg Carapace 1","Zerg Evolution Chamber","Zerg Lair");
+		addUnit("Zerg Carapace 3",300,300,4960,0,0,"Zerg Carapace 2","Zerg Evolution Chamber","Zerg Hive");
+		addUnit("Zerg Flyer Attacks 1",100,100,4000,0,0,"Zerg Spire","Zerg Spire");
+		addUnit("Zerg Flyer Attacks 2",175,175,4480,0,0,"Zerg Flyer Attacks 1","Zerg Spire","Zerg Lair");
+		addUnit("Zerg Flyer Attacks 3",250,250,4960,0,0,"Zerg Flyer Attacks 2","Zerg Spire","Zerg Hive");
+		addUnit("Zerg Flyer Carapace 1",150,150,4000,0,0,"Zerg Spire","Zerg Spire");
+		addUnit("Zerg Flyer Carapace 2",225,225,4480,0,0,"Zerg Flyer Carapace 1","Zerg Spire","Zerg Lair");
+		addUnit("Zerg Flyer Carapace 3",300,300,4960,0,0,"Zerg Flyer Carapace 2","Zerg Spire","Zerg Hive");
 	}
 }

@@ -33,6 +33,13 @@ void Build::reset()
 	cResources.addSupplyMax(cUnitTree.findUnit(cUnitTree.getExpansionName())->getSupplyProvided());
 	cResources.addMinerals(50);
 
+	//zergs get more stuff
+	if (cResources.getRace() == 'z')
+	{
+		cUnitList.spawnUnit(*(cUnitTree.findUnit("Zerg Overlord")));
+		cResources.addSupplyMax(cUnitTree.findUnit("Zerg Overlord")->getSupplyProvided());
+	}
+
 	cBuildOrder.reset();
 }
 
@@ -151,7 +158,7 @@ bool Build::tryToBuild(string unitName)
 		 return false;
 	if (buildUnitPtr->getGasCost() > cResources.getGas())
 		 return false;
-	if (buildUnitPtr->getSupplyCost() > cResources.getAvailableSupply())
+	if (buildUnitPtr->getSupplyCost() != 0 && buildUnitPtr->getSupplyCost() > cResources.getAvailableSupply())
 		 return false;
 
 	if (cUnitList.tryToBuild(*(buildUnitPtr)))

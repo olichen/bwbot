@@ -21,6 +21,7 @@ class Unit
 		string getBuildsFromName() const { return mBuildsFrom; }
 		bool isAddon() const { return mIsAddon; }
 		bool reqAddon() const { return mReqAddon; }
+		bool isMorph() const { return mMorph; }
 
 		bool operator==(const Unit &unit) const { return mName==unit.getName(); }
 

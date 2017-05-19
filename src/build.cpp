@@ -130,7 +130,9 @@ void Build::handleBuild()
 			if (true || cBuildOrder.getNext() != cUnitTree.getWorkerName())
 			{
 				//DEBUG PRINTING
-				cout << "Starting to build: " << cBuildOrder.getNext() << " (" << cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime() << " frames)\n Constructing:";
+				cout << "Starting to build: " << cBuildOrder.getNext();
+				cout << " (" << cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime() << " frames, ";
+				cout << 42.0 * cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime()/1000 << " seconds)\n Constructing:";
 				cUnitList.printBuilding();
 				cUnitList.printUnits();
 				cout << "\n";
@@ -158,14 +160,23 @@ bool Build::tryToBuild(string unitName)
 		 return false;
 	if (buildUnitPtr->getGasCost() > cResources.getGas())
 		 return false;
-	if (buildUnitPtr->getSupplyCost() != 0 && buildUnitPtr->getSupplyCost() > cResources.getAvailableSupply())
+	if (buildUnitPtr->isMorph() && buildUnitPtr->getSupplyCost() > 0)
+	{
+		if (buildUnitPtr->getSupplyCost() - cUnitTree.findUnit(buildUnitPtr->getBuildsFromName())->getSupplyCost() > 0)
+			if (buildUnitPtr->getSupplyCost() - cUnitTree.findUnit(buildUnitPtr->getBuildsFromName())->getSupplyCost() > cResources.getAvailableSupply())
+				return false;
+	}
+	else if (buildUnitPtr->getSupplyCost() > 0 && buildUnitPtr->getSupplyCost() > cResources.getAvailableSupply())
 		 return false;
 
 	if (cUnitList.tryToBuild(*(buildUnitPtr)))
 	{
 		cResources.useMinerals(buildUnitPtr->getMineralCost());
 		cResources.useGas(buildUnitPtr->getGasCost());
-		cResources.useSupply(buildUnitPtr->getSupplyCost());
+		if (buildUnitPtr->isMorph())
+			cResources.useSupply(buildUnitPtr->getSupplyCost() - cUnitTree.findUnit(buildUnitPtr->getBuildsFromName())->getSupplyCost());
+		else
+			cResources.useSupply(buildUnitPtr->getSupplyCost());
 		cUnitList.buildUnit(*(buildUnitPtr));
 		return true;
 	}
@@ -209,12 +220,12 @@ void Build::updateMineralRate()
 
 void Build::printResources() const
 {
-	//printf(" Frame |  Min  |  Gas  | Supply | Time | Miners\n");
+	//printf(" Frame |  Min  |  Gas  | Supply |  Time | Miners\n");
 	printf("%6d |", cResources.getFrame());
 	printf("%5d  |", cResources.getMinerals());
 	printf("%5d  |", cResources.getGas());
 	printf("%4d/%-3d|", cResources.getSupply(), cResources.getSupplyMax());
-	printf("%5d |", cResources.getFrame()*42/1000);
+	printf("%6.1f |", 42.0 * cResources.getFrame()/1000);
 	printf("%5d", cUnitList.minerCount());
 	printf("\n");
 }

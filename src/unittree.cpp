@@ -82,11 +82,11 @@ void UnitTree::loadRace(char race)
 		addUnit("Terran Nuclear Silo",100,100,1200,0,0,"Terran Covert Ops","Terran Command Center","",true);
 		addUnit("Terran Nuclear Missile",200,200,1500,8,0,"Terran Nuclear Silo","Terran Nuclear Silo");
 		//upgrades/tech
-		addUnit("Terran Stim Pack",100,100,1200,0,0,"Terran Armory","Terran Armory");
-		addUnit("Terran U-238 Shells",150,150,1500,0,0,"Terran Armory","Terran Armory");
-		addUnit("Terran Restoration",100,100,1200,0,0,"Terran Armory","Terran Armory");
-		addUnit("Terran Optical Flare",100,100,1200,0,0,"Terran Armory","Terran Armory");
-		addUnit("Terran Caduceus Reactor",150,150,2500,0,0,"Terran Armory","Terran Armory");
+		addUnit("Terran Stim Pack",100,100,1200,0,0,"Terran Academy","Terran Academy");
+		addUnit("Terran U-238 Shells",150,150,1500,0,0,"Terran Academy","Terran Academy");
+		addUnit("Terran Restoration",100,100,1200,0,0,"Terran Academy","Terran Academy");
+		addUnit("Terran Optical Flare",100,100,1200,0,0,"Terran Academy","Terran Academy");
+		addUnit("Terran Caduceus Reactor",150,150,2500,0,0,"Terran Academy","Terran Academy");
 		addUnit("Terran Siege Tech",150,150,1200,0,0,"Terran Machine Shop","Terran Machine Shop");
 		addUnit("Terran Spider Mines",100,100,1200,0,0,"Terran Machine Shop","Terran Machine Shop");
 		addUnit("Terran Ion Thrusters",100,100,1500,0,0,"Terran Machine Shop","Terran Machine Shop");

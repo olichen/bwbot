@@ -189,7 +189,7 @@ void UnitList::buildUnit(Unit &unit)
 	if (unit.getName() == mWorkerName)
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit), Action("GATHER MINERALS", mMineralRate)));
 	else if (unit.getBuildsFromName() == "Protoss Probe")
-		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 80, unit)));
+		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 70, unit)));
 	else
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit)));
 }

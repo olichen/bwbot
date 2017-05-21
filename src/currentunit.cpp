@@ -20,7 +20,7 @@ void CurrentUnit::update(vector<Action> &actionList)
 			break;
 		//if action completes
 		case(0):
-			if (mCurrentAction.getActionName()=="BUILD")
+			if (mCurrentAction.getActionName()=="BUILDING")
 			{
 				if (mCurrentAction.getTargetUnit().getName() == "Protoss Interceptor")
 					addCount();

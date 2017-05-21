@@ -27,7 +27,7 @@ class CurrentUnit
 		void addAddon() { mHasAddon = true; }
 		void setIdleActionTimer(int timer) { mIdleAction.setTimer(timer); }
 		void setIdleAction(Action action) { mIdleAction = action; }
-		void addCount(int i = 1) { mCount += i }
+		void addCount(int i = 1) { mCount += i; }
 
 	private:
 		void nextAction();

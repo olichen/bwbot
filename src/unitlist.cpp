@@ -80,6 +80,20 @@ bool UnitList::tryToBuild(Unit &unit)
 		{
 			if (iCurrentUnit.getName() == unit.getBuildsFromName())
 			{
+				if (unit.getName() == "Protoss Interceptor")
+				{
+					if (iCurrentUnit.getCount() == 8)
+						continue;
+					if (iCurrentUnit.getCount() == 4 && !hasUnit("Protoss Carrier Capacity"))
+						continue;
+				}
+				if (unit.getName() == "Protoss Scarab")
+				{
+					if (iCurrentUnit.getCount() == 10)
+						continue;
+					if (iCurrentUnit.getCount() == 5 && !hasUnit("Protoss Reaver Capacity"))
+						continue;
+				}
 				//continue if unit requires addon but building does not have one
 				if (unit.reqAddon() && !iCurrentUnit.hasAddon())
 					continue;

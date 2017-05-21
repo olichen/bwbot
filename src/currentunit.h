@@ -22,10 +22,12 @@ class CurrentUnit
 		string getName() const { return pUnit->getName(); }
 		bool isIdle() const { return mTimer == -1; }
 		bool hasAddon() const { return mHasAddon; }
+		int getCount() const { return mCount; }
 
 		void addAddon() { mHasAddon = true; }
 		void setIdleActionTimer(int timer) { mIdleAction.setTimer(timer); }
 		void setIdleAction(Action action) { mIdleAction = action; }
+		void addCount(int i = 1) { mCount += i }
 
 	private:
 		void nextAction();
@@ -34,6 +36,6 @@ class CurrentUnit
 		Action mCurrentAction;
 		queue<Action> vNextAction;
 		Action mIdleAction;
-		int mTimer;
+		int mTimer, mCount;
 		bool mHasAddon;
 };

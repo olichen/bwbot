@@ -2,7 +2,7 @@
 #include "currentunit.h"
 
 CurrentUnit::CurrentUnit(Unit &unit, Action curAction, Action idleAction)
-	: pUnit(&unit), mCurrentAction(Action()), mIdleAction(idleAction), mTimer(-1), mHasAddon(false)
+	: pUnit(&unit), mCurrentAction(Action()), mIdleAction(idleAction), mTimer(-1), mCount(0), mHasAddon(false)
 {
 	if (curAction.getActionName() != "IDLE")
 	{
@@ -20,6 +20,15 @@ void CurrentUnit::update(vector<Action> &actionList)
 			break;
 		//if action completes
 		case(0):
+			if (mCurrentAction.getActionName()=="BUILD")
+			{
+				if (mCurrentAction.getTargetUnit().getName() == "Protoss Interceptor")
+					addCount();
+				else if (mCurrentAction.getTargetUnit().getName() == "Protoss Scarab")
+					addCount();
+				else if (mCurrentAction.getTargetUnit().getName() == "Protoss Larva")
+					addCount();
+			}
 			actionList.push_back(mCurrentAction);
 			nextAction();
 			break;

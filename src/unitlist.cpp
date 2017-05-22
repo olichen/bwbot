@@ -259,8 +259,12 @@ void UnitList::scout()
 
 void UnitList::buildUnit(Unit &unit)
 {
-	if (unit.getName() == mWorkerName)
+	if (unit.getName() == "Zerg Drone")
+		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 18, unit), Action("GATHER MINERALS", mMineralRate)));
+	else if (unit.getName() == mWorkerName)
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit), Action("GATHER MINERALS", mMineralRate)));
+	else if (unit.getBuildsFromName() == "Zerg Larva")
+		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 18, unit)));
 	else if (unit.getBuildsFromName() == "Protoss Probe")
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 70, unit)));
 	else

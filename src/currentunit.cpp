@@ -26,8 +26,6 @@ void CurrentUnit::update(vector<Action> &actionList)
 					addCount();
 				else if (mCurrentAction.getTargetUnit().getName() == "Protoss Scarab")
 					addCount();
-				else if (mCurrentAction.getTargetUnit().getName() == "Protoss Larva")
-					addCount();
 			}
 			actionList.push_back(mCurrentAction);
 			nextAction();
@@ -49,7 +47,7 @@ void CurrentUnit::gotoAction(Action nextAction)
 {
 	mCurrentAction = nextAction;
 	mTimer = nextAction.getTimer();
-	vNextAction = queue<Action>();
+	vNextAction = {};
 }
 
 void CurrentUnit::nextAction()

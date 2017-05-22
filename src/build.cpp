@@ -38,6 +38,9 @@ void Build::reset()
 	{
 		cUnitList.spawnUnit(*(cUnitTree.findUnit("Zerg Overlord")));
 		cResources.addSupplyMax(cUnitTree.findUnit("Zerg Overlord")->getSupplyProvided());
+		addLarvaSpawner();
+		cUnitList.addLarva(*(cUnitTree.findUnit("Zerg Larva")));
+		cUnitList.addLarva(*(cUnitTree.findUnit("Zerg Larva")));
 	}
 
 	cBuildOrder.reset();
@@ -108,6 +111,10 @@ void Build::update()
 	cUnitList.update(vActionList);
 	//DEBUG: print out actions
 	//printActions(false);
+
+	//try to build larva
+	if (cResources.getRace() == 'z')
+		while (cUnitList.addLarva(*(cUnitTree.findUnit("Zerg Larva")), Action("CONSTRUCTING", *(cUnitTree.findUnit("Zerg Larva")))));
 	//handle any thrown actions
 	handleActions();
 	//refresh mining rate
@@ -183,6 +190,12 @@ bool Build::tryToBuild(string unitName)
 	return false;
 }
 
+void Build::addLarvaSpawner()
+{
+	cUnitList.spawnUnit(*(cUnitTree.findUnit("Zerg Larva Spawner")));
+	cUnitList.addLarva(*(cUnitTree.findUnit("Zerg Larva")));
+}
+
 void Build::handleActions()
 {
 	if (!vActionList.empty())
@@ -196,6 +209,8 @@ void Build::handleActions()
 			else if(iAction.getActionName()=="CONSTRUCTING")
 			{
 				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());
+				if(iAction.getTargetUnit().getName() == "Zerg Hatchery")
+					addLarvaSpawner();
 				if(iAction.getTargetUnit().getName() == cUnitTree.getGasName())
 					for (int i=0; i<3; i++)
 						cUnitList.addGasWorker();

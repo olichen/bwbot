@@ -40,6 +40,54 @@ void UnitList::updateGasRate()
 			iCurrentUnit.setIdleActionTimer(mGasRate);
 }
 
+bool UnitList::addLarva(Unit &larva, Action nextAction)
+{
+	for (CurrentUnit &iCurrentUnit : vUnitList)
+	{
+		if (iCurrentUnit.getName() == "Zerg Larva Spawner")
+		{
+			if (iCurrentUnit.getCount() == 3)
+				continue;
+			if (iCurrentUnit.isIdle())
+			{
+				iCurrentUnit.addCount();
+				CurrentUnit newUnit(larva, nextAction);
+				vUnitList.push_back(newUnit);
+				if (nextAction.getActionName() != "IDLE")
+					iCurrentUnit.gotoAction(Action("abc", 342));
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void UnitList::useLarva()
+{
+	CurrentUnit *larvaSpawner = NULL;
+	int larvaCount = 0;
+	int larvaFrame = -1;
+	for (CurrentUnit &iCurrentUnit : vUnitList)
+	{
+		if (iCurrentUnit.getName() == "Zerg Larva Spawner")
+		{
+			if (iCurrentUnit.getCount() > larvaCount)
+			{
+				larvaSpawner = &iCurrentUnit;
+				larvaCount = iCurrentUnit.getCount();
+				larvaFrame = iCurrentUnit.getTimer();
+			}
+			if (iCurrentUnit.getTimer() < larvaFrame)
+			{
+				larvaSpawner = &iCurrentUnit;
+				larvaCount = iCurrentUnit.getCount();
+				larvaFrame = iCurrentUnit.getTimer();
+			}
+		}
+	}
+	larvaSpawner->addCount(-1);
+}
+
 void UnitList::addUnit(Unit &unit, Action nextAction, Action idleAction)
 {
 	CurrentUnit newUnit(unit, nextAction, idleAction);
@@ -54,7 +102,6 @@ bool UnitList::tryToBuild(Unit &unit)
 	if (unit.hasPrereq2() && !hasUnit(unit.getPrereq2Name()))
 		return false;
 
-
 	//if unit builds from worker
 	if (unit.getBuildsFromName() == mWorkerName)
 	{
@@ -63,9 +110,11 @@ bool UnitList::tryToBuild(Unit &unit)
 			return true;
 
 		//otherwise find an idle worker
-		CurrentUnit *workerPtr = findWorker();
+		CurrentUnit *workerPtr = findWorker("GATHER MINERALS", unit.isMorph());
 		if (workerPtr != NULL)
 		{
+			if(unit.isMorph())
+				return true;
 			workerPtr->gotoAction(Action("BUILDING", unit));
 			return true;
 		}
@@ -76,8 +125,9 @@ bool UnitList::tryToBuild(Unit &unit)
 	else
 	{
 		//find an idle production facility
-		for (CurrentUnit &iCurrentUnit : vUnitList)
+		for (unsigned int i=0; i < vUnitList.size(); i++) //CurrentUnit &iCurrentUnit : vUnitList)
 		{
+			CurrentUnit iCurrentUnit = vUnitList[i];
 			if (iCurrentUnit.getName() == unit.getBuildsFromName())
 			{
 				if (unit.getName() == "Protoss Interceptor")
@@ -102,6 +152,10 @@ bool UnitList::tryToBuild(Unit &unit)
 				if (iCurrentUnit.isIdle())
 				{
 					iCurrentUnit.gotoAction(Action("BUILDING", unit));
+					if (unit.isMorph())
+						vUnitList.erase(vUnitList.begin() + i);
+					if (unit.getBuildsFromName() == "Zerg Larva")
+						useLarva();
 					if (unit.isAddon())
 						iCurrentUnit.addAddon();
 					return true;
@@ -155,21 +209,26 @@ int UnitList::countUnit(string unitName) const
 }
 
 //find the most idle worker (whoever is most done with mining)
-CurrentUnit *UnitList::findWorker(string action)
+CurrentUnit *UnitList::findWorker(string action, bool morph)
 {
 	CurrentUnit *workerPtr = NULL;
 	int workerFrame = -1;
-	for (CurrentUnit &iCurrentUnit : vUnitList)
+	unsigned int workerID = -1;
+	for (unsigned int i = 0; i<vUnitList.size(); i++) //CurrentUnit &iCurrentUnit : vUnitList)
 	{
+		CurrentUnit &iCurrentUnit = vUnitList[i];
 		if (iCurrentUnit.getActionName() == action)
 		{
 			if (iCurrentUnit.getTimer() > workerFrame)
 			{
 				workerPtr = &iCurrentUnit;
 				workerFrame = iCurrentUnit.getTimer();
+				workerID = i;
 			}
 		}
 	}
+	if (morph)
+		vUnitList.erase(vUnitList.begin() + workerID);
 	return workerPtr;
 }
 

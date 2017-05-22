@@ -36,6 +36,7 @@ class Build
 		void handleActions();
 		void spawnUnit(Unit &unit);
 		void buildUnit(Unit &unit);
+		void addLarvaSpawner();
 
 		void updateMineralRate();
 		void printResources() const;

@@ -206,7 +206,7 @@ void UnitTree::loadRace(char race)
 		addUnit("Zerg Drone",50,0,300,1,0,"Zerg Larva","Zerg Larva","",false,false,true);
 		addUnit("Zerg Hatchery",300,0,1800,0,1,"Zerg Drone","Zerg Drone","",false,false,true);
 		addUnit("Zerg Extractor",50,0,600,0,0,"Zerg Hatchery","Zerg Drone","",false,false,true);
-		addUnit("Zerg Larva Spawner",0,0,0,0,0,"Zerg Hatchery","Zerg Hatchery");
+		addUnit("Zerg Larva Spawner",10000,10000,0,0,0,"Zerg Hatchery","Zerg Hatchery");
 		//ground units
 		addUnit("Zerg Larva",0,0,342,0,0,"Zerg Larva Spawner","Zerg Larva Spawner");
 		addUnit("Zerg Zergling",50,0,420,1,0,"Zerg Spawning Pool","Zerg Larva","",false,false,true);

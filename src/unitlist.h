@@ -21,6 +21,8 @@ class UnitList
 		void addGasWorker();
 		void removeGasWorker();
 		void scout();
+		bool addLarva(Unit &larva, Action nextAction = Action());
+		void useLarva();
 
 		void setMineralRate(int mineralRate);
 		void clear() { vUnitList.clear(); };
@@ -34,7 +36,7 @@ class UnitList
 
 	private:
 		bool mergeArchon(Unit &unit);
-		CurrentUnit *findWorker(string action = "GATHER MINERALS");
+		CurrentUnit *findWorker(string action = "GATHER MINERALS", bool morph = false);
 		//bool hasUnit(const Unit unit) const;
 		bool hasUnit(string unitName) const;
 		int countUnit(string unitName) const;

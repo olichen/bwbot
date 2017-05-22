@@ -47,7 +47,8 @@ void CurrentUnit::gotoAction(Action nextAction)
 {
 	mCurrentAction = nextAction;
 	mTimer = nextAction.getTimer();
-	vNextAction = {};
+	if (!vNextAction.empty())
+		vNextAction = queue<Action>();
 }
 
 void CurrentUnit::nextAction()

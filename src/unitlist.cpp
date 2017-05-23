@@ -127,7 +127,7 @@ bool UnitList::tryToBuild(Unit &unit)
 		//find an idle production facility
 		for (unsigned int i=0; i < vUnitList.size(); i++) //CurrentUnit &iCurrentUnit : vUnitList)
 		{
-			CurrentUnit iCurrentUnit = vUnitList[i];
+			CurrentUnit &iCurrentUnit = vUnitList[i];
 			if (iCurrentUnit.getName() == unit.getBuildsFromName())
 			{
 				if (unit.getName() == "Protoss Interceptor")

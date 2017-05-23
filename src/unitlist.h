@@ -34,6 +34,7 @@ class UnitList
 
 		void printUnitStatus(bool hideMining = true, bool hideIdle = true) const;
 		void printUnits() const;
+		void printLarva() const;
 		void printBuilding() const;
 
 	private:

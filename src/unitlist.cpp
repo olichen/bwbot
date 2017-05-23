@@ -66,7 +66,7 @@ void UnitList::useLarva()
 {
 	CurrentUnit *larvaSpawner = NULL;
 	int larvaCount = 0;
-	int larvaFrame = -1;
+	int larvaFrame = 342;
 	for (CurrentUnit &iCurrentUnit : vUnitList)
 	{
 		if (iCurrentUnit.getName() == "Zerg Larva Spawner")
@@ -77,10 +77,9 @@ void UnitList::useLarva()
 				larvaCount = iCurrentUnit.getCount();
 				larvaFrame = iCurrentUnit.getTimer();
 			}
-			if (iCurrentUnit.getTimer() < larvaFrame)
+			if (iCurrentUnit.getCount() == larvaCount && iCurrentUnit.getTimer() < larvaFrame)
 			{
 				larvaSpawner = &iCurrentUnit;
-				larvaCount = iCurrentUnit.getCount();
 				larvaFrame = iCurrentUnit.getTimer();
 			}
 		}
@@ -366,6 +365,16 @@ void UnitList::printUnits() const
 	printf(" // Units: ");
 	for (unsigned int i=0; i<unitNames.size(); i++)
 		printf("%i %s, ", unitCount[i], unitNames[i].c_str());
+	printLarva();
+}
+
+void UnitList::printLarva() const
+{
+	for (CurrentUnit iUnit : vUnitList)
+	{
+		if (iUnit.getName() == "Zerg Larva Spawner")
+			printf("(%i), ", iUnit.getCount());
+	}
 }
 
 void UnitList::printBuilding() const

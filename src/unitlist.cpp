@@ -280,7 +280,7 @@ void UnitList::buildUnit(Unit &unit)
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 18, unit), Action("GATHER MINERALS", mMineralRate)));
 	else if (unit.getName() == mWorkerName)
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit), Action("GATHER MINERALS", mMineralRate)));
-	else if (unit.getBuildsFromName() == "Zerg Larva")
+	else if (unit.isMorph())
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 18, unit)));
 	else if (unit.getBuildsFromName() == "Protoss Probe")
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 70, unit)));

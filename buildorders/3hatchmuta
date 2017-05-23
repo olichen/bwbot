@@ -2,6 +2,7 @@ zerg
 5 drone
 overlord
 3 drone
+search
 expand
 spawning pool
 3 drone
@@ -21,7 +22,8 @@ drone
 spire
 2 drone
 5 zergling
-2 overlord
+2 drone
+3 overlord
 9 mutalisk
 hydralisk den
 overlord

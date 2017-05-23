@@ -65,17 +65,17 @@ string string_alg::add_race(char race, string s1)
 		return "ON GAS";
 	else if (race == 't')
 	{
-		if (!lower_eq(s1.substr(0,6), "terran"))
+		if (!lower_eq(s1.substr(0,7), "terran "))
 			return titleize("Terran " + s1);
 	}
 	else if (race == 'z')
 	{
-		if (!lower_eq(s1.substr(0,4), "zerg"))
+		if (!lower_eq(s1.substr(0,5), "zerg "))
 			return titleize("Zerg " + s1);
 	}
 	else if (race == 'p')
 	{
-		if (!lower_eq(s1.substr(0,7), "protoss"))
+		if (!lower_eq(s1.substr(0,8), "protoss "))
 			return titleize("Protoss " + s1);
 	}
 	return s1;

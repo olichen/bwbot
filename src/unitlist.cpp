@@ -52,9 +52,9 @@ bool UnitList::addLarva(Unit &larva, Action nextAction)
 			{
 				iCurrentUnit.addCount();
 				CurrentUnit newUnit(larva, nextAction);
-				vUnitList.push_back(newUnit);
 				if (nextAction.getActionName() != "IDLE")
-					iCurrentUnit.gotoAction(Action("abc", 342));
+					iCurrentUnit.gotoAction(Action("BUILDING", larva));
+				vUnitList.push_back(newUnit);
 				return true;
 			}
 		}

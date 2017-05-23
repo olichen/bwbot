@@ -132,7 +132,27 @@ void Build::handleBuild()
 			cUnitList.removeGasWorker();
 		else if (cBuildOrder.getNext()=="ON GAS")
 			cUnitList.addGasWorker();
-		else if (tryToBuild(cBuildOrder.getNext()))
+		else if (cBuildOrder.getNext()=="EXPAND")
+		{
+			Unit *expansionPtr = cUnitTree.findUnit(cUnitTree.getExpansionName());
+			if (expansionPtr->getMineralCost() + 8 > cResources.getMinerals())
+				 break;
+			if (cUnitList.tryToExpand(*expansionPtr))
+			{
+				cResources.useMinerals(expansionPtr->getMineralCost());
+				if (expansionPtr->isMorph())
+					cResources.useSupply(expansionPtr->getSupplyCost() - cUnitTree.findUnit(expansionPtr->getBuildsFromName())->getSupplyCost());
+				//
+				cout << "Starting to build: " << cBuildOrder.getNext();
+				cout << " (" << 1800 << " frames, ";
+				cout << 42.0 * 1800/1000 << " seconds)\n Constructing:";
+				cUnitList.printBuilding();
+				cUnitList.printUnits();
+				cout << "\n";
+				printResources();
+			}
+		}
+		else if ((cBuildOrder.getNext() != cUnitTree.getGasName() || cUnitList.gasCount() < cResources.getGasGeysers()) && tryToBuild(cBuildOrder.getNext()))
 		{
 			if (true || cBuildOrder.getNext() != cUnitTree.getWorkerName())
 			{
@@ -206,6 +226,11 @@ void Build::handleActions()
 				cResources.addMinerals();
 			else if(iAction.getActionName()=="GATHER GAS")
 				cResources.addGas();
+			else if(iAction.getActionName()=="EXPANDING")
+			{
+				cResources.addExpansion();
+				updateMineralRate();
+			}
 			else if(iAction.getActionName()=="CONSTRUCTING")
 			{
 				cResources.addSupplyMax(iAction.getTargetUnit().getSupplyProvided());

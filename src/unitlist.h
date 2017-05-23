@@ -15,6 +15,7 @@ class UnitList
 		void init(string workerName, string gasName, string expansionName);
 		void addUnit(Unit &unit, Action nextAction = Action(), Action idleAction = Action());
 		void update(vector<Action> &actionList);
+		bool tryToExpand(Unit &expansion);
 		bool tryToBuild(Unit &unit);
 		void buildUnit(Unit &unit);
 		void spawnUnit(Unit &unit);
@@ -29,6 +30,7 @@ class UnitList
 
 		int minerCount() const;
 		int gasMinerCount() const;
+		int gasCount() const { return countUnit(mGasName); }
 
 		void printUnitStatus(bool hideMining = true, bool hideIdle = true) const;
 		void printUnits() const;
@@ -39,8 +41,8 @@ class UnitList
 		CurrentUnit *findWorker(string action = "GATHER MINERALS", bool morph = false);
 		//bool hasUnit(const Unit unit) const;
 		bool hasUnit(string unitName) const;
-		int countUnit(string unitName) const;
 		void updateGasRate();
+		int countUnit(string unitName) const;
 
 		vector<CurrentUnit> vUnitList;
 		string mWorkerName, mGasName, mExpansionName;

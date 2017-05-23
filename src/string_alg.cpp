@@ -63,6 +63,8 @@ string string_alg::add_race(char race, string s1)
 		return "OFF GAS";
 	if (lower_eq("on gas", s1))
 		return "ON GAS";
+	if (lower_eq("expand", s1))
+		return "EXPAND";
 	else if (race == 't')
 	{
 		if (!lower_eq(s1.substr(0,7), "terran "))

@@ -222,8 +222,8 @@ void UnitTree::loadRace(char race)
 		addUnit("Zerg Guardian",50,100,600,2,0,"Zerg Greater Spire","Zerg Mutalisk","",false,false,true);
 		addUnit("Zerg Devourer",150,50,600,2,0,"Zerg Greater Spire","Zerg Mutalisk","",false,false,true);
 		//basic buildings
-		addUnit("Zerg Lair",150,100,1500,0,1,"Zerg Spawning Pool","Zerg Hatchery","",true);
-		addUnit("Zerg Hive",200,150,1800,0,1,"Zerg Queen's Nest","Zerg Lair","",true);
+		addUnit("Zerg Lair",150,100,1500,0,0,"Zerg Spawning Pool","Zerg Hatchery","",true);
+		addUnit("Zerg Hive",200,150,1800,0,0,"Zerg Queen's Nest","Zerg Lair","",true);
 		addUnit("Zerg Spawning Pool",200,0,1200,0,0,"Zerg Hatchery","Zerg Drone","",false,false,true);
 		addUnit("Zerg Evolution Chamber",75,0,600,0,0,"Zerg Hatchery","Zerg Drone","",false,false,true);
 		addUnit("Zerg Hydralisk Den",100,50,600,0,0,"Zerg Spawning Pool","Zerg Drone","",false,false,true);

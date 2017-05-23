@@ -94,6 +94,24 @@ void UnitList::addUnit(Unit &unit, Action nextAction, Action idleAction)
 	vUnitList.push_back(newUnit);
 }
 
+bool UnitList::tryToExpand(Unit &expansion)
+{
+
+	//otherwise find an idle worker
+	CurrentUnit *workerPtr = findWorker("GATHER MINERALS", expansion.isMorph());
+	if (workerPtr != NULL)
+	{
+		if(expansion.getBuildsFromName() != "Protoss Probe" && !expansion.isMorph())
+			workerPtr->gotoAction(Action("BUILDING", expansion));
+	}
+	else
+		return false;
+	CurrentUnit newExpansion(expansion, Action("EXPANDING",expansion.getBuildTime()-1));
+	newExpansion.addNextAction(Action("CONSTRUCTING",1,expansion));
+	vUnitList.push_back(newExpansion);
+	return true;
+}
+
 bool UnitList::tryToBuild(Unit &unit)
 {
 	//check prerequisites
@@ -105,14 +123,14 @@ bool UnitList::tryToBuild(Unit &unit)
 	//if unit builds from worker
 	if (unit.getBuildsFromName() == mWorkerName)
 	{
-		//warp it in if builds from probe
-		if (unit.getBuildsFromName() == "Protoss Probe")
-			return true;
-
-		//otherwise find an idle worker
+		//find an idle worker
 		CurrentUnit *workerPtr = findWorker("GATHER MINERALS", unit.isMorph());
 		if (workerPtr != NULL)
 		{
+			//warp it in if builds from probe
+			if (unit.getBuildsFromName() == "Protoss Probe")
+				return true;
+
 			if(unit.isMorph())
 				return true;
 			workerPtr->gotoAction(Action("BUILDING", unit));

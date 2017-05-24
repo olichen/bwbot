@@ -278,6 +278,8 @@ void UnitList::buildUnit(Unit &unit)
 {
 	if (unit.getName() == "Zerg Drone")
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 18, unit), Action("GATHER MINERALS", mMineralRate)));
+	else if (unit.getName() == mGasName)
+		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 100, unit)));
 	else if (unit.getName() == mWorkerName)
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit), Action("GATHER MINERALS", mMineralRate)));
 	else if (unit.isMorph())

@@ -51,7 +51,7 @@ void UnitTree::loadRace(char race)
 		addUnit("Terran Marine",50,0,360,1,0,"Terran Barracks","Terran Barracks");
 		addUnit("Terran Firebat",50,25,360,1,0,"Terran Academy","Terran Barracks");
 		addUnit("Terran Ghost",25,75,750,1,0,"Terran Covert Ops","Terran Barracks","Terran Academy");
-		addUnit("Terran Medic",50,25,450,1,0,"Terran Academy","Terran Academy");
+		addUnit("Terran Medic",50,25,450,1,0,"Terran Academy","Terran Barracks");
 		addUnit("Terran Vulture",75,0,450,2,0,"Terran Factory","Terran Factory");
 		addUnit("Terran Goliath",100,50,600,2,0,"Terran Armory","Terran Factory");
 		addUnit("Terran Siege Tank",150,100,750,2,0,"Terran Machine Shop","Terran Factory","",false,true);

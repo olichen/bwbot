@@ -143,7 +143,7 @@ void Build::handleBuild()
 				if (expansionPtr->isMorph())
 					cResources.useSupply(expansionPtr->getSupplyCost() - cUnitTree.findUnit(expansionPtr->getBuildsFromName())->getSupplyCost());
 				//
-				cout << "Starting to build: " << cBuildOrder.getNext();
+				cout << "$> Starting to build: " << cBuildOrder.getNext();
 				cout << " (" << 1800 << " frames, ";
 				cout << 42.0 * 1800/1000 << " seconds)\n Constructing:";
 				cUnitList.printBuilding();
@@ -157,7 +157,7 @@ void Build::handleBuild()
 			if (true || cBuildOrder.getNext() != cUnitTree.getWorkerName())
 			{
 				//DEBUG PRINTING
-				cout << "Starting to build: " << cBuildOrder.getNext();
+				cout << "$> Starting to build: " << cBuildOrder.getNext();
 				cout << " (" << cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime() << " frames, ";
 				cout << 42.0 * cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime()/1000 << " seconds)\n Constructing:";
 				cUnitList.printBuilding();

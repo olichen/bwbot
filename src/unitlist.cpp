@@ -344,7 +344,7 @@ void UnitList::printUnits() const
 	vector<unsigned int> unitCount;
 	for (CurrentUnit iUnit : vUnitList)
 	{
-		if (iUnit.getActionName() != "CONSTRUCTING")
+		if (iUnit.getActionName() != "CONSTRUCTING" && iUnit.getActionName() != "EXPANDING")
 		{
 			int hasUnit = -1;
 			for (unsigned int i=0; i<unitNames.size(); i++)
@@ -364,7 +364,7 @@ void UnitList::printUnits() const
 			}
 		}
 	}
-	printf(" // Units: ");
+	printf("\n Units: ");
 	for (unsigned int i=0; i<unitNames.size(); i++)
 		printf("%i %s, ", unitCount[i], unitNames[i].c_str());
 	printLarva();
@@ -382,6 +382,6 @@ void UnitList::printLarva() const
 void UnitList::printBuilding() const
 {
 	for (CurrentUnit iUnit : vUnitList)
-		if (iUnit.getActionName() == "CONSTRUCTING")
+		if (iUnit.getActionName() == "CONSTRUCTING" || iUnit.getActionName() == "EXPANDING")
 			printf(" %s: %d,", iUnit.getName().c_str(), iUnit.getTimer());
 }

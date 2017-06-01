@@ -152,6 +152,25 @@ void Build::handleBuild()
 				printResources();
 			}
 		}
+		else if (cBuildOrder.getNext()=="EXTRACTOR TRICK")
+		{
+			if(cResources.getRace() != 'z' || cResources.getMinerals() < 100)
+				break;
+			Unit *workerPtr = cUnitTree.findUnit(cUnitTree.getWorkerName());
+			if (cUnitList.tryToBuild(*(workerPtr)))
+			{
+				cResources.useMinerals(75);
+				cResources.useSupply(workerPtr->getSupplyCost());
+				//
+				cout << "$> Starting to build: " << cBuildOrder.getNext();
+				cout << " (" << 1800 << " frames, ";
+				cout << 42.0 * 1800/1000 << " seconds)\n Constructing:";
+				cUnitList.printBuilding();
+				cUnitList.printUnits();
+				cout << "\n";
+				printResources();
+			}
+		}
 		else if ((cBuildOrder.getNext() != cUnitTree.getGasName() || cUnitList.gasCount() < cResources.getGasGeysers()) && tryToBuild(cBuildOrder.getNext()))
 		{
 			if (true || cBuildOrder.getNext() != cUnitTree.getWorkerName())

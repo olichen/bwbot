@@ -249,9 +249,11 @@ CurrentUnit *UnitList::findWorker(string action, bool morph)
 	return workerPtr;
 }
 
-void UnitList::addGasWorker()
+bool UnitList::addGasWorker()
 {
 	CurrentUnit *workerPtr = findWorker();
+	if (workerPtr == NULL)
+		return false;
 	int gasInit = mGasRate;
 	CurrentUnit *gasWorkerPtr = findWorker("GATHER GAS");
 	if (gasWorkerPtr != NULL)
@@ -259,14 +261,18 @@ void UnitList::addGasWorker()
 	workerPtr->gotoAction(Action("GATHER GAS", gasInit));
 	workerPtr->setIdleAction(Action("GATHER GAS", mGasRate));
 	updateGasRate();
+	return true;
 }
 
-void UnitList::removeGasWorker()
+bool UnitList::removeGasWorker()
 {
 	CurrentUnit *workerPtr = findWorker("GATHER GAS");
+	if (workerPtr == NULL)
+		return false;
 	workerPtr->gotoAction(Action("GATHER MINERALS", mMineralRate - mGasRate + workerPtr->getTimer()));
 	workerPtr->setIdleAction(Action("GATHER MINERALS", mMineralRate));
 	updateGasRate();
+	return true;
 }
 
 void UnitList::scout()

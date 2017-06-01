@@ -129,9 +129,15 @@ void Build::handleBuild()
 		if (cBuildOrder.getNext()=="SEARCH")
 			cUnitList.scout();
 		else if (cBuildOrder.getNext()=="OFF GAS")
-			cUnitList.removeGasWorker();
+		{
+			if (!cUnitList.removeGasWorker())
+				break;
+		}
 		else if (cBuildOrder.getNext()=="ON GAS")
-			cUnitList.addGasWorker();
+		{
+			if (!cUnitList.addGasWorker())
+				break;
+		}
 		else if (cBuildOrder.getNext()=="EXPAND")
 		{
 			Unit *expansionPtr = cUnitTree.findUnit(cUnitTree.getExpansionName());

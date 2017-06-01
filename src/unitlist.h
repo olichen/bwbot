@@ -19,8 +19,8 @@ class UnitList
 		bool tryToBuild(Unit &unit);
 		void buildUnit(Unit &unit);
 		void spawnUnit(Unit &unit);
-		void addGasWorker();
-		void removeGasWorker();
+		bool addGasWorker();
+		bool removeGasWorker();
 		void scout();
 		bool addLarva(Unit &larva, Action nextAction = Action());
 		void useLarva();

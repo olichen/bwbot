@@ -1,3 +1,8 @@
+### Qt ###
+bwbot
+bwbot.pro.user
+.qmake.stash
+
 ### C++ ###
 # Compiled Object files
 *.slo

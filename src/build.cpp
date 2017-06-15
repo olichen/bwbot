@@ -293,6 +293,17 @@ void Build::printResources() const
 	printf("%6.1f |", 42.0 * cResources.getFrame()/1000);
 	printf("%5d", cUnitList.minerCount());
 	printf("\n");
+	//int frame, time, minerals, gas, supply, supplymax, miners, gasminers;
+	//string action, unit;
+	Frame newFrame = {
+		cResources.getFrame(), cResources.getMinerals();
+	newFrame.gas = cResources.getGas();
+	newFrame.supply = cResources.getSupply();u
+	newFrame.supplymax = cResources.getSupplyMax();
+	newFrame.miners = cUnitList.minerCount();
+	newFrame.gasminers = cUnitList.gasMinerCount();
+	newFrame.action = "";
+	newFrame.f
 }
 
 void Build::printActions(bool hideMining) const

@@ -5,6 +5,7 @@
 #include "currentunit.h"
 #include "unittree.h"
 #include "unitlist.h"
+#include "frame.h"
 #include "action.h"
 #include "string_alg.hpp"
 #include "buildorder.hpp"
@@ -28,6 +29,8 @@ class Build
 		void pushBuildOrder(string build) { cBuildOrder.push_back(build); }
 		void popBuildOrder() { cBuildOrder.pop(); }
 
+		vector<Frame> getOutput() { return vOutput; };
+
 	private:
 		void update();
 		void handleBuild();
@@ -47,4 +50,5 @@ class Build
 		UnitList cUnitList;
 		vector<Action> vActionList;
 		BuildOrder cBuildOrder;
+		vector<Frame> vOutput;
 };

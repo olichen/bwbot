@@ -2,6 +2,7 @@
 bwbot
 bwbot.pro.user
 .qmake.stash
+*.autosave
 
 ### C++ ###
 # Compiled Object files

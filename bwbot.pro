@@ -25,10 +25,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    src/action.cpp \
+    src/build.cpp \
+    src/buildorder.cpp \
+    src/currentunit.cpp \
+    src/resources.cpp \
+    src/string_alg.cpp \
+    src/unit.cpp \
+    src/unitlist.cpp \
+    src/unittree.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    src/action.h \
+    src/actionname.hpp \
+    src/build.h \
+    src/buildorder.hpp \
+    src/currentunit.h \
+    src/resources.h \
+    src/string_alg.hpp \
+    src/unit.h \
+    src/unitlist.h \
+    src/unittree.h
 
 FORMS += \
         mainwindow.ui

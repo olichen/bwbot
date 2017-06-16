@@ -93,6 +93,7 @@ void Build::run()
 	reset();
 	while(cResources.getFrame() <= 20000 && !cBuildOrder.atEnd())
 		update();
+	printOutput();
 }
 
 void Build::update()
@@ -161,18 +162,16 @@ void Build::handleBuild()
 		{
 			if(cResources.getRace() != 'z' || cResources.getMinerals() < 100)
 				break;
-			Unit *workerPtr = cUnitTree.findUnit(cUnitTree.getWorkerName());
-			if (cUnitList.tryToBuild(*(workerPtr)))
+			cResources.addSupplyMax(1);
+			if (tryToBuild(cUnitTree.getWorkerName()))
 			{
-				cResources.useMinerals(75);
-				cResources.useSupply(workerPtr->getSupplyCost());
-				//
-				cout << "$> Starting to build: " << cBuildOrder.getNext();
-				cout << " (" << 1800 << " frames, ";
-				cout << 42.0 * 1800/1000 << " seconds)\n Constructing:";
-				cUnitList.printBuilding();
-				cUnitList.printUnits();
-				cout << "\n";
+				cResources.useMinerals(25);
+				cResources.addSupplyMax(-1);
+			}
+			else
+			{
+				cResources.addSupplyMax(-1);
+				break;
 			}
 		}
 		else if ((cBuildOrder.getNext() != cUnitTree.getGasName() || cUnitList.gasCount() < cResources.getGasGeysers()) && tryToBuild(cBuildOrder.getNext()))
@@ -192,6 +191,7 @@ void Build::handleBuild()
 		else break;
 
 		updateMineralRate();
+		//add to output
 		addOutput(cBuildOrder.getNext());
 		cBuildOrder.next();
 	}
@@ -231,7 +231,7 @@ bool Build::tryToBuild(string unitName)
 		cUnitList.buildUnit(*(buildUnitPtr));
 
 		//add to output
-		addOutput("BUILDING", buildUnitPtr->getBuildTime(), buildUnitPtr->getName());
+		addOutput("STARTBUILD", buildUnitPtr->getBuildTime(), buildUnitPtr->getName());
 		return true;
 	}
 	return false;
@@ -267,6 +267,7 @@ void Build::handleActions()
 					for (int i=0; i<3; i++)
 						cUnitList.addGasWorker();
 			}
+			//add to output
 			if (iAction.hasTargetUnit())
 				addOutput(iAction.getActionName(), iAction.getTimer(), iAction.getTargetUnit().getName());
 			else
@@ -314,5 +315,17 @@ void Build::outputActions()
 			addOutput(iAction.getActionName(), iAction.getTimer(), iAction.getTargetUnit().getName());
 		else
 			addOutput(iAction.getActionName(), iAction.getTimer());
+	}
+}
+
+void Build::printOutput() const
+{
+	for (Frame iFrame : vOutput)
+	{
+		printf("\n%5d %4d %4d %3d/%-3d %3d %3d %s %d %s",
+			iFrame.frame, iFrame.minerals, iFrame.gas,
+			iFrame.supply, iFrame.supplymax,
+			iFrame.miners, iFrame.gasminers,
+			iFrame.action.c_str(), iFrame.time, iFrame.unit.c_str());
 	}
 }

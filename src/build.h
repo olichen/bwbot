@@ -44,6 +44,7 @@ class Build
 		void updateMineralRate();
 		void addOutput(string action = "", int time = -1, string unit = "");
 		void outputActions();
+		void printOutput() const;
 
 		Resources cResources;
 		UnitTree cUnitTree;

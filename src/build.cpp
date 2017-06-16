@@ -155,7 +155,6 @@ void Build::handleBuild()
 				cUnitList.printBuilding();
 				cUnitList.printUnits();
 				cout << "\n";
-				printResources();
 			}
 		}
 		else if (cBuildOrder.getNext()=="EXTRACTOR TRICK")
@@ -174,7 +173,6 @@ void Build::handleBuild()
 				cUnitList.printBuilding();
 				cUnitList.printUnits();
 				cout << "\n";
-				printResources();
 			}
 		}
 		else if ((cBuildOrder.getNext() != cUnitTree.getGasName() || cUnitList.gasCount() < cResources.getGasGeysers()) && tryToBuild(cBuildOrder.getNext()))
@@ -188,13 +186,13 @@ void Build::handleBuild()
 				cUnitList.printBuilding();
 				cUnitList.printUnits();
 				cout << "\n";
-				printResources();
 				//
 			}
 		}
 		else break;
 
 		updateMineralRate();
+		addOutput(cBuildOrder.getNext());
 		cBuildOrder.next();
 	}
 
@@ -221,6 +219,7 @@ bool Build::tryToBuild(string unitName)
 	else if (buildUnitPtr->getSupplyCost() > 0 && buildUnitPtr->getSupplyCost() > cResources.getAvailableSupply())
 		 return false;
 
+	//otherwise build it if prereqs are there
 	if (cUnitList.tryToBuild(*(buildUnitPtr)))
 	{
 		cResources.useMinerals(buildUnitPtr->getMineralCost());
@@ -230,6 +229,9 @@ bool Build::tryToBuild(string unitName)
 		else
 			cResources.useSupply(buildUnitPtr->getSupplyCost());
 		cUnitList.buildUnit(*(buildUnitPtr));
+
+		//add to output
+		addOutput("BUILDING", buildUnitPtr->getBuildTime(), buildUnitPtr->getName());
 		return true;
 	}
 	return false;
@@ -265,6 +267,10 @@ void Build::handleActions()
 					for (int i=0; i<3; i++)
 						cUnitList.addGasWorker();
 			}
+			if (iAction.hasTargetUnit())
+				addOutput(iAction.getActionName(), iAction.getTimer(), iAction.getTargetUnit().getName());
+			else
+				addOutput(iAction.getActionName(), iAction.getTimer());
 		}
 	}
 	vActionList.clear();
@@ -283,49 +289,30 @@ void Build::updateMineralRate()
 		cUnitList.setMineralRate(240 * minerCount / minPatches * 3);
 }
 
-void Build::printResources() const
+void Build::addOutput(string action, int time, string unit)
 {
-	//printf(" Frame |  Min  |  Gas  | Supply |  Time | Miners\n");
-	printf("%6d |", cResources.getFrame());
-	printf("%5d  |", cResources.getMinerals());
-	printf("%5d  |", cResources.getGas());
-	printf("%4d/%-3d|", cResources.getSupply(), cResources.getSupplyMax());
-	printf("%6.1f |", 42.0 * cResources.getFrame()/1000);
-	printf("%5d", cUnitList.minerCount());
-	printf("\n");
-	//int frame, time, minerals, gas, supply, supplymax, miners, gasminers;
-	//string action, unit;
 	Frame newFrame = {
-		cResources.getFrame(), cResources.getMinerals();
-	newFrame.gas = cResources.getGas();
-	newFrame.supply = cResources.getSupply();u
-	newFrame.supplymax = cResources.getSupplyMax();
-	newFrame.miners = cUnitList.minerCount();
-	newFrame.gasminers = cUnitList.gasMinerCount();
-	newFrame.action = "";
-	newFrame.f
+		cResources.getFrame(),
+		cResources.getMinerals(),
+		cResources.getGas(),
+		cResources.getSupply(),
+		cResources.getSupplyMax(),
+		cUnitList.minerCount(),
+		cUnitList.gasMinerCount(),
+		time,
+		action,
+		unit
+	};
+	vOutput.push_back(newFrame);
 }
 
-void Build::printActions(bool hideMining) const
+void Build::outputActions()
 {
-	bool print = false;
 	for (Action iAction : vActionList)
 	{
-		if (iAction.getActionName().at(0) == 'G' && hideMining)
-			continue;
-		cout << " "<<  iAction.getActionName() << " " << iAction.getTimer();
 		if (iAction.hasTargetUnit())
-		{
-			cout << " " << iAction.getTargetUnit().getName();
-		}
-		cout << "//";
-		print = true;
-	}
-	if(print)
-	{
-		cout << "\n";
-		cUnitList.printUnitStatus();
-		printResources();
+			addOutput(iAction.getActionName(), iAction.getTimer(), iAction.getTargetUnit().getName());
+		else
+			addOutput(iAction.getActionName(), iAction.getTimer());
 	}
 }
-////END debug printing

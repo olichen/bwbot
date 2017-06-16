@@ -2,6 +2,6 @@
 
 struct Frame
 {
-	int frame, time, minerals, gas, supply, supplymax, miners, gasminers;
+	int frame, minerals, gas, supply, supplymax, miners, gasminers, time;
 	string action, unit;
 };

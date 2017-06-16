@@ -42,8 +42,8 @@ class Build
 		void addLarvaSpawner();
 
 		void updateMineralRate();
-		void printResources() const;
-		void printActions(bool hideMining = true) const;
+		void addOutput(string action = "", int time = -1, string unit = "");
+		void outputActions();
 
 		Resources cResources;
 		UnitTree cUnitTree;

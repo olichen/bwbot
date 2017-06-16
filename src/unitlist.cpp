@@ -282,16 +282,22 @@ void UnitList::scout()
 
 void UnitList::buildUnit(Unit &unit)
 {
+	//add egg spawn time for drone
 	if (unit.getName() == "Zerg Drone")
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 18, unit), Action("GATHER MINERALS", mMineralRate)));
+	//add worker travel to gas time
 	else if (unit.getName() == mGasName)
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 100, unit)));
+	//make workers gather automatically (automine?? mbs????)
 	else if (unit.getName() == mWorkerName)
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit), Action("GATHER MINERALS", mMineralRate)));
+	//add egg spawn time for all zerg stuff
 	else if (unit.isMorph())
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 18, unit)));
+	//add warpin time
 	else if (unit.getBuildsFromName() == "Protoss Probe")
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit.getBuildTime() + 70, unit)));
+	//build normally
 	else
 		vUnitList.push_back(CurrentUnit(unit, Action("CONSTRUCTING", unit)));
 }

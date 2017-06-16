@@ -20,11 +20,7 @@ void Build::init(char race)
 
 void Build::reset()
 {
-	//initialize starting units and resources
-	cUnitList.clear();
-	for (int i=0; i<4; i++)
-		cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getWorkerName())));
-	cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getExpansionName())));
+	vOutput.clear();
 
 	//reset resources
 	cResources.clear();
@@ -33,11 +29,23 @@ void Build::reset()
 	cResources.addSupplyMax(cUnitTree.findUnit(cUnitTree.getExpansionName())->getSupplyProvided());
 	cResources.addMinerals(50);
 
+	//initialize starting units and resources
+	cUnitList.clear();
+	for (int i=0; i<4; i++)
+	{
+		cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getWorkerName())));
+		addOutput("SPAWN", -1, cUnitTree.getWorkerName());
+	}
+	cUnitList.spawnUnit(*(cUnitTree.findUnit(cUnitTree.getExpansionName())));
+	addOutput("SPAWN", -1, cUnitTree.getExpansionName());
+
+
 	//zergs get more stuff
 	if (cResources.getRace() == 'z')
 	{
 		cUnitList.spawnUnit(*(cUnitTree.findUnit("Zerg Overlord")));
 		cResources.addSupplyMax(cUnitTree.findUnit("Zerg Overlord")->getSupplyProvided());
+		addOutput("SPAWN", -1, "Zerg Overlord");
 		addLarvaSpawner();
 		cUnitList.addLarva(*(cUnitTree.findUnit("Zerg Larva")));
 		cUnitList.addLarva(*(cUnitTree.findUnit("Zerg Larva")));
@@ -84,6 +92,16 @@ void Build::loadFile(string fileName)
 		throw "Unable to open file 'buildorders/" + fileName + "'";
 }
 
+void Build::loadVector(vector<string> build)
+{
+	cBuildOrder.clear();
+	loadRace(tolower(build.front().at(0)));
+	for (unsigned int i=1; i<build.size(); i++)
+	{
+		cBuildOrder.push_back(build[i]);
+	}
+}
+
 void Build::run()
 {
 	// DEBUG: print build order
@@ -110,15 +128,13 @@ void Build::update()
 	}
 	//update state of all units
 	cUnitList.update(vActionList);
-	//DEBUG: print out actions
-	//printActions(false);
 
 	//try to build larva
 	if (cResources.getRace() == 'z')
-		while (cUnitList.addLarva(*(cUnitTree.findUnit("Zerg Larva")), Action("CONSTRUCTING", *(cUnitTree.findUnit("Zerg Larva")))));
+		while (cUnitList.addLarva(*(cUnitTree.findUnit("Zerg Larva")), Action("CONSTRUCTING", *(cUnitTree.findUnit("Zerg Larva")))))
+			addOutput("STARTBUILD", 342, "Zerg Larva");
 	//handle any thrown actions
 	handleActions();
-	//refresh mining rate
 	//update frame number
 	cResources.nextFrame();
 }
@@ -141,22 +157,8 @@ void Build::handleBuild()
 		}
 		else if (cBuildOrder.getNext()=="EXPAND")
 		{
-			Unit *expansionPtr = cUnitTree.findUnit(cUnitTree.getExpansionName());
-			if (expansionPtr->getMineralCost() + 8 > cResources.getMinerals())
-				 break;
-			if (cUnitList.tryToExpand(*expansionPtr))
-			{
-				cResources.useMinerals(expansionPtr->getMineralCost());
-				if (expansionPtr->isMorph())
-					cResources.useSupply(expansionPtr->getSupplyCost() - cUnitTree.findUnit(expansionPtr->getBuildsFromName())->getSupplyCost());
-				//
-				cout << "$> Starting to build: " << cBuildOrder.getNext();
-				cout << " (" << 1800 << " frames, ";
-				cout << 42.0 * 1800/1000 << " seconds)\n Constructing:";
-				cUnitList.printBuilding();
-				cUnitList.printUnits();
-				cout << "\n";
-			}
+			if (!tryToExpand())
+				break;
 		}
 		else if (cBuildOrder.getNext()=="EXTRACTOR TRICK")
 		{
@@ -176,17 +178,7 @@ void Build::handleBuild()
 		}
 		else if ((cBuildOrder.getNext() != cUnitTree.getGasName() || cUnitList.gasCount() < cResources.getGasGeysers()) && tryToBuild(cBuildOrder.getNext()))
 		{
-			if (true || cBuildOrder.getNext() != cUnitTree.getWorkerName())
-			{
-				//DEBUG PRINTING
-				cout << "$> Starting to build: " << cBuildOrder.getNext();
-				cout << " (" << cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime() << " frames, ";
-				cout << 42.0 * cUnitTree.findUnit(cBuildOrder.getNext())->getBuildTime()/1000 << " seconds)\n Constructing:";
-				cUnitList.printBuilding();
-				cUnitList.printUnits();
-				cout << "\n";
-				//
-			}
+			//don't let players build too many gasses (idk if this matters tbh)
 		}
 		else break;
 
@@ -196,6 +188,23 @@ void Build::handleBuild()
 		cBuildOrder.next();
 	}
 
+}
+
+bool Build::tryToExpand()
+{
+	Unit *expansionPtr = cUnitTree.findUnit(cUnitTree.getExpansionName());
+	if (expansionPtr->getMineralCost() + 8 > cResources.getMinerals())
+		 return false;
+	if (cUnitList.tryToExpand(*expansionPtr))
+	{
+		cResources.useMinerals(expansionPtr->getMineralCost() + 8);
+		if (expansionPtr->isMorph())
+			cResources.useSupply(expansionPtr->getSupplyCost() - cUnitTree.findUnit(expansionPtr->getBuildsFromName())->getSupplyCost());
+		//add to output
+		addOutput("STARTBUILD", expansionPtr->getBuildTime(), expansionPtr->getName());
+		return true;
+	}
+	return false;
 }
 
 bool Build::tryToBuild(string unitName)
@@ -241,6 +250,7 @@ void Build::addLarvaSpawner()
 {
 	cUnitList.spawnUnit(*(cUnitTree.findUnit("Zerg Larva Spawner")));
 	cUnitList.addLarva(*(cUnitTree.findUnit("Zerg Larva")));
+	addOutput("SPAWN",-1,"Zerg Larva");
 }
 
 void Build::handleActions()
@@ -267,6 +277,7 @@ void Build::handleActions()
 					for (int i=0; i<3; i++)
 						cUnitList.addGasWorker();
 			}
+
 			//add to output
 			if (iAction.hasTargetUnit())
 				addOutput(iAction.getActionName(), iAction.getTimer(), iAction.getTargetUnit().getName());
@@ -307,22 +318,11 @@ void Build::addOutput(string action, int time, string unit)
 	vOutput.push_back(newFrame);
 }
 
-void Build::outputActions()
-{
-	for (Action iAction : vActionList)
-	{
-		if (iAction.hasTargetUnit())
-			addOutput(iAction.getActionName(), iAction.getTimer(), iAction.getTargetUnit().getName());
-		else
-			addOutput(iAction.getActionName(), iAction.getTimer());
-	}
-}
-
 void Build::printOutput() const
 {
 	for (Frame iFrame : vOutput)
 	{
-		printf("\n%5d %4d %4d %3d/%-3d %3d %3d %s %d %s",
+		printf("%5d %4d %4d %3d/%-3d %3d %3d %-15s %4d %s\n",
 			iFrame.frame, iFrame.minerals, iFrame.gas,
 			iFrame.supply, iFrame.supplymax,
 			iFrame.miners, iFrame.gasminers,

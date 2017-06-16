@@ -25,6 +25,7 @@ class Build
 		void run(); //runs build order
 		//void loadBuildOrder(vector<string> buildOrder);
 		void loadFile(string fileName); //load file (race, build)
+		void loadVector(vector<string> build); //load file (race, build)
 
 		void pushBuildOrder(string build) { cBuildOrder.push_back(build); }
 		void popBuildOrder() { cBuildOrder.pop(); }
@@ -34,6 +35,7 @@ class Build
 	private:
 		void update();
 		void handleBuild();
+		bool tryToExpand();
 		bool tryToBuild(string unitName);
 
 		void handleActions();
@@ -43,7 +45,6 @@ class Build
 
 		void updateMineralRate();
 		void addOutput(string action = "", int time = -1, string unit = "");
-		void outputActions();
 		void printOutput() const;
 
 		Resources cResources;

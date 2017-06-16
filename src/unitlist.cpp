@@ -95,8 +95,6 @@ void UnitList::addUnit(Unit &unit, Action nextAction, Action idleAction)
 
 bool UnitList::tryToExpand(Unit &expansion)
 {
-
-	//otherwise find an idle worker
 	CurrentUnit *workerPtr = findWorker("GATHER MINERALS", expansion.isMorph());
 	if (workerPtr != NULL)
 	{

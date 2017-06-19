@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -15,8 +16,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void help();
+    void about();
+
 private:
     Ui::MainWindow *ui;
+    void setupMenu();
 };
 
 #endif // MAINWINDOW_H

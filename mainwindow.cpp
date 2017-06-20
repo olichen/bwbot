@@ -3,7 +3,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    build(new Build)
 {
     ui->setupUi(this);
     setupMenu();
@@ -12,6 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setupMenu()
+{
+    connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(help()));
+    connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
+    QListWidgetItem *lwi = new QListWidgetItem(tr("test"), ui->listWidget);
 }
 
 void MainWindow::help()
@@ -24,8 +32,3 @@ void MainWindow::about()
     QMessageBox::about(this, tr("About"), tr("This is the about display hello there amigos."));
 }
 
-void MainWindow::setupMenu()
-{
-    connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(help()));
-    connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
-}

@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include "src/build.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +25,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    Build *build;
     void setupMenu();
 };
 

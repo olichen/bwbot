@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setupMenu();
+    build->loadFile("101010");
+    build->run();
 }
 
 MainWindow::~MainWindow()
@@ -19,7 +21,6 @@ void MainWindow::setupMenu()
 {
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(help()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
-    QListWidgetItem *lwi = new QListWidgetItem(tr("test"), ui->listWidget);
 }
 
 void MainWindow::help()

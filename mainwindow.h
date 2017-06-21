@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QIcon>
 #include "src/build.h"
 
 namespace Ui {

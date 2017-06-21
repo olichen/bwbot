@@ -11,7 +11,8 @@ bool string_alg::is_empty(string s1)
 
 string string_alg::trim(string s1)
 {
-	int first_char, last_char;
+	int first_char = 0;
+	int last_char = s1.length();
 	for (unsigned int i=0; i<s1.length(); i++)
 	{
 		if (!isspace(s1[i]))

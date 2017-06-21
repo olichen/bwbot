@@ -34,7 +34,7 @@ SOURCES += \
     src/string_alg.cpp \
     src/unit.cpp \
     src/unitlist.cpp \
-    src/unittree.cpp
+    src/unittree.cpp \
 
 HEADERS += \
         mainwindow.h \
@@ -43,11 +43,12 @@ HEADERS += \
     src/build.h \
     src/buildorder.hpp \
     src/currentunit.h \
+    src/frame.h \
     src/resources.h \
     src/string_alg.hpp \
     src/unit.h \
     src/unitlist.h \
-    src/unittree.h
+    src/unittree.h \
 
 FORMS += \
         mainwindow.ui

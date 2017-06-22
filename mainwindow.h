@@ -6,6 +6,8 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QIcon>
+#include <vector>
+#include "src/frame.h"
 #include "src/build.h"
 
 namespace Ui {
@@ -28,6 +30,8 @@ private:
     Ui::MainWindow *ui;
     Build *build;
     void setupMenu();
+    void run();
+    vector<Frame> data;
 };
 
 #endif // MAINWINDOW_H

@@ -32,11 +32,6 @@ class UnitList
 		int gasMinerCount() const;
 		int gasCount() const { return countUnit(mGasName); }
 
-		void printUnitStatus(bool hideMining = true, bool hideIdle = true) const;
-		void printUnits() const;
-		void printLarva() const;
-		void printBuilding() const;
-
 	private:
 		bool mergeArchon(Unit &unit);
 		CurrentUnit *findWorker(string action = "GATHER MINERALS", bool morph = false);

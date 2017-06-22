@@ -4,7 +4,6 @@ bwbot.pro.user
 .qmake.stash
 *.autosave
 ui_mainwindow.h
-c[0-9]*.png
 moc_*
 
 ### C++ ###

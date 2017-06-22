@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     build(new Build)
 {
     ui->setupUi(this);
+    this->setStyleSheet("background-color: gray; color: white");
     setupMenu();
     build->loadFile("101010");
     build->run();
@@ -19,6 +20,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupMenu()
 {
+    ui->b1->setStyleSheet("background-image:url(images/c10.png)");
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(help()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
 }

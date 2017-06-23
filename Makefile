@@ -71,7 +71,8 @@ OBJECTS       = main.o \
 		unitlist.o \
 		unittree.o \
 		moc_mainwindow.o
-DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
+DIST          = buildorders/101010 \
+		/usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
 		/usr/lib/qt/mkspecs/common/sanitize.conf \
@@ -381,14 +382,14 @@ moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
-moc_mainwindow.cpp: src/build.h \
+moc_mainwindow.cpp: src/frame.h \
+		src/build.h \
 		src/resources.h \
 		src/unit.h \
 		src/currentunit.h \
 		src/action.h \
 		src/unittree.h \
 		src/unitlist.h \
-		src/frame.h \
 		src/string_alg.hpp \
 		src/buildorder.hpp \
 		mainwindow.h \
@@ -416,6 +417,7 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: main.cpp mainwindow.h \
+		src/frame.h \
 		src/build.h \
 		src/resources.h \
 		src/unit.h \
@@ -423,12 +425,12 @@ main.o: main.cpp mainwindow.h \
 		src/action.h \
 		src/unittree.h \
 		src/unitlist.h \
-		src/frame.h \
 		src/string_alg.hpp \
 		src/buildorder.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
+		src/frame.h \
 		src/build.h \
 		src/resources.h \
 		src/unit.h \
@@ -436,7 +438,6 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		src/action.h \
 		src/unittree.h \
 		src/unitlist.h \
-		src/frame.h \
 		src/string_alg.hpp \
 		src/buildorder.hpp \
 		ui_mainwindow.h

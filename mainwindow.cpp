@@ -7,8 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
     build(new Build)
 {
     ui->setupUi(this);
-    this->setStyleSheet("background-color: #333; color: white");
-    setupMenu();
+    this->setStyleSheet("background-color: #333; color: white;");
+    init();
     run();
 }
 
@@ -17,11 +17,30 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setupMenu()
+void MainWindow::init()
+{
+    initMenu();
+    initControls();
+}
+
+void MainWindow::initMenu()
 {
     ui->b1->setStyleSheet("background-image:url(images/c10.png)");
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(help()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
+}
+
+void MainWindow::initRace(char race)
+{
+}
+
+void MainWindow::initControls()
+{
+    ui->cslower->setStyleSheet("background-image:url(images/ucslower.png)");
+    ui->cstop->setStyleSheet("background-image:url(images/ucstop.png)");
+    ui->cpause->setStyleSheet("background-image:url(images/ucpause.png)");
+    ui->cplay->setStyleSheet("background-image:url(images/ucplay.png)");
+    ui->cfaster->setStyleSheet("background-image:url(images/ucfaster.png)");
 }
 
 void MainWindow::run()

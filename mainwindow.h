@@ -29,7 +29,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Build *build;
-    void setupMenu();
+    void init();
+    void initMenu();
+    void initRace(char race);
+    void initControls();
     void run();
     vector<Frame> data;
 };

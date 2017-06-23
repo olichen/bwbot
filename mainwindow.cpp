@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     frame(0), index(0), framems(21)
 {
     ui->setupUi(this);
-    this->setStyleSheet("background-color: #333; color: white;");
+    this->setStyleSheet("background-color: #222; color: white;");
     init();
     run();
 }
@@ -118,11 +118,11 @@ void MainWindow::run()
     build->loadFile("101010");
     build->run();
     data = build->getOutput();
-    ui->rFrame->setText(QString::number(data.back().frame));
+    ui->rFrame->setText(QString::number(20000));
     ui->rTime->setText(QString::number(data.back().frame*42.0/1000, 'f', 1));
     ui->rMineral->setText(QString::number(data.back().minerals));
     ui->rGas->setText(QString::number(data.back().gas));
-    ui->rSupply->setText(QString::number(data.back().supply)+"/"+QString::number(data.back().supplymax));
+    ui->rSupply->setText(QString::number(200)+"/"+QString::number(200));
     ui->rMiner->setText(QString::number(data.back().miners));
     ui->rGasMiner->setText(QString::number(data.back().gasminers));
 }

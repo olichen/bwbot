@@ -3,9 +3,8 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
-#include <QListWidget>
-#include <QListWidgetItem>
 #include <QIcon>
+#include <QTimer>
 #include <vector>
 #include "src/frame.h"
 #include "src/build.h"
@@ -25,15 +24,26 @@ public:
 private slots:
     void help();
     void about();
+    void cslower();
+    void cstop();
+    void cpause();
+    void cplay();
+    void cfaster();
+    void update();
 
 private:
     Ui::MainWindow *ui;
     Build *build;
+    QTimer timer;
+    int frame, index;
+    float framems;
+
     void init();
     void initMenu();
     void initRace(char race);
     void initControls();
     void run();
+    void render(int index);
     vector<Frame> data;
 };
 

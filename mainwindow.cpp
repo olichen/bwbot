@@ -80,9 +80,12 @@ void MainWindow::initControls()
     connect(ui->b2, &QPushButton::clicked, this, [=](){this->bpage(2);});
     connect(ui->b3, &QPushButton::clicked, this, [=](){this->bpage(3);});
     connect(ui->b4, &QPushButton::clicked, this, [=](){this->bpage(4);});
-    //connect(ui->b2, SIGNAL(clicked()), this, SLOT(bpage(2)));
-    //connect(ui->b3, SIGNAL(clicked()), this, SLOT(bpage(3)));
-    //connect(ui->b4, SIGNAL(clicked()), this, SLOT(bpage(4)));
+    connect(ui->b5, &QPushButton::clicked, this, [=](){this->initRace('t');});
+    connect(ui->b6, &QPushButton::clicked, this, [=](){this->initRace('p');});
+    connect(ui->b7, &QPushButton::clicked, this, [=](){this->initRace('z');});
+    ui->b5->setStyleSheet("background-image:url(images/t0.png)");
+    ui->b6->setStyleSheet("background-image:url(images/p0.png)");
+    ui->b7->setStyleSheet("background-image:url(images/z0.png)");
 
     ui->cslower->setStyleSheet("background-image:url(images/ucslower.png)");
     ui->cstop->setStyleSheet("background-image:url(images/ucstop.png)");

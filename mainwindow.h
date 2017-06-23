@@ -24,6 +24,7 @@ public:
 private slots:
     void help();
     void about();
+    void bpage(int page);
     void cslower();
     void cstop();
     void cpause();
@@ -37,6 +38,7 @@ private:
     QTimer timer;
     int frame, index;
     float framems;
+    char mRace, mPage;
 
     void init();
     void initMenu();

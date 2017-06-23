@@ -6,9 +6,10 @@ using namespace std;
 class Unit
 {
 	public:
-		Unit(string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided,
+		Unit(int id, string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided,
 				string prereq, string buildsFrom, string prereq2 = "", bool isAddon = false, bool reqAddon = false, bool morph = false);
 
+		int getId() const { return mId; }
 		int getMineralCost() const { return mMineralCost; }
 		int getGasCost() const { return mGasCost; }
 		int getSupplyCost() const { return mSupplyCost; }
@@ -26,6 +27,7 @@ class Unit
 		bool operator==(const Unit &unit) const { return mName==unit.getName(); }
 
 	private:
+		int mId;
 		string mName;
 		int mMineralCost, mGasCost, mBuildTime, mSupplyCost, mSupplyProvided;
 		string mPrereq, mBuildsFrom, mPrereq2;

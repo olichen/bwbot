@@ -16,6 +16,7 @@ class UnitTree
 		string getWorkerName() const { return vUnitList.front().getName(); }
 		string getExpansionName() const { return vUnitList.at(1).getName(); }
 		string getGasName() const { return vUnitList.at(2).getName(); }
+		int getId(string unit) const;
 
 	private:
 		void clear() { vUnitList.clear(); }

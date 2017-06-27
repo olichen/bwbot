@@ -21,6 +21,18 @@ void UnitTree::addUnit(int id, string name, int mineralCost, int gasCost, int bu
 	vUnitList.push_back(*newUnit);
 }
 
+int UnitTree::getId(string unit) const
+{
+	for (Unit iUnit : vUnitList)
+	{
+		if (iUnit.getName() == unit)
+		{
+			return iUnit.getId();
+		}
+	}
+	return 0;
+}
+
 //return the unit
 Unit *UnitTree::findUnit(string unitName)
 {

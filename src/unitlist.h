@@ -35,7 +35,6 @@ class UnitList
 	private:
 		bool mergeArchon(Unit &unit);
 		CurrentUnit *findWorker(string action = "GATHER MINERALS", bool morph = false);
-		//bool hasUnit(const Unit unit) const;
 		bool hasUnit(string unitName) const;
 		void updateGasRate();
 		int countUnit(string unitName) const;

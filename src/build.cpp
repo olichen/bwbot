@@ -318,6 +318,31 @@ void Build::addOutput(string action, int time, string unit)
 	vOutput.push_back(newFrame);
 }
 
+vector<int> Build::getBuildOrder()
+{
+	vector<int> output;
+	cBuildOrder.reset();
+	while (!cBuildOrder.atEnd())
+	{
+		string unit = cBuildOrder.getNext();
+		cBuildOrder.next();
+		if(unit == "SEARCH")
+			output.push_back(-1);
+		else if (unit == "ON GAS")
+			output.push_back(-2);
+		else if (unit == "OFF GAS")
+			output.push_back(-3);
+		else if (unit == "EXPAND")
+			output.push_back(-4);
+		else if (unit == "EXTRACTOR TRICK")
+			output.push_back(-5);
+		else
+			output.push_back(cUnitTree.getId(unit));
+	}
+	cBuildOrder.reset();
+	return output;
+}
+
 void Build::printOutput() const
 {
 	for (Frame iFrame : vOutput)

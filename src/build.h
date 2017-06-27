@@ -31,6 +31,7 @@ class Build
 		void popBuildOrder() { cBuildOrder.pop(); }
 
 		vector<Frame> getOutput() { return vOutput; };
+		vector<int> getBuildOrder();
 
 	private:
 		void update();

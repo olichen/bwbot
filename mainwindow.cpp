@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    build(new Build),
+    pBuild(new Build),
     frame(0), index(0), framems(21),
     mRace('t'), mPage('1')
 {
@@ -45,6 +45,33 @@ void MainWindow::initRace(char race)
     ui->b3->setStyleSheet(imgfolder+mRace+"3.png)");
     ui->b4->setStyleSheet(imgfolder+mRace+"4.png)");
     bpage(1);
+}
+
+void MainWindow::initBuildOrder()
+{
+    vector<int> buildorder = pBuild->getBuildOrder();
+    QString imgfolder("background-image:url(images/");
+    for (unsigned int i=0; i<buildorder.size(); i++)
+    {
+        QPushButton *newUnit = new QPushButton(QString::number(i));
+        newUnit->setFlat(true);
+        newUnit->setMinimumSize(32, 32);
+        newUnit->setMaximumSize(32, 32);
+        printf("%d ", buildorder[i]);
+        if(buildorder[i]==-1)
+            newUnit->setStyleSheet(imgfolder+"ubsearch.png)");
+        else if(buildorder[i]==-2)
+            newUnit->setStyleSheet(imgfolder+"uboffgas.png)");
+        else if(buildorder[i]==-3)
+            newUnit->setStyleSheet(imgfolder+"ubongas.png)");
+        else if(buildorder[i]==-4)
+            newUnit->setStyleSheet(imgfolder+"ubexpand.png)");
+        else if(buildorder[i]==-5)
+            newUnit->setStyleSheet(imgfolder+"ubextractortrick.png)");
+        else
+            newUnit->setStyleSheet(imgfolder+mRace+QString::number(buildorder[i]).remove(0,1)+".png)");
+        ui->buildorder->addWidget(newUnit);
+    }
 }
 
 void MainWindow::bpage(int page)
@@ -99,6 +126,7 @@ void MainWindow::initControls()
     connect(ui->cfaster, SIGNAL(clicked()), this, SLOT(cfaster()));
     connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
 }
+
 void MainWindow::cslower()
 {
     framems*=2;
@@ -157,20 +185,26 @@ void MainWindow::render(int index)
     ui->rSupply->setText(QString::number(data[index].supply)+"/"+QString::number(data[index].supplymax));
     ui->rMiner->setText(QString::number(data[index].miners));
     ui->rGasMiner->setText(QString::number(data[index].gasminers));
+
+    if(true) //data[index].action=="STARTBUILD" || data[index].action=="CONSTRUCTING" || data[index].action=="SPAWNING")
+    {
+        ui->plainTextEdit->appendPlainText(QString(data[index].action.c_str()) + " " + QString::number(data[index].time) + " " + data[index].unit.c_str());
+    }
 }
 
 void MainWindow::run()
 {
-    build->loadFile("101010");
-    build->run();
-    data = build->getOutput();
-    ui->rFrame->setText(QString::number(20000));
+    pBuild->loadFile("11rax12gas");
+    pBuild->run();
+    data = pBuild->getOutput();
+    ui->rFrame->setText(QString::number(data.back().frame));
     ui->rTime->setText(QString::number(data.back().frame*42.0/1000, 'f', 1));
     ui->rMineral->setText(QString::number(data.back().minerals));
     ui->rGas->setText(QString::number(data.back().gas));
-    ui->rSupply->setText(QString::number(200)+"/"+QString::number(200));
+    ui->rSupply->setText(QString::number(data.back().supply)+"/"+QString::number(data.back().supplymax));
     ui->rMiner->setText(QString::number(data.back().miners));
     ui->rGasMiner->setText(QString::number(data.back().gasminers));
+    initBuildOrder();
 }
 
 void MainWindow::help()

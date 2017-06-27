@@ -8,6 +8,7 @@
 #include <vector>
 #include "src/frame.h"
 #include "src/build.h"
+#include "src/unittree.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,16 +35,18 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Build *build;
+    Build *pBuild;
     QTimer timer;
     int frame, index;
     float framems;
     char mRace, mPage;
+    UnitTree cUnitTree;
 
     void init();
     void initMenu();
     void initRace(char race);
     void initControls();
+    void initBuildOrder();
     void run();
     void render(int index);
     vector<Frame> data;

@@ -34,6 +34,7 @@ void MainWindow::initMenu()
 
 void MainWindow::initRace(char race)
 {
+    cUnitTree.loadRace(race);
     mRace = race;
     QString pixmapfolder("images/");
     ui->rMinerP->setPixmap(QPixmap(pixmapfolder+mRace+"211.png"));
@@ -55,9 +56,7 @@ void MainWindow::initBuildOrder()
     {
         QPushButton *newUnit = new QPushButton(QString::number(i));
         newUnit->setFlat(true);
-        newUnit->setMinimumSize(32, 32);
         newUnit->setMaximumSize(32, 32);
-        printf("%d ", buildorder[i]);
         if(buildorder[i]==-1)
             newUnit->setStyleSheet(imgfolder+"ubsearch.png)");
         else if(buildorder[i]==-2)
@@ -186,9 +185,50 @@ void MainWindow::render(int index)
     ui->rMiner->setText(QString::number(data[index].miners));
     ui->rGasMiner->setText(QString::number(data[index].gasminers));
 
-    if(true) //data[index].action=="STARTBUILD" || data[index].action=="CONSTRUCTING" || data[index].action=="SPAWNING")
+    if(data[index].action=="STARTBUILD" || data[index].action=="CONSTRUCTING" || data[index].action=="SPAWN")
     {
         ui->plainTextEdit->appendPlainText(QString(data[index].action.c_str()) + " " + QString::number(data[index].time) + " " + data[index].unit.c_str());
+    }
+    if(data[index].action=="CONSTRUCTING" || data[index].action=="SPAWN")
+    {
+        int found = -1;
+        int unitid = cUnitTree.getId(data[index].unit);
+        for (unsigned int i=0; i<vUnitList.size(); i++)
+        {
+            if(vUnitList[i]==unitid)
+            {
+                vUnitCount[i]++;
+                found = i;
+                break;
+            }
+        }
+        if(found == -1)
+        {
+            vUnitList.push_back(unitid);
+            vUnitCount.push_back(1);
+        }
+        renderUnits(found);
+    }
+}
+
+void MainWindow::renderUnits(int index)
+{
+    if(index == -1)
+    {
+        index = (int)vUnitList.size() - 1;
+        QLabel *newPic = new QLabel();
+        newPic->setPixmap(QPixmap(QString("images/")+mRace+QString::number(vUnitList[index]).remove(0,1)+".png"));
+        ui->units->addWidget(newPic,0+index%4,0+(index/4)*2);
+
+        QLabel *newCount = new QLabel("1");
+        newCount->setMinimumSize(32, 32);
+        ui->units->addWidget(newCount,0+index%4,1+(index/4)*2);
+
+        vUnitDisplay.push_back(newCount);
+    }
+    else
+    {
+        vUnitDisplay[index]->setText(QString::number(vUnitCount[index]));
     }
 }
 

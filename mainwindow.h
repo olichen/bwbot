@@ -41,6 +41,9 @@ private:
     float framems;
     char mRace, mPage;
     UnitTree cUnitTree;
+    vector<Frame> data;
+    vector<int> vUnitList, vUnitCount;
+    vector<QLabel*> vUnitDisplay;
 
     void init();
     void initMenu();
@@ -49,7 +52,7 @@ private:
     void initBuildOrder();
     void run();
     void render(int index);
-    vector<Frame> data;
+    void renderUnits(int index);
 };
 
 #endif // MAINWINDOW_H

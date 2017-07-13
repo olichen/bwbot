@@ -1,6 +1,5 @@
-// unittree.cpp
 #include "unittree.h"
-#include "string_alg.hpp"
+#include "string_alg.h"
 #include <exception>
 
 UnitTree::UnitTree()

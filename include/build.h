@@ -7,8 +7,8 @@
 #include "unitlist.h"
 #include "frame.h"
 #include "action.h"
-#include "string_alg.hpp"
-#include "buildorder.hpp"
+#include "string_alg.h"
+#include "buildorder.h"
 #include <fstream>
 #include <vector>
 

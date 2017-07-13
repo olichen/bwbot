@@ -1,4 +1,4 @@
-#include "buildorder.hpp"
+#include "buildorder.h"
 
 BuildOrder::BuildOrder()
 	: mRace('t')

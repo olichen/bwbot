@@ -1,4 +1,4 @@
-#include "string_alg.hpp"
+#include "string_alg.h"
 
 bool string_alg::is_empty(string s1)
 {

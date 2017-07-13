@@ -1,4 +1,3 @@
-// unitlist.cpp
 #include "unitlist.h"
 
 UnitList::UnitList()

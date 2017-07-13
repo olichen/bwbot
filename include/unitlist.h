@@ -1,4 +1,3 @@
-// unitlist.h
 #pragma once
 #include "currentunit.h"
 #include "unit.h"

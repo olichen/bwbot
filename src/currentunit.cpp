@@ -1,4 +1,3 @@
-// currentunit.cpp
 #include "currentunit.h"
 
 CurrentUnit::CurrentUnit(Unit &unit, Action curAction, Action idleAction)

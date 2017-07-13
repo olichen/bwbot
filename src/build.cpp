@@ -1,4 +1,3 @@
-// build.cpp
 #include "build.h"
 #include <iostream>
 

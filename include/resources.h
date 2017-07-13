@@ -1,4 +1,3 @@
-// resources.h
 #pragma once
 
 class Resources

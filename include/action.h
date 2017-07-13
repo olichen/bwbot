@@ -1,4 +1,3 @@
-// action.h
 #pragma once
 #include "unit.h"
 #include <string>

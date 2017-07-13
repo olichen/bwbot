@@ -1,4 +1,3 @@
-// build.h
 #pragma once
 #include "resources.h"
 #include "unit.h"

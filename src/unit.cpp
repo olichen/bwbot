@@ -1,4 +1,3 @@
-// unit.cpp
 #include "unit.h"
 
 Unit::Unit(int id, string name, int mineralCost, int gasCost, int buildTime, int supplyCost, int supplyProvided,

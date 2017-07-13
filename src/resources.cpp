@@ -1,4 +1,3 @@
-// resources.cpp
 #include "resources.h"
 
 Resources::Resources(int mineralPatches, int gasGeysers, char race)

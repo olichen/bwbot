@@ -6,14 +6,22 @@ Resources::Resources(int mineralPatches, int gasGeysers, char race)
 	//
 }
 
-void Resources::addExpansion(int mineralPatches, int gasGeysers)
-{
+void Resources::addExpansion(int mineralPatches, int gasGeysers) {
 	mMineralPatches += mineralPatches;
 	mGasGeysers += gasGeysers;
 }
 
-int Resources::getBaseMineRate() const
-{
+void Resources::reset(int mineralPatches, int gasGeysers) {
+	mMinerals = 0;
+	mGas = 0;
+	mSupply = 0;
+	mSupplyMax = 0;
+	mFrame = 0;
+	mMineralPatches = mineralPatches;
+	mGasGeysers = gasGeysers;
+}
+
+int Resources::getBaseMineRate() const {
 	if (mRace=='t')
 		return 176;
 	if (mRace=='z')

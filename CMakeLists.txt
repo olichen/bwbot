@@ -11,6 +11,8 @@ add_library(SrcBase ${SRC_BASE})
 add_executable(bwbot src/main.cpp)
 target_link_libraries(bwbot SrcBase)
 
+#gui
+
 #testing
 enable_testing()
 include_directories(test)

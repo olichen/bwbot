@@ -18,6 +18,7 @@ class Resources
 		int getBaseMineRate() const;
 		char getRace() const { return mRace; }
 		void clear() { mMinerals = 0; mGas = 0; mSupply = 0; mSupplyMax = 0; mFrame = 0; }
+		void reset(int mineralPatches = 9, int gasGeysers = 1);
 
 		// increment minerals, gas, supply, frame
 		void addMinerals(int minerals = 8) { mMinerals += minerals; }

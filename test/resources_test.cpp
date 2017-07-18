@@ -1,4 +1,4 @@
-#include <catch.hpp>
+#include "catch.hpp"
 #include "resources.h"
 
 TEST_CASE("resources") {

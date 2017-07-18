@@ -7,3 +7,4 @@ Unit::Unit(int id, string name, int mineralCost, int gasCost, int buildTime, int
 {
 	//
 }
+

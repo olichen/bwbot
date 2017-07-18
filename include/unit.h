@@ -25,6 +25,7 @@ class Unit
 
 		bool operator==(const Unit &unit) const { return mName==unit.getName(); }
 
+
 	private:
 		int mId;
 		string mName;

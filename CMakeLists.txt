@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.8.0)
 project(bwbot)
 
+#compilation database
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 #compile base files
 include_directories(include)
 file(GLOB SRC_BASE "src/*.cpp")
@@ -12,6 +15,7 @@ add_executable(bwbot src/main.cpp)
 target_link_libraries(bwbot SrcBase)
 
 #gui
+#fill out later
 
 #testing
 enable_testing()

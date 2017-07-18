@@ -1,5 +1,7 @@
 #pragma once
 #include "unit.h"
+#include "unitname.h"
+#include "unitdata.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -16,6 +18,7 @@ class UnitTree
 		string getExpansionName() const { return vUnitList.at(1).getName(); }
 		string getGasName() const { return vUnitList.at(2).getName(); }
 		int getId(string unit) const;
+		const UnitData unitList[UnitName::NUMBER_OF_UNITS];
 
 	private:
 		void clear() { vUnitList.clear(); }

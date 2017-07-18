@@ -35,7 +35,7 @@ enum class UnitName {
 	Terran_Physics_Lab,
 	Terran_Covert_Ops,
 	Terran_Nuclear_Missile,
-	Terran_U-238_Shells,
+	Terran_U238_Shells,
 	Terran_Stim_Pack,
 	Terran_Restoration,
 	Terran_Optical_Flare,
@@ -166,7 +166,7 @@ enum class UnitName {
 	Zerg_Lair,
 	Zerg_Hive,
 	Zerg_Spire,
-	Zerg_Queen's_Nest,
+	Zerg_Queens_Nest,
 	Zerg_Nydus_Canal,
 	Zerg_Ultralisk_Cavern,
 	Zerg_Defiler_Mound,
@@ -203,7 +203,7 @@ enum class UnitName {
 	Zerg_Flyer_Carapace_1,
 	Zerg_Flyer_Carapace_2,
 	Zerg_Flyer_Carapace_3
-}
+};
 
 class Unit
 {

@@ -359,7 +359,7 @@ UnitTree::UnitTree()
 			50,0,300,1,0,
 			{UnitName::Protoss_Nexus},UnitName::Protoss_Nexus,
 			false, false, false, false,
-			false, false, false },
+			false, false, true },
 		{ 'p', "Protoss Zealot", {},
 			100,0,600,2,0,
 			{UnitName::Protoss_Gateway},UnitName::Protoss_Gateway,
@@ -438,82 +438,82 @@ UnitTree::UnitTree()
 		{ 'p', "Protoss Nexus", {},
 			400,0,1800,0,9,
 			{UnitName::Protoss_Probe},UnitName::Protoss_Probe,
-			false, false, false, false,
-			false, false, false },
+			false, false, false, true,
+			true, false, false },
 		{ 'p', "Protoss Pylon", {},
 			100,0,450,0,8,
 			{UnitName::Protoss_Probe},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Assimilator", {},
 			100,0,600,0,0,
 			{UnitName::Protoss_Nexus},UnitName::Protoss_Probe,
-			false, false, false, false,
-			false, false, false },
+			false, false, false, true,
+			false, true, false },
 		{ 'p', "Protoss Gateway", {},
 			150,0,900,0,0,
 			{UnitName::Protoss_Nexus,UnitName::Protoss_Pylon},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Forge", {},
 			150,0,600,0,0,
 			{UnitName::Protoss_Nexus},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Photon Cannon", {},
 			150,0,750,0,0,
 			{UnitName::Protoss_Forge},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Cybernetics Core", {},
 			200,0,900,0,0,
 			{UnitName::Protoss_Gateway},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Shield Battery", {},
 			100,0,450,0,0,
 			{UnitName::Protoss_Gateway},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Robotics Facility", {},
 			200,200,1200,0,0,
 			{UnitName::Protoss_Cybernetics_Core},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Robotics Support Bay", {},
 			150,100,450,0,0,
 			{UnitName::Protoss_Robotics_Facility},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Observatory", {},
 			50,100,450,0,0,
 			{UnitName::Protoss_Robotics_Facility},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Stargate", {},
 			150,150,1050,0,0,
 			{UnitName::Protoss_Cybernetics_Core},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Fleet Beacon", {},
 			300,200,900,0,0,
 			{UnitName::Protoss_Stargate},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Arbiter Tribunal", {},
 			200,150,900,0,0,
 			{UnitName::Protoss_Stargate,UnitName::Protoss_Templar_Archives},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Citadel Of Adun", {},
 			150,100,900,0,0,
 			{UnitName::Protoss_Cybernetics_Core},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Templar Archives", {},
 			150,200,900,0,0,
 			{UnitName::Protoss_Citadel_Of_Adun},UnitName::Protoss_Probe,
-			false, false, false, false,
+			false, false, false, true,
 			false, false, false },
 		{ 'p', "Protoss Singularity Charge", {},
 			150,150,2500,0,0,
@@ -764,7 +764,7 @@ UnitTree::UnitTree()
 			300,0,1800,0,1,
 			{UnitName::Zerg_Drone},UnitName::Zerg_Drone,
 			false, false, true, false,
-			false, false, false },
+			true, false, false },
 		{ 'z', "Zerg Larva Spawner", {},
 			10000,10000,0,0,0,
 			{UnitName::Zerg_Hatchery},UnitName::Zerg_Hatchery,
@@ -774,7 +774,7 @@ UnitTree::UnitTree()
 			50,0,600,0,0,
 			{UnitName::Zerg_Hatchery},UnitName::Zerg_Drone,
 			false, false, true, false,
-			false, false, false },
+			false, true, false },
 		{ 'z', "Zerg Spawning Pool", {},
 			200,0,1200,0,0,
 			{UnitName::Zerg_Hatchery},UnitName::Zerg_Drone,
@@ -1009,6 +1009,35 @@ UnitTree::UnitTree()
 {
 	//
 }
+UnitData UnitTree::getUnit(int unitId) const
+{
+	return unitList[unitId];
+}
+
+UnitData UnitTree::getWorker(char race) const
+{
+	for (UnitData unit : unitList)
+		if(unit.race == race && unit.worker == true)
+			return unit;
+	throw -1;
+}
+
+UnitData UnitTree::getExpansion(char race) const
+{
+	for (UnitData unit : unitList)
+		if(unit.race == race && unit.expansion == true)
+			return unit;
+	throw -1;
+}
+
+UnitData UnitTree::getGas(char race) const
+{
+	for (UnitData unit : unitList)
+		if(unit.race == race && unit.gas == true)
+			return unit;
+	throw -1;
+}
+
 
 UnitTree::~UnitTree()
 {

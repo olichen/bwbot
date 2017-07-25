@@ -17,8 +17,14 @@ class UnitTree
 		string getWorkerName() const { return vUnitList.front().getName(); }
 		string getExpansionName() const { return vUnitList.at(1).getName(); }
 		string getGasName() const { return vUnitList.at(2).getName(); }
+
 		int getId(string unit) const;
-		const UnitData unitList[UnitName::NUMBER_OF_UNITS];
+
+		UnitData getUnit(int unitId) const;
+		UnitData getWorker(char race = 't') const;
+		UnitData getExpansion(char race = 't') const;
+		UnitData getGas(char race = 't') const;
+
 
 	private:
 		void clear() { vUnitList.clear(); }
@@ -26,4 +32,6 @@ class UnitTree
 			string prereq, string buildsFrom, string prereq2 = "", bool isAddon = false, bool reqAddon = false, bool morph = false);
 
 		vector<Unit> vUnitList;
+
+		const UnitData unitList[UnitName::NUMBER_OF_UNITS];
 };

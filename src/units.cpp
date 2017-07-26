@@ -1231,7 +1231,7 @@ Units::Units()
 {
 	//
 }
-Units::~Units()
-{
+
+Units::~Units() {
 	//
 }

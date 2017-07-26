@@ -1,7 +1,7 @@
 #pragma once
 
-enum UnitName {
-	Terran_SCV = 0,
+enum UnitName : unsigned char {
+	Terran_SCV,
 	Terran_Marine,
 	Terran_Firebat,
 	Terran_Ghost,
@@ -201,5 +201,5 @@ enum UnitName {
 	Zerg_Flyer_Carapace_1,
 	Zerg_Flyer_Carapace_2,
 	Zerg_Flyer_Carapace_3,
-	NUMBER_OF_UNITS
+	UNIT_TOTAL
 };

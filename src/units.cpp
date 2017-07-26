@@ -1,30 +1,26 @@
 #include "units.h"
 
-UnitStats Units::getUnitFromId(int unitId) const
-{
+UnitStats Units::getUnitFromId(int unitId) const {
+	if(unitId >= UnitName::UNIT_TOTAL)
+		throw UnitNotFound();
 	return unitStatsList[unitId];
 }
 
-UnitStats Units::getRaceWorker(char race) const
-{
-	for (UnitStats unit : unitStatsList)
-		if(unit.race == race && unit.isWorker())
-			return unit;
-	throw UnitNotFound();
+UnitStats Units::getRaceWorker(char race) const {
+	return getUnitForRace(race, &UnitStats::isWorker);
 }
 
-UnitStats Units::getRaceExpansion(char race) const
-{
-	for (UnitStats unit : unitStatsList)
-		if(unit.race == race && unit.isExpansion())
-			return unit;
-	throw UnitNotFound();
+UnitStats Units::getRaceExpansion(char race) const {
+	return getUnitForRace(race, &UnitStats::isExpansion);
 }
 
-UnitStats Units::getRaceGas(char race) const
-{
+UnitStats Units::getRaceGas(char race) const {
+	return getUnitForRace(race, &UnitStats::isGas);
+}
+
+UnitStats Units::getUnitForRace(char race, bool (UnitStats::*f)()) const {
 	for (UnitStats unit : unitStatsList)
-		if(unit.race == race && unit.isGas())
+		if(unit.race == race && (unit.*f)())
 			return unit;
 	throw UnitNotFound();
 }

@@ -18,6 +18,8 @@ class Units
 		UnitStats getRaceExpansion(char race = 't') const;
 		UnitStats getRaceGas(char race = 't') const;
 
+		UnitStats getUnitForRace(char race, bool (UnitStats::*f)()) const;
+
 	private:
 
 		const UnitStats unitStatsList[UnitName::UNIT_TOTAL];

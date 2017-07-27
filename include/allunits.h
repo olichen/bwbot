@@ -4,8 +4,14 @@
 using namespace std;
 
 class AllUnits {
-	ActionName action;
-	int timer;
+	public:
+		bool canBuild(UnitStatBlock);
+		void build(UnitStatBlock);
+		int update();
+		void clear();
+
 	private:
+		bool hasUnit(UnitName);
+
 		vector<ActiveUnit> unitList;
 };

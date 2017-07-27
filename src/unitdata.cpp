@@ -1238,7 +1238,3 @@ UnitData::UnitData()
 {
 	//
 }
-
-UnitData::~UnitData() {
-	//
-}

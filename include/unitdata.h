@@ -9,7 +9,6 @@ class UnitData
 {
 	public:
 		UnitData();
-		~UnitData();
 
 		int getUnitIdFromName(string name) const;
 		UnitStatBlock getUnitFromId(int unitId) const;

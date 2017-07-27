@@ -1,6 +1,6 @@
 #pragma once
 #include "unitname.h"
-#include "unitstats.h"
+#include "unitstatblock.h"
 #include "exceptions.h"
 #include <string>
 using namespace std;
@@ -13,14 +13,14 @@ class Units
 
 		int getId(string unit) const;
 
-		UnitStats getUnitFromId(int unitId) const;
-		UnitStats getRaceWorker(char race = 't') const;
-		UnitStats getRaceExpansion(char race = 't') const;
-		UnitStats getRaceGas(char race = 't') const;
+		UnitStatBlock getUnitFromId(int unitId) const;
+		UnitStatBlock getRaceWorker(char race = 't') const;
+		UnitStatBlock getRaceExpansion(char race = 't') const;
+		UnitStatBlock getRaceGas(char race = 't') const;
 
-		UnitStats getUnitForRace(char race, bool (UnitStats::*f)()) const;
+		UnitStatBlock getUnitForRace(char race, bool (UnitStatBlock::*f)()) const;
 
 	private:
 
-		const UnitStats unitStatsList[UnitName::UNIT_TOTAL];
+		const UnitStatBlock unitStatsList[UnitName::UNIT_TOTAL];
 };

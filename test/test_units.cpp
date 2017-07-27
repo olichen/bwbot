@@ -23,7 +23,7 @@ TEST_CASE("init") {
 	SECTION("make sure zerg unit/buildings morph") {
 		for(int i=0; i<UnitName::UNIT_TOTAL; i++)
 		{
-			UnitStats unit = units.getUnitFromId(i);
+			UnitStatBlock unit = units.getUnitFromId(i);
 			if(unit.name == "Zerg Larva" || unit.name == "Zerg Larva Spawner")
 				continue;
 			INFO(unit.name);

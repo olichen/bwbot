@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-struct UnitStats {
+struct UnitStatBlock {
 	char race;
 	string name;
 	int mineralCost;

@@ -11,16 +11,14 @@ class UnitData
 		UnitData();
 		~UnitData();
 
-		int getId(string unit) const;
-
+		int getUnitIdFromName(string name) const;
 		UnitStatBlock getUnitFromId(int unitId) const;
 		UnitStatBlock getRaceWorker(char race = 't') const;
 		UnitStatBlock getRaceExpansion(char race = 't') const;
 		UnitStatBlock getRaceGas(char race = 't') const;
 
-		UnitStatBlock getUnitForRace(char race, bool (UnitStatBlock::*f)()) const;
-
 	private:
+		UnitStatBlock getUnitForRace(char race, bool (UnitStatBlock::*f)()) const;
 
 		const UnitStatBlock unitStatsList[UnitName::UNIT_TOTAL];
 };

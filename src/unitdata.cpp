@@ -1,5 +1,12 @@
 #include "unitdata.h"
 
+int UnitData::getUnitIdFromName(string name) const {
+	for(int i=0; i<UnitName::UNIT_TOTAL; i++)
+		if(unitStatsList[i].name == name)
+			return i; 
+	throw UnitNotFound();
+}
+
 UnitStatBlock UnitData::getUnitFromId(int unitId) const {
 	if(unitId >= UnitName::UNIT_TOTAL)
 		throw UnitNotFound();

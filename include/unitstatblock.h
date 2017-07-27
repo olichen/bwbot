@@ -1,11 +1,10 @@
 #pragma once
 #include "unitname.h"
 #include <string>
-using namespace std;
 
 struct UnitStatBlock {
 	char race;
-	string name;
+	std::string name;
 	int mineralCost;
 	int gasCost;
 	int supplyCost;

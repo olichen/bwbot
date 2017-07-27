@@ -1,18 +1,14 @@
 #pragma once
-#include <string>
-using namespace std;
 
-namespace ActionName
-{
-	//actions
-	string idle = "IDLE";
-	string constructing = "CONSTRUCTING";
-	string building = "BUILDING";
-	string expanding = "EXPANDING";
-	string scout = "SCOUT";
-	string gatherMinerals = "GATHER MINERALS";
-	string gatherGas = "GATHER GAS";
-
-	//unit names that may change
-	string larvaSpawner = "Zerg Larva Spawner";
-}
+enum ActionName : unsigned char {
+	Gather_Minerals,
+	Gather_Gas,
+	Build,
+	Being_Built,
+	Scout,
+	On_Gas,
+	Off_Gas,
+	Expand,
+	Extractor_Trick,
+	ACTION_TOTAL
+};

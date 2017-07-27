@@ -5,11 +5,11 @@
 #include <string>
 using namespace std;
 
-class Units
+class UnitData
 {
 	public:
-		Units();
-		~Units();
+		UnitData();
+		~UnitData();
 
 		int getId(string unit) const;
 

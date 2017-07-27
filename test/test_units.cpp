@@ -1,8 +1,8 @@
 #include "catch.hpp"
-#include "units.h"
+#include "unitdata.h"
 
 TEST_CASE("init") {
-	Units units;
+	UnitData units;
 	
 	SECTION("random tests to make sure unitnames are correct") {
 		CHECK(units.getUnitFromId(UnitName::Terran_SCV).name == "Terran SCV");

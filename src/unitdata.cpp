@@ -1,31 +1,31 @@
-#include "units.h"
+#include "unitdata.h"
 
-UnitStatBlock Units::getUnitFromId(int unitId) const {
+UnitStatBlock UnitData::getUnitFromId(int unitId) const {
 	if(unitId >= UnitName::UNIT_TOTAL)
 		throw UnitNotFound();
 	return unitStatsList[unitId];
 }
 
-UnitStatBlock Units::getRaceWorker(char race) const {
+UnitStatBlock UnitData::getRaceWorker(char race) const {
 	return getUnitForRace(race, &UnitStatBlock::isWorker);
 }
 
-UnitStatBlock Units::getRaceExpansion(char race) const {
+UnitStatBlock UnitData::getRaceExpansion(char race) const {
 	return getUnitForRace(race, &UnitStatBlock::isExpansion);
 }
 
-UnitStatBlock Units::getRaceGas(char race) const {
+UnitStatBlock UnitData::getRaceGas(char race) const {
 	return getUnitForRace(race, &UnitStatBlock::isGas);
 }
 
-UnitStatBlock Units::getUnitForRace(char race, bool (UnitStatBlock::*f)()) const {
+UnitStatBlock UnitData::getUnitForRace(char race, bool (UnitStatBlock::*f)()) const {
 	for (UnitStatBlock unit : unitStatsList)
 		if(unit.race == race && (unit.*f)())
 			return unit;
 	throw UnitNotFound();
 }
 
-Units::Units()
+UnitData::UnitData()
 	: unitStatsList {
 		{ 't', "Terran SCV",
 			50,0,300,1,0,
@@ -1232,6 +1232,6 @@ Units::Units()
 	//
 }
 
-Units::~Units() {
+UnitData::~UnitData() {
 	//
 }

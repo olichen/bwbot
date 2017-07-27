@@ -201,5 +201,6 @@ enum UnitName : unsigned char {
 	Zerg_Flyer_Carapace_1,
 	Zerg_Flyer_Carapace_2,
 	Zerg_Flyer_Carapace_3,
-	UNIT_TOTAL
+	UNIT_TOTAL,
+	UNIT_NULL
 };

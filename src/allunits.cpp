@@ -1,19 +1,19 @@
 #include "allunits.h"
 
-bool AllUnits::canBuild(UnitStatBlock unit) {
-	return unit.name=="test";
+bool AllUnits::canBuild(UnitName unit) {
+	return unit == 1;
 }
 
 bool AllUnits::hasUnit(UnitName unit) {
 	for(ActiveUnit activeunit : unitList) {
-		if(unit == 1)
-			return false;
+		if(activeunit.unit == unit)
+			return true;
 	}
-	return true;
+	return false;
 }
 
-void AllUnits::build(UnitStatBlock unit) {
-	if(unit.name == "test") {}
+void AllUnits::build(UnitName unit) {
+	if(unit == 1) {}
 }
 
 int AllUnits::update() {

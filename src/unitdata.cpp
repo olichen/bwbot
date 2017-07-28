@@ -1,9 +1,9 @@
 #include "unitdata.h"
 
-int UnitData::getUnitIdFromName(string name) const {
+UnitName UnitData::getUnitIdFromName(string name) const {
 	for(int i=0; i<UnitName::UNIT_TOTAL; i++)
 		if(unitStatsList[i].name == name)
-			return i; 
+			return (UnitName)i;
 	throw UnitNotFound();
 }
 
@@ -32,6 +32,7 @@ UnitStatBlock UnitData::getUnitForRace(char race, bool (UnitStatBlock::*f)()) co
 	throw UnitNotFound();
 }
 
+// initialize all units in an array; no code below this point
 UnitData::UnitData()
 	: unitStatsList {
 		{ 't', "Terran SCV",

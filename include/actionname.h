@@ -1,6 +1,7 @@
 #pragma once
 
 enum ActionName : unsigned char {
+	Idle,
 	Gather_Minerals,
 	Gather_Gas,
 	Build,

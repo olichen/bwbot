@@ -3,16 +3,13 @@
 #include "actionname.h"
 
 struct ActiveUnit {
-	UnitName unit, targetUnit;
+	UnitName unit;
 	ActionName action;
 	int timer;
 
-	ActiveUnit(UnitName, ActionName, int);
 	ActiveUnit(int, int, int);
+	bool isIdle();
+	bool exists() { return true; }
+	bool isMiningMinerals() { return action == ActionName::Gather_Minerals; }
+	bool isMiningGas() { return action == ActionName::Gather_Gas; }
 };
-
-ActiveUnit::ActiveUnit(int unit, int action, int timer)
-	: unit((UnitName)unit), action((ActionName)action), timer(timer)
-{
-	//
-}

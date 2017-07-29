@@ -15,7 +15,6 @@ TEST_CASE("allunitss") {
 		CHECK(allunits.canBuild(UnitName::Terran_SCV)==false);
 		CHECK(allunits.canBuild(UnitName::Terran_Command_Center)==false);
 	}
-
 	SECTION("check that workers spawn mining") {
 		CHECK(allunits.getMineralMinerCount() == 0);
 		allunits.spawn(UnitName::Terran_SCV);
@@ -27,5 +26,15 @@ TEST_CASE("allunitss") {
 		allunits.spawn(UnitName::Zerg_Drone);
 		CHECK(allunits.getMineralMinerCount() == 4);
 	}
-
+	SECTION("check building units") {
+		CHECK(allunits.canBuild(UnitName::Terran_SCV)==false);
+		CHECK(allunits.canBuild(UnitName::Terran_Command_Center)==false);
+		CHECK_THROWS(allunits.build(UnitName::Terran_SCV));
+		CHECK_THROWS(allunits.build(UnitName::Terran_Command_Center));
+		allunits.spawn(UnitName::Terran_Command_Center);
+		CHECK(allunits.canBuild(UnitName::Terran_SCV)==true);
+		allunits.build(UnitName::Terran_SCV);
+		CHECK(allunits.canBuild(UnitName::Terran_Command_Center)==false);
+		CHECK_THROWS(allunits.build(UnitName::Terran_Command_Center));
+	}
 }

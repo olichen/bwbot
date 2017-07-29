@@ -36,28 +36,46 @@ bool AllUnits::isNonNullUnit(UnitName unitname) const {
 void AllUnits::build(UnitName unitname) {
 	UnitStatBlock unittoconstruct = unitdata.getUnitFromId(unitname);
 	UnitName buildername = unittoconstruct.buildsFrom;
-	int builderunit = findIdleUnit(buildername);
-	unitList[builderunit].action = ActionName::Build;
-	unitList[builderunit].timer = unittoconstruct.buildTime;
+	int buildtime = unittoconstruct.buildTime;
+
+	vector<ActiveUnit>::iterator builderunitit = findIdleUnit(buildername);
+	ActiveUnit &builderunit = *builderunitit;
+
+	if(unittoconstruct.isMorph()) {
+		buildtime += 18;
+		unitList.erase(builderunitit);
+	}
+	else {
+		if(unittoconstruct.isWarp()) {
+			buildtime += 70;
+			builderunit.timer = 100;
+		}
+		else {
+			builderunit.timer = buildtime;
+		}
+		builderunit.action = ActionName::Build;
+	}
+	unitList.push_back(ActiveUnit(unitname, ActionName::Being_Built, buildtime));
 }
 
 //finds an idle unit, including workers mining minerals
-int AllUnits::findIdleUnit(UnitName unitname) const {
-	int idleunit = -1;
+vector<ActiveUnit>::iterator AllUnits::findIdleUnit(UnitName unitname) {
+	vector<ActiveUnit>::iterator idleunit = unitList.end();
 	int timer = -1;
-	for(unsigned int i=0; i<unitList.size(); i++) {
-		ActiveUnit activeunit = unitList[i];
+	vector<ActiveUnit>::iterator unititerator = unitList.begin();
+	for(;unititerator != unitList.end(); ++unititerator) {
+		ActiveUnit activeunit = *unititerator;
 		if(activeunit.unit != unitname)
 			continue;
 		if(activeunit.action == ActionName::Idle)
-			return i;
+			return unititerator;
 		if(activeunit.isMiningMinerals() && activeunit.timer > timer) {
-			idleunit = i;
+			idleunit = unititerator;
 			timer = activeunit.timer;
 		}
 	}
-	if(idleunit != -1)
-		return idleunit;
+	if(idleunit != unitList.end())
+		return unititerator;
 	throw UnitNotFound();
 }
 
@@ -96,6 +114,8 @@ int AllUnits::countUnit(bool (ActiveUnit::*function)()) const {
 }
 
 ActionName AllUnits::update() {
+	for(int i=0;i<5;i++) {
+	}
 	return ActionName::Next_Frame;
 }
 

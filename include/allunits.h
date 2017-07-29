@@ -3,6 +3,7 @@
 #include "activeunit.h"
 #include "expansions.h"
 #include <vector>
+#include <iterator>
 using namespace std;
 
 class AllUnits {
@@ -20,11 +21,12 @@ class AllUnits {
 		bool hasIdleUnit(UnitName) const;
 		bool hasUnit(UnitName, bool (ActiveUnit::*)()) const;
 		bool isNonNullUnit(UnitName) const;
-		int findIdleUnit(UnitName) const;
+		vector<ActiveUnit>::iterator findIdleUnit(UnitName);
 		int getMineralRate(char race) const;
 		int getGasRate() const;
 		int countUnit(bool (ActiveUnit::*)()) const;
 
+		vector<ActiveUnit>::iterator unitListIterator;
 		vector<ActiveUnit> unitList;
 		UnitData unitdata;
 		Expansions expansion;

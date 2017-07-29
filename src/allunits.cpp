@@ -3,7 +3,7 @@
 bool AllUnits::canBuild(UnitName unitname) const {
 	UnitStatBlock unit = unitdata.getUnitFromId(unitname);
 
-	if(hasUnit(unit.buildsFrom) == false)
+	if(hasIdleUnit(unit.buildsFrom) == false)
 		return false;
 	if(hasUnit(unit.prerequisite[0]) == false)
 		return false;

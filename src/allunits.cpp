@@ -46,6 +46,7 @@ void AllUnits::build(UnitName unitname) {
 		unitList.erase(builderunitit);
 	}
 	else {
+		builderunit.action = ActionName::Build;
 		if(unittoconstruct.isWarp()) {
 			buildtime += 70;
 			builderunit.timer = 100;
@@ -53,29 +54,31 @@ void AllUnits::build(UnitName unitname) {
 		else {
 			builderunit.timer = buildtime;
 		}
-		builderunit.action = ActionName::Build;
 	}
 	unitList.push_back(ActiveUnit(unitname, ActionName::Being_Built, buildtime));
 }
 
 //finds an idle unit, including workers mining minerals
 vector<ActiveUnit>::iterator AllUnits::findIdleUnit(UnitName unitname) {
-	vector<ActiveUnit>::iterator idleunit = unitList.end();
+	vector<ActiveUnit>::iterator idleunit;
 	int timer = -1;
 	vector<ActiveUnit>::iterator unititerator = unitList.begin();
-	for(;unititerator != unitList.end(); ++unititerator) {
+	while(unititerator != unitList.end()) {
 		ActiveUnit activeunit = *unititerator;
-		if(activeunit.unit != unitname)
+		if(activeunit.unit != unitname) {
+			unititerator++;
 			continue;
+		}
 		if(activeunit.action == ActionName::Idle)
 			return unititerator;
 		if(activeunit.isMiningMinerals() && activeunit.timer > timer) {
 			idleunit = unititerator;
 			timer = activeunit.timer;
 		}
+		unititerator++;
 	}
-	if(idleunit != unitList.end())
-		return unititerator;
+	if(timer != -1)
+		return idleunit;
 	throw UnitNotFound();
 }
 

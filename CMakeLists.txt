@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8.0)
 project(bwbot)
 
+set(CMAKE_CXX_STANDARD 11)
+
 #compilation database
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 

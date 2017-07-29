@@ -1,16 +1,16 @@
 #include "unitdata.h"
 
-int UnitData::getUnitIdFromName(string name) const {
+UnitName UnitData::getUnitIdFromName(string name) const {
 	for(int i=0; i<UnitName::UNIT_TOTAL; i++)
 		if(unitStatsList[i].name == name)
-			return i; 
+			return (UnitName)i;
 	throw UnitNotFound();
 }
 
-UnitStatBlock UnitData::getUnitFromId(int unitId) const {
-	if(unitId >= UnitName::UNIT_TOTAL)
+UnitStatBlock UnitData::getUnitFromId(UnitName unitname) const {
+	if(unitname >= UnitName::UNIT_TOTAL)
 		throw UnitNotFound();
-	return unitStatsList[unitId];
+	return unitStatsList[unitname];
 }
 
 UnitStatBlock UnitData::getRaceWorker(char race) const {
@@ -25,13 +25,14 @@ UnitStatBlock UnitData::getRaceGas(char race) const {
 	return getUnitForRace(race, &UnitStatBlock::isGas);
 }
 
-UnitStatBlock UnitData::getUnitForRace(char race, bool (UnitStatBlock::*f)()) const {
+UnitStatBlock UnitData::getUnitForRace(char race, bool (UnitStatBlock::*function)()) const {
 	for (UnitStatBlock unit : unitStatsList)
-		if(unit.race == race && (unit.*f)())
+		if(unit.race == race && (unit.*function)())
 			return unit;
 	throw UnitNotFound();
 }
 
+// initialize all units in an array; no code below this point
 UnitData::UnitData()
 	: unitStatsList {
 		{ 't', "Terran SCV",

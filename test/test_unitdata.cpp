@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "unitdata.h"
 
-TEST_CASE("init") {
+TEST_CASE("unitdata") {
 	UnitData unitdata;
 	
 	SECTION("make sure the correct unit ids are pulled from names") {
@@ -41,7 +41,7 @@ TEST_CASE("init") {
 	SECTION("make sure zerg unit/buildings morph") {
 		for(int i=0; i<UnitName::UNIT_TOTAL; i++)
 		{
-			UnitStatBlock unit = unitdata.getUnitFromId(i);
+			UnitStatBlock unit = unitdata.getUnitFromId((UnitName)i);
 			if(unit.name == "Zerg Larva" || unit.name == "Zerg Larva Spawner")
 				continue;
 			INFO(unit.name);

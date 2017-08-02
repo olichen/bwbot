@@ -26,8 +26,9 @@ class AllUnits {
 		int getMineralRate(char race) const;
 		int getGasRate() const;
 		int countUnit(bool (ActiveUnit::*)()) const;
+		void updateAction(ActiveUnit&);
 
-		vector<ActiveUnit>::iterator unitListIterator;
+		vector<ActiveUnit>::iterator unitListIterator = unitList.begin();
 		vector<ActiveUnit> unitList;
 		UnitData unitData;
 		Expansions expansion;

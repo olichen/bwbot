@@ -115,12 +115,32 @@ int AllUnits::countUnit(bool (ActiveUnit::*function)()) const {
 }
 
 ActionName AllUnits::update() {
-	for(int i=0;i<5;i++) {
+	for(;unitListIterator != unitList.end();unitListIterator++) {
+		ActiveUnit &activeUnit = *unitListIterator;
+		if(activeUnit.timer == 0) {
+			ActionName activeUnitAction = activeUnit.action;
+			updateAction(activeUnit);
+			return activeUnitAction;
+		}
+		activeUnit.timer--;
 	}
+	unitListIterator = unitList.begin();
 	return ActionName::Next_Frame;
+}
+
+void AllUnits::updateAction(ActiveUnit &activeUnit) {
+	if(activeUnit.isMiningGas())
+		activeUnit.timer = expansion.getGasRate();
+	else if(unitData.getUnitFromId(activeUnit.unit).isWorker()) {
+		activeUnit.action = ActionName::Gather_Minerals;
+		activeUnit.timer = getMineralRate(unitData.getUnitFromId(activeUnit.unit).race);
+	}
+	else
+		activeUnit.action = ActionName::Idle;
 }
 
 void AllUnits::clear() {
 	unitList.clear();
+	unitListIterator = unitList.begin();
 	expansion.init();
 }

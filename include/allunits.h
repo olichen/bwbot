@@ -18,16 +18,17 @@ class AllUnits {
 
 	private:
 		bool hasUnit(UnitName) const;
-		bool hasIdleUnit(UnitName) const;
+		bool hasAvailableUnit(UnitName) const;
 		bool hasUnit(UnitName, bool (ActiveUnit::*)()) const;
 		bool isNonNullUnit(UnitName) const;
-		vector<ActiveUnit>::iterator findIdleUnit(UnitName);
+		int getBuildTime(UnitStatBlock);
+		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
 		int getMineralRate(char race) const;
 		int getGasRate() const;
 		int countUnit(bool (ActiveUnit::*)()) const;
 
 		vector<ActiveUnit>::iterator unitListIterator;
 		vector<ActiveUnit> unitList;
-		UnitData unitdata;
+		UnitData unitData;
 		Expansions expansion;
 };

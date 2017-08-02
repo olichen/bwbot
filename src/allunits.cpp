@@ -1,9 +1,9 @@
 #include "allunits.h"
 
-bool AllUnits::canBuild(UnitName unitname) const {
-	UnitStatBlock unit = unitdata.getUnitFromId(unitname);
+bool AllUnits::canBuild(UnitName unitName) const {
+	UnitStatBlock unit = unitData.getUnitFromId(unitName);
 
-	if(hasIdleUnit(unit.buildsFrom) == false)
+	if(hasAvailableUnit(unit.buildsFrom) == false)
 		return false;
 	if(hasUnit(unit.prerequisite[0]) == false)
 		return false;
@@ -13,82 +13,80 @@ bool AllUnits::canBuild(UnitName unitname) const {
 	return true;
 }
 
-bool AllUnits::hasUnit(UnitName unitname) const {
-	return hasUnit(unitname, &ActiveUnit::exists);
+bool AllUnits::hasUnit(UnitName unitName) const {
+	return hasUnit(unitName, &ActiveUnit::exists);
 }
 
-bool AllUnits::hasIdleUnit(UnitName unitname) const {
-	return hasUnit(unitname, &ActiveUnit::isIdle);
+bool AllUnits::hasAvailableUnit(UnitName unitName) const {
+	return hasUnit(unitName, &ActiveUnit::isAvailable);
 }
 
-bool AllUnits::hasUnit(UnitName unitname, bool (ActiveUnit::*function)()) const {
+bool AllUnits::hasUnit(UnitName unitName, bool (ActiveUnit::*function)()) const {
 	for(ActiveUnit activeunit : unitList) {
-		if(activeunit.unit == unitname && (activeunit.*function)())
+		if(activeunit.unit == unitName && (activeunit.*function)())
 			return true;
 	}
 	return false;
 }
 
-bool AllUnits::isNonNullUnit(UnitName unitname) const {
-	return unitname != UnitName::UNIT_NULL;
+bool AllUnits::isNonNullUnit(UnitName unitName) const {
+	return unitName != UnitName::UNIT_NULL;
 }
 
-void AllUnits::build(UnitName unitname) {
-	UnitStatBlock unittoconstruct = unitdata.getUnitFromId(unitname);
-	UnitName buildername = unittoconstruct.buildsFrom;
-	int buildtime = unittoconstruct.buildTime;
+void AllUnits::build(UnitName unitBeingBuiltName) {
+	UnitStatBlock unitBeingBuilt = unitData.getUnitFromId(unitBeingBuiltName);
+	UnitName unitBuilderName = unitBeingBuilt.buildsFrom;
+	int buildTime = getBuildTime(unitBeingBuilt);
 
-	vector<ActiveUnit>::iterator builderunitit = findIdleUnit(buildername);
-	ActiveUnit &builderunit = *builderunitit;
-
-	if(unittoconstruct.isMorph()) {
-		buildtime += 18;
+	vector<ActiveUnit>::iterator builderunitit = findAvailableUnit(unitBuilderName);
+	ActiveUnit &builderunit = *findAvailableUnit(unitBuilderName);
+	
+	if(unitBeingBuilt.isMorph())
 		unitList.erase(builderunitit);
-	}
 	else {
 		builderunit.action = ActionName::Build;
-		if(unittoconstruct.isWarp()) {
-			buildtime += 70;
-			builderunit.timer = 100;
-		}
-		else {
-			builderunit.timer = buildtime;
-		}
+			builderunit.timer = buildTime;
 	}
-	unitList.push_back(ActiveUnit(unitname, ActionName::Being_Built, buildtime));
+	unitList.push_back(ActiveUnit(unitBeingBuiltName, ActionName::Being_Built, buildTime));
 }
 
-//finds an idle unit, including workers mining minerals
-vector<ActiveUnit>::iterator AllUnits::findIdleUnit(UnitName unitname) {
-	vector<ActiveUnit>::iterator idleunit;
-	int timer = -1;
-	vector<ActiveUnit>::iterator unititerator = unitList.begin();
-	while(unititerator != unitList.end()) {
-		ActiveUnit activeunit = *unititerator;
-		if(activeunit.unit != unitname) {
-			unititerator++;
+int AllUnits::getBuildTime(UnitStatBlock unit) {
+	if(unit.isMorph())
+		return unit.buildTime + 18;
+	if(unit.isWarp())
+		return unit.buildTime + 70;
+	return unit.buildTime;
+}
+
+//finds an available unit, including workers mining minerals
+vector<ActiveUnit>::iterator AllUnits::findAvailableUnit(UnitName unitName) {
+	vector<ActiveUnit>::iterator miningWorker;
+	int miningTimer = -1;
+
+	vector<ActiveUnit>::iterator unitIterator = unitList.begin();
+	for(;unitIterator != unitList.end();unitIterator++) {
+		ActiveUnit activeUnit = *unitIterator;
+		if(activeUnit.unit != unitName)
 			continue;
+		if(activeUnit.isIdle())
+			return unitIterator;
+		if(activeUnit.isMiningMinerals() && activeUnit.timer > miningTimer) {
+			miningWorker = unitIterator;
+			miningTimer = activeUnit.timer;
 		}
-		if(activeunit.action == ActionName::Idle)
-			return unititerator;
-		if(activeunit.isMiningMinerals() && activeunit.timer > timer) {
-			idleunit = unititerator;
-			timer = activeunit.timer;
-		}
-		unititerator++;
 	}
-	if(timer != -1)
-		return idleunit;
+	if(miningTimer != -1)
+		return miningWorker;
 	throw UnitNotFound();
 }
 
-void AllUnits::spawn(UnitName unitname, ActionName action, int timer) {
-	UnitStatBlock unit = unitdata.getUnitFromId(unitname);
+void AllUnits::spawn(UnitName unitName, ActionName action, int timer) {
+	UnitStatBlock unit = unitData.getUnitFromId(unitName);
 	if(unit.isWorker()) {
 		action = ActionName::Gather_Minerals;
 		timer = getMineralRate(unit.race);
 	}
-	unitList.push_back(ActiveUnit(unitname, action, timer));
+	unitList.push_back(ActiveUnit(unitName, action, timer));
 }
 
 int AllUnits::getMineralRate(char race) const {

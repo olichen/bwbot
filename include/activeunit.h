@@ -8,8 +8,9 @@ struct ActiveUnit {
 	int timer;
 
 	ActiveUnit(int, int, int);
-	bool isIdle();
+	bool isAvailable();
 	bool exists() { return true; }
+	bool isIdle() { return action == ActionName::Idle; }
 	bool isMiningMinerals() { return action == ActionName::Gather_Minerals; }
 	bool isMiningGas() { return action == ActionName::Gather_Gas; }
 };

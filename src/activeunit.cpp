@@ -6,7 +6,7 @@ ActiveUnit::ActiveUnit(int unit, int action, int timer)
 	//
 }
 
-bool ActiveUnit::isIdle() {
+bool ActiveUnit::isAvailable() {
 	if (action == ActionName::Idle || action == ActionName::Gather_Minerals)
 		return true;
 	return false;

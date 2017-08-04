@@ -7,9 +7,9 @@ struct UnitStatBlock {
 	std::string name;
 	int mineralCost;
 	int gasCost;
+	int buildTime;
 	int supplyCost;
 	int supplyProvided;
-	int buildTime;
 	UnitName prerequisite[2];
 	UnitName buildsFrom;
 	bool requireAddon;

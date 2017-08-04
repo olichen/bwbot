@@ -9,7 +9,7 @@ using namespace std;
 class AllUnits {
 	public:
 		bool canBuild(UnitName) const;
-		void spawn(UnitName, ActionName = ActionName::Idle, int timer = -1);
+		void spawn(UnitName);
 		void build(UnitName);
 		int getMineralMinerCount() const;
 		int getGasMinerCount() const;
@@ -28,7 +28,7 @@ class AllUnits {
 		int countUnit(bool (ActiveUnit::*)()) const;
 		void updateAction(ActiveUnit&);
 
-		vector<ActiveUnit>::iterator unitListIterator = unitList.begin();
+		vector<ActiveUnit>::iterator unitListIterator;
 		vector<ActiveUnit> unitList;
 		UnitData unitData;
 		Expansions expansion;

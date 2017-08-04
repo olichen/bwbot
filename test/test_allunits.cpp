@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "allunits.h"
 
-TEST_CASE("allunitss") {
+TEST_CASE("allunits") {
 	AllUnits allunits;
 
 	SECTION("check spawning and prerequisites") {
@@ -47,5 +47,38 @@ TEST_CASE("allunitss") {
 		allunits.build(UnitName::Zerg_Hatchery);
 		CHECK(allunits.canBuild(UnitName::Zerg_Hatchery)==false);
 		CHECK_THROWS(allunits.build(UnitName::Zerg_Hatchery));
+	}
+	SECTION("check mining update") {
+		allunits.spawn(UnitName::Terran_SCV);
+		for(int i=0;i<176;i++)
+			REQUIRE(allunits.update()==ActionName::Next_Frame);
+		REQUIRE(allunits.update()==ActionName::Gather_Minerals);
+		REQUIRE(allunits.update()==ActionName::Next_Frame);
+		allunits.spawn(UnitName::Terran_SCV);
+		for(int i=0;i<175;i++)
+			REQUIRE(allunits.update()==ActionName::Next_Frame);
+		REQUIRE(allunits.update()==ActionName::Gather_Minerals);
+		REQUIRE(allunits.update()==ActionName::Next_Frame);
+		REQUIRE(allunits.update()==ActionName::Gather_Minerals);
+	}
+	SECTION("check building update") {
+		allunits.spawn(UnitName::Terran_Command_Center);
+		REQUIRE(allunits.update()==ActionName::Next_Frame);
+		allunits.build(UnitName::Terran_SCV);
+		for(int i=0;i<300;i++)
+			REQUIRE(allunits.update()==ActionName::Next_Frame);
+		REQUIRE(allunits.update()==ActionName::Build);
+		REQUIRE(allunits.update()==ActionName::Being_Built);
+		allunits.build(UnitName::Terran_SCV);
+		for(int i=0;i<176;i++)
+			REQUIRE(allunits.update()==ActionName::Next_Frame);
+		REQUIRE(allunits.update()==ActionName::Gather_Minerals);
+		for(int i=0;i<(300-176);i++)
+			REQUIRE(allunits.update()==ActionName::Next_Frame);
+		REQUIRE(allunits.update()==ActionName::Build);
+		REQUIRE(allunits.update()==ActionName::Being_Built);
+		for(int i=0;i<(176*2-300);i++)
+			REQUIRE(allunits.update()==ActionName::Next_Frame);
+		REQUIRE(allunits.update()==ActionName::Gather_Minerals);
 	}
 }

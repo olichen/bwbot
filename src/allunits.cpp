@@ -45,9 +45,10 @@ void AllUnits::build(UnitName unitBeingBuiltName) {
 		unitList.erase(builderunitit);
 	else {
 		builderunit.action = ActionName::Build;
-			builderunit.timer = buildTime;
+		builderunit.timer = buildTime;
 	}
 	unitList.push_back(ActiveUnit(unitBeingBuiltName, ActionName::Being_Built, buildTime));
+	unitListIterator = unitList.begin();
 }
 
 int AllUnits::getBuildTime(UnitStatBlock unit) {
@@ -80,13 +81,16 @@ vector<ActiveUnit>::iterator AllUnits::findAvailableUnit(UnitName unitName) {
 	throw UnitNotFound();
 }
 
-void AllUnits::spawn(UnitName unitName, ActionName action, int timer) {
+void AllUnits::spawn(UnitName unitName) {
 	UnitStatBlock unit = unitData.getUnitFromId(unitName);
+	ActionName action = ActionName::Idle;
+	int timer = -1;
 	if(unit.isWorker()) {
 		action = ActionName::Gather_Minerals;
 		timer = getMineralRate(unit.race);
 	}
 	unitList.push_back(ActiveUnit(unitName, action, timer));
+	unitListIterator = unitList.begin();
 }
 
 int AllUnits::getMineralRate(char race) const {
@@ -135,8 +139,10 @@ void AllUnits::updateAction(ActiveUnit &activeUnit) {
 		activeUnit.action = ActionName::Gather_Minerals;
 		activeUnit.timer = getMineralRate(unitData.getUnitFromId(activeUnit.unit).race);
 	}
-	else
+	else {
 		activeUnit.action = ActionName::Idle;
+		activeUnit.timer = -1;
+	}
 }
 
 void AllUnits::clear() {

@@ -43,6 +43,10 @@ void AllUnits::build(UnitName unitBeingBuiltName) {
 	
 	if(unitBeingBuilt.isMorph())
 		unitList.erase(builderunitit);
+	else if (unitBeingBuilt.isWarp()) {
+		builderunit.action = ActionName::Build;
+		builderunit.timer = 64; //time it takes to move 5 units and back
+	}
 	else {
 		builderunit.action = ActionName::Build;
 		builderunit.timer = buildTime;
@@ -123,7 +127,7 @@ ActionName AllUnits::update() {
 		ActiveUnit &activeUnit = *unitListIterator;
 		if(activeUnit.timer == 0) {
 			ActionName activeUnitAction = activeUnit.action;
-			updateAction(activeUnit);
+			updateUnitAction(activeUnit);
 			return activeUnitAction;
 		}
 		activeUnit.timer--;
@@ -132,7 +136,7 @@ ActionName AllUnits::update() {
 	return ActionName::Next_Frame;
 }
 
-void AllUnits::updateAction(ActiveUnit &activeUnit) {
+void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {
 	if(activeUnit.isMiningGas())
 		activeUnit.timer = expansion.getGasRate();
 	else if(unitData.getUnitFromId(activeUnit.unit).isWorker()) {

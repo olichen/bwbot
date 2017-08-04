@@ -26,7 +26,7 @@ class AllUnits {
 		int getMineralRate(char race) const;
 		int getGasRate() const;
 		int countUnit(bool (ActiveUnit::*)()) const;
-		void updateAction(ActiveUnit&);
+		void updateUnitAction(ActiveUnit&);
 
 		vector<ActiveUnit>::iterator unitListIterator;
 		vector<ActiveUnit> unitList;

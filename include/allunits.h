@@ -9,11 +9,11 @@ using namespace std;
 class AllUnits {
 	public:
 		bool canBuild(UnitName) const;
-		void spawn(UnitName);
+		void spawn(UnitName, ActionName actionName = ActionName::Idle, int timer = -1);
 		void build(UnitName);
 		int getMineralMinerCount() const;
 		int getGasMinerCount() const;
-		ActionName update();
+		ActiveUnit update();
 		void clear();
 
 	private:
@@ -21,6 +21,7 @@ class AllUnits {
 		bool hasAvailableUnit(UnitName) const;
 		bool hasUnit(UnitName, bool (ActiveUnit::*)()) const;
 		bool isNonNullUnit(UnitName) const;
+		void updateUnitBuilder(UnitName);
 		int getBuildTime(UnitStatBlock);
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
 		int getMineralRate(char race) const;

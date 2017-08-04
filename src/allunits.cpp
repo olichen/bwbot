@@ -51,8 +51,10 @@ void AllUnits::build(UnitName unitBeingBuiltName) {
 		builderunit.action = ActionName::Build;
 		builderunit.timer = buildTime;
 	}
-	unitList.push_back(ActiveUnit(unitBeingBuiltName, ActionName::Being_Built, buildTime));
-	unitListIterator = unitList.begin();
+	spawn(unitBeingBuiltName, ActionName::Being_Built, buildTime);
+}
+
+void AllUnits::updateUnitBuilder(UnitName unitName) {
 }
 
 int AllUnits::getBuildTime(UnitStatBlock unit) {
@@ -85,16 +87,17 @@ vector<ActiveUnit>::iterator AllUnits::findAvailableUnit(UnitName unitName) {
 	throw UnitNotFound();
 }
 
-void AllUnits::spawn(UnitName unitName) {
+void AllUnits::spawn(UnitName unitName, ActionName actionName, int timer) {
 	UnitStatBlock unit = unitData.getUnitFromId(unitName);
-	ActionName action = ActionName::Idle;
-	int timer = -1;
 	if(unit.isWorker()) {
-		action = ActionName::Gather_Minerals;
+		actionName = ActionName::Gather_Minerals;
 		timer = getMineralRate(unit.race);
 	}
-	unitList.push_back(ActiveUnit(unitName, action, timer));
+	unitList.push_back(ActiveUnit(unitName, actionName, timer));
 	unitListIterator = unitList.begin();
+	if(unitName==UnitName::Zerg_Hatchery) {
+		spawn(UnitName::Zerg_Larva_Spawner, actionName, timer);
+	}
 }
 
 int AllUnits::getMineralRate(char race) const {
@@ -122,18 +125,18 @@ int AllUnits::countUnit(bool (ActiveUnit::*function)()) const {
 	return count;
 }
 
-ActionName AllUnits::update() {
+ActiveUnit AllUnits::update() {
 	for(;unitListIterator != unitList.end();unitListIterator++) {
 		ActiveUnit &activeUnit = *unitListIterator;
 		if(activeUnit.timer == 0) {
-			ActionName activeUnitAction = activeUnit.action;
+			ActiveUnit activeUnitCopy = activeUnit;
 			updateUnitAction(activeUnit);
-			return activeUnitAction;
+			return activeUnitCopy;
 		}
 		activeUnit.timer--;
 	}
 	unitListIterator = unitList.begin();
-	return ActionName::Next_Frame;
+	return ActiveUnit(UnitName::UNIT_NULL,ActionName::Next_Frame,0);
 }
 
 void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {

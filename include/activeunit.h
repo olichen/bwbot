@@ -5,7 +5,7 @@
 struct ActiveUnit {
 	UnitName unit;
 	ActionName action;
-	int timer;
+	short int timer, count;
 
 	ActiveUnit(int, int, int);
 	bool isAvailable();

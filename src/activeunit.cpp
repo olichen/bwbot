@@ -1,7 +1,7 @@
 #include "activeunit.h"
 
 ActiveUnit::ActiveUnit(int unit, int action, int timer)
-	: unit((UnitName)unit), action((ActionName)action), timer(timer)
+	: unit((UnitName)unit), action((ActionName)action), timer(timer), count(0)
 {
 	//
 }

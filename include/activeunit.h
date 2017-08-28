@@ -5,9 +5,9 @@
 struct ActiveUnit {
 	UnitName unit;
 	ActionName action;
-	short int timer, count;
+	short int timer, count, counttimer;
 
-	ActiveUnit(int, int, int, int count = 0);
+	ActiveUnit(int, int, int, int count = 0, int counttimer = -1);
 	bool isAvailable();
 	bool exists() { return true; }
 	bool isBuilding() { return action == ActionName::Build; }

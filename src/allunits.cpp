@@ -90,12 +90,14 @@ void AllUnits::spawn(UnitName unitName, ActionName actionName, int timer) {
 		actionName = ActionName::Gather_Minerals;
 		timer = getMineralRate(unit.race);
 	}
-	unitList.push_back(ActiveUnit(unitName, actionName, timer));
-	unitListIterator = unitList.begin();
 	if(unitName==UnitName::Zerg_Hatchery) {
-		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva_Spawner, actionName, timer, 1));
+		unitList.push_back(ActiveUnit(unitName, actionName, timer, 1));
 		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva, actionName, timer));
 	}
+	else {
+		unitList.push_back(ActiveUnit(unitName, actionName, timer));
+	}
+	unitListIterator = unitList.begin();
 }
 
 int AllUnits::getMineralRate(char race) const {
@@ -140,13 +142,15 @@ ActiveUnit AllUnits::update() {
 void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {
 	if(activeUnit.isMiningGas())
 		activeUnit.timer = expansion.getGasRate();
-	else if(activeUnit.isBuilding()) {
-		activeUnit.action = ActionName::Travelling;
-		activeUnit.timer = 64;
-	}
 	else if(unitData.getUnitFromId(activeUnit.unit).isWorker()) {
-		activeUnit.action = ActionName::Gather_Minerals;
-		activeUnit.timer = getMineralRate(unitData.getUnitFromId(activeUnit.unit).race);
+		if(activeUnit.isBuilding()) {
+			activeUnit.action = ActionName::Travelling;
+			activeUnit.timer = 64;
+		}
+		else {
+			activeUnit.action = ActionName::Gather_Minerals;
+			activeUnit.timer = getMineralRate(unitData.getUnitFromId(activeUnit.unit).race);
+		}
 	}
 	else if(activeUnit.unit==UnitName::Zerg_Larva_Spawner) {
 		//TODO:

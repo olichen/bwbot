@@ -117,7 +117,6 @@ TEST_CASE("allunits") {
 		allunits.spawn(UnitName::Zerg_Hatchery);
 		REQUIRE(allunits.update().action==ActionName::Spawning);
 		REQUIRE(allunits.update().action==ActionName::Spawning);
-		REQUIRE(allunits.update().action==ActionName::Spawning);
 		REQUIRE(allunits.update().action==ActionName::Next_Frame);
 		allunits.build(UnitName::Zerg_Drone);
 		for(int i=0;i<318;i++)

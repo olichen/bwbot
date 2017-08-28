@@ -91,7 +91,6 @@ void AllUnits::spawn(UnitName unitName, ActionName actionName, int timer) {
 	// spawn a bunch of stuff for a hatch
 	if(unitName==UnitName::Zerg_Hatchery) {
 		unitList.push_back(ActiveUnit(unitName, actionName, timer));
-		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva_Spawner, actionName, timer, 1));
 		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva, actionName, timer));
 	}
 	else {
@@ -151,16 +150,6 @@ void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {
 		else {
 			activeUnit.action = ActionName::Gather_Minerals;
 			activeUnit.timer = getMineralRate(unitData.getUnitFromId(activeUnit.unit).race);
-		}
-	}
-	else if(activeUnit.unit==UnitName::Zerg_Larva_Spawner) {
-		if(activeUnit.count < 3) {
-			activeUnit.action = ActionName::Idle;
-			activeUnit.timer = 0;
-		}
-		else {
-			activeUnit.action = ActionName::Idle;
-			activeUnit.timer = 0;
 		}
 	}
 	else {

@@ -86,12 +86,9 @@ vector<ActiveUnit>::iterator AllUnits::findAvailableUnit(UnitName unitName) {
 
 void AllUnits::spawn(UnitName unitName, ActionName actionName, int timer) {
 	UnitStatBlock unit = unitData.getUnitFromId(unitName);
-	if(unit.isWorker() && actionName==ActionName::Idle) {
-		actionName = ActionName::Gather_Minerals;
-		timer = getMineralRate(unit.race);
-	}
 	if(unitName==UnitName::Zerg_Hatchery) {
-		unitList.push_back(ActiveUnit(unitName, actionName, timer, 1));
+		unitList.push_back(ActiveUnit(unitName, actionName, timer));
+		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva_Spawner, actionName, timer, 1));
 		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva, actionName, timer));
 	}
 	else {
@@ -152,8 +149,10 @@ void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {
 			activeUnit.timer = getMineralRate(unitData.getUnitFromId(activeUnit.unit).race);
 		}
 	}
-	else if(activeUnit.unit==UnitName::Zerg_Larva_Spawner) {
+	else if(activeUnit.unit==UnitName::Zerg_Larva_Spawner && activeUnit.count < 3) {
 		//TODO:
+		activeUnit.action = ActionName::Idle;
+		activeUnit.timer = -1;
 	}
 	else {
 		activeUnit.action = ActionName::Idle;

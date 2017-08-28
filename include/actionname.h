@@ -12,6 +12,7 @@ enum ActionName : unsigned char {
 	Expand,
 	Extractor_Trick,
 	Travelling, //10
+	Spawning,
 	Next_Frame,
 	ACTION_TOTAL
 };

@@ -8,66 +8,67 @@ TEST_CASE("allunits") {
 	const int MINE_RATE_P = 169;
 	const int TRAVEL_TIME = 64;
 
-	SECTION("check spawning and prerequisites") {
+	SECTION("check that prerequisites work") {
 		CHECK(allunits.canBuild(UnitName::Terran_SCV)==false);
 		CHECK(allunits.canBuild(UnitName::Terran_Command_Center)==false);
 		allunits.spawn(UnitName::Terran_SCV);
+		allunits.update();
 		CHECK(allunits.canBuild(UnitName::Terran_Command_Center)==true);
 		allunits.spawn(UnitName::Terran_Command_Center);
+		allunits.update();
 		CHECK(allunits.canBuild(UnitName::Terran_SCV)==true);
 		allunits.clear();
 		CHECK(allunits.canBuild(UnitName::Terran_SCV)==false);
 		CHECK(allunits.canBuild(UnitName::Terran_Command_Center)==false);
 	}
-	SECTION("check that workers spawn mining") {
+	SECTION("check that workers begin mining") {
 		CHECK(allunits.getMineralMinerCount() == 0);
 		allunits.spawn(UnitName::Terran_SCV);
+		allunits.update();
 		CHECK(allunits.getMineralMinerCount() == 1);
 		allunits.spawn(UnitName::Terran_SCV);
+		allunits.update();
 		CHECK(allunits.getMineralMinerCount() == 2);
 		allunits.spawn(UnitName::Protoss_Probe);
+		allunits.update();
 		CHECK(allunits.getMineralMinerCount() == 3);
 		allunits.spawn(UnitName::Zerg_Drone);
+		allunits.update();
 		CHECK(allunits.getMineralMinerCount() == 4);
 	}
-	SECTION("check building units") {
+	SECTION("check that you can only build 1 unit at a time") {
 		CHECK(allunits.canBuild(UnitName::Terran_SCV)==false);
 		CHECK(allunits.canBuild(UnitName::Terran_Command_Center)==false);
 		CHECK_THROWS(allunits.build(UnitName::Terran_SCV));
 		CHECK_THROWS(allunits.build(UnitName::Terran_Command_Center));
 		allunits.spawn(UnitName::Terran_Command_Center);
+		allunits.update();
 		CHECK(allunits.canBuild(UnitName::Terran_SCV)==true);
 		allunits.build(UnitName::Terran_SCV);
+		allunits.update();
+		CHECK(allunits.canBuild(UnitName::Terran_SCV)==false);
 		CHECK(allunits.canBuild(UnitName::Terran_Command_Center)==false);
+		CHECK_THROWS(allunits.build(UnitName::Terran_SCV));
 		CHECK_THROWS(allunits.build(UnitName::Terran_Command_Center));
-	}
-	SECTION("check morphing units") {
-		CHECK(allunits.canBuild(UnitName::Zerg_Drone)==false);
-		CHECK(allunits.canBuild(UnitName::Zerg_Hatchery)==false);
-		CHECK_THROWS(allunits.build(UnitName::Zerg_Drone));
-		CHECK_THROWS(allunits.build(UnitName::Zerg_Hatchery));
-		allunits.spawn(UnitName::Zerg_Drone);
-		CHECK(allunits.canBuild(UnitName::Zerg_Hatchery)==true);
-		allunits.build(UnitName::Zerg_Hatchery);
-		CHECK(allunits.canBuild(UnitName::Zerg_Hatchery)==false);
-		CHECK_THROWS(allunits.build(UnitName::Zerg_Hatchery));
 	}
 	SECTION("check mining update") {
 		allunits.spawn(UnitName::Terran_SCV);
+		REQUIRE(allunits.update().action==ActionName::Spawning);
 		for(int i=0;i<MINE_RATE_T;i++)
 			REQUIRE(allunits.update().action==ActionName::Next_Frame);
 		REQUIRE(allunits.update().action==ActionName::Gather_Minerals);
 		REQUIRE(allunits.update().action==ActionName::Next_Frame);
 		allunits.spawn(UnitName::Terran_SCV);
+		REQUIRE(allunits.update().action==ActionName::Spawning);
 		for(int i=0;i<MINE_RATE_T-1;i++)
 			REQUIRE(allunits.update().action==ActionName::Next_Frame);
 		REQUIRE(allunits.update().action==ActionName::Gather_Minerals);
 		REQUIRE(allunits.update().action==ActionName::Next_Frame);
 		REQUIRE(allunits.update().action==ActionName::Gather_Minerals);
 	}
-	SECTION("check terran build unit") {
+	SECTION("check building scv mining") {
 		allunits.spawn(UnitName::Terran_Command_Center);
-		REQUIRE(allunits.update().action==ActionName::Next_Frame);
+		REQUIRE(allunits.update().action==ActionName::Spawning);
 		allunits.build(UnitName::Terran_SCV);
 		for(int i=0;i<300;i++)
 			REQUIRE(allunits.update().action==ActionName::Next_Frame);
@@ -87,6 +88,7 @@ TEST_CASE("allunits") {
 	}
 	SECTION("check terran build building") {
 		allunits.spawn(UnitName::Terran_SCV);
+		REQUIRE(allunits.update().action==ActionName::Spawning);
 		allunits.build(UnitName::Terran_Supply_Depot);
 		for(int i=0;i<600;i++)
 			REQUIRE(allunits.update().action==ActionName::Next_Frame);
@@ -96,18 +98,9 @@ TEST_CASE("allunits") {
 			REQUIRE(allunits.update().action==ActionName::Next_Frame);
 		REQUIRE(allunits.update().action==ActionName::Travelling);
 	}
-	SECTION("check protoss build unit/building") {
-		allunits.spawn(UnitName::Protoss_Nexus);
-		REQUIRE(allunits.update().action==ActionName::Next_Frame);
-		allunits.build(UnitName::Protoss_Probe);
-		for(int i=0;i<300;i++)
-			REQUIRE(allunits.update().action==ActionName::Next_Frame);
-		REQUIRE(allunits.update().action==ActionName::Build);
-		REQUIRE(allunits.update().action==ActionName::Being_Built);
-		for(int i=0;i<MINE_RATE_P;i++)
-			REQUIRE(allunits.update().action==ActionName::Next_Frame);
-		REQUIRE(allunits.update().action==ActionName::Gather_Minerals);
-		//build pylon
+	SECTION("check protoss warp building") {
+		allunits.spawn(UnitName::Protoss_Probe);
+		REQUIRE(allunits.update().action==ActionName::Spawning);
 		allunits.build(UnitName::Protoss_Pylon);
 		for(int i=0;i<TRAVEL_TIME;i++)
 			REQUIRE(allunits.update().action==ActionName::Next_Frame);
@@ -122,6 +115,9 @@ TEST_CASE("allunits") {
 	}
 	SECTION("check zerg building update") {
 		allunits.spawn(UnitName::Zerg_Hatchery);
+		REQUIRE(allunits.update().action==ActionName::Spawning);
+		REQUIRE(allunits.update().action==ActionName::Spawning);
+		REQUIRE(allunits.update().action==ActionName::Spawning);
 		REQUIRE(allunits.update().action==ActionName::Next_Frame);
 		allunits.build(UnitName::Zerg_Drone);
 		for(int i=0;i<318;i++)

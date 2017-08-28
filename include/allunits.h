@@ -9,7 +9,7 @@ using namespace std;
 class AllUnits {
 	public:
 		bool canBuild(UnitName) const;
-		void spawn(UnitName, ActionName actionName = ActionName::Idle, int timer = -1);
+		void spawn(UnitName, ActionName actionName = ActionName::Spawning, int timer = 0);
 		void build(UnitName);
 		int getMineralMinerCount() const;
 		int getGasMinerCount() const;

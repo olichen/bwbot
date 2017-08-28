@@ -54,9 +54,6 @@ void AllUnits::build(UnitName unitBeingBuiltName) {
 	spawn(unitBeingBuiltName, ActionName::Being_Built, buildTime);
 }
 
-void AllUnits::updateUnitBuilder(UnitName unitName) {
-}
-
 int AllUnits::getBuildTime(UnitStatBlock unit) {
 	if(unit.isMorph())
 		return unit.buildTime + 18;
@@ -96,8 +93,8 @@ void AllUnits::spawn(UnitName unitName, ActionName actionName, int timer) {
 	unitList.push_back(ActiveUnit(unitName, actionName, timer));
 	unitListIterator = unitList.begin();
 	if(unitName==UnitName::Zerg_Hatchery) {
-		spawn(UnitName::Zerg_Larva_Spawner, actionName, timer);
-		//spawnLarva();
+		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva_Spawner, actionName, timer, 1));
+		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva, actionName, timer));
 	}
 }
 
@@ -146,6 +143,9 @@ void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {
 	else if(unitData.getUnitFromId(activeUnit.unit).isWorker()) {
 		activeUnit.action = ActionName::Gather_Minerals;
 		activeUnit.timer = getMineralRate(unitData.getUnitFromId(activeUnit.unit).race);
+	}
+	else if(activeUnit.unit==UnitName::Zerg_Larva_Spawner) {
+
 	}
 	else {
 		activeUnit.action = ActionName::Idle;

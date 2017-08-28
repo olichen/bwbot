@@ -103,7 +103,6 @@ TEST_CASE("allunits") {
 		for(int i=0;i<(520-TRAVEL_TIME_PROBE);i++) {
 			REQUIRE(allunits.update().action==ActionName::Next_Frame);
 			if((i+1)%MINE_RATE_P==0 && i>1) {
-				printf("here");
 				REQUIRE(allunits.update().action==ActionName::Gather_Minerals);
 			}
 		}

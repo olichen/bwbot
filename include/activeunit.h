@@ -7,7 +7,7 @@ struct ActiveUnit {
 	ActionName action;
 	short int timer, count;
 
-	ActiveUnit(int, int, int);
+	ActiveUnit(int, int, int, int count = 0);
 	bool isAvailable();
 	bool exists() { return true; }
 	bool isIdle() { return action == ActionName::Idle; }

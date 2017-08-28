@@ -21,7 +21,6 @@ class AllUnits {
 		bool hasAvailableUnit(UnitName) const;
 		bool hasUnit(UnitName, bool (ActiveUnit::*)()) const;
 		bool isNonNullUnit(UnitName) const;
-		void updateUnitBuilder(UnitName);
 		int getBuildTime(UnitStatBlock);
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
 		int getMineralRate(char race) const;

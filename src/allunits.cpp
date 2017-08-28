@@ -44,8 +44,8 @@ void AllUnits::build(UnitName unitBeingBuiltName) {
 	if(unitBeingBuilt.isMorph())
 		unitList.erase(builderunitit);
 	else if (unitBeingBuilt.isWarp()) {
-		builderunit.action = ActionName::Build;
-		builderunit.timer = 64; //time it takes to move 5 units and back
+		builderunit.action = ActionName::Travelling;
+		builderunit.timer = 64;
 	}
 	else {
 		builderunit.action = ActionName::Build;
@@ -140,12 +140,16 @@ ActiveUnit AllUnits::update() {
 void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {
 	if(activeUnit.isMiningGas())
 		activeUnit.timer = expansion.getGasRate();
+	else if(activeUnit.isBuilding()) {
+		activeUnit.action = ActionName::Travelling;
+		activeUnit.timer = 64;
+	}
 	else if(unitData.getUnitFromId(activeUnit.unit).isWorker()) {
 		activeUnit.action = ActionName::Gather_Minerals;
 		activeUnit.timer = getMineralRate(unitData.getUnitFromId(activeUnit.unit).race);
 	}
 	else if(activeUnit.unit==UnitName::Zerg_Larva_Spawner) {
-
+		//TODO:
 	}
 	else {
 		activeUnit.action = ActionName::Idle;

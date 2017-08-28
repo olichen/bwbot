@@ -11,6 +11,7 @@ enum ActionName : unsigned char {
 	Off_Gas,
 	Expand,
 	Extractor_Trick,
-	Next_Frame, //10
+	Travelling, //10
+	Next_Frame,
 	ACTION_TOTAL
 };

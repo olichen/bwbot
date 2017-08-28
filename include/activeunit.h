@@ -10,6 +10,7 @@ struct ActiveUnit {
 	ActiveUnit(int, int, int, int count = 0);
 	bool isAvailable();
 	bool exists() { return true; }
+	bool isBuilding() { return action == ActionName::Build; }
 	bool isIdle() { return action == ActionName::Idle; }
 	bool isMiningMinerals() { return action == ActionName::Gather_Minerals; }
 	bool isMiningGas() { return action == ActionName::Gather_Gas; }

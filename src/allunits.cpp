@@ -90,6 +90,8 @@ void AllUnits::spawn(UnitName unitName, ActionName actionName, int timer) {
 	UnitStatBlock unit = unitData.getUnitFromId(unitName);
 
 	unitList.push_back(ActiveUnit(unitName, actionName, timer));
+	if(unitName==UnitName::Zerg_Hatchery)
+		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva, actionName, timer));
 	unitListIterator = unitList.begin();
 }
 
@@ -118,6 +120,7 @@ int AllUnits::countUnit(bool (ActiveUnit::*function)()) const {
 	return count;
 }
 
+
 //returns actions if they are completed
 ActiveUnit AllUnits::update() {
 	for(;unitListIterator != unitList.end();unitListIterator++) {
@@ -130,7 +133,13 @@ ActiveUnit AllUnits::update() {
 		activeUnit.timer--;
 	}
 	unitListIterator = unitList.begin();
+	updateLarva();
 	return ActiveUnit(UnitName::UNIT_NULL,ActionName::Next_Frame,0);
+}
+
+void AllUnits::updateLarva() {
+	for(int i=0; i<larvaHandler.updateLarva(); i++)
+		spawn(UnitName::Zerg_Larva);
 }
 
 void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {
@@ -156,4 +165,5 @@ void AllUnits::clear() {
 	unitList.clear();
 	unitListIterator = unitList.begin();
 	expansion.init();
+	larvaHandler.clear();
 }

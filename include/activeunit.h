@@ -9,6 +9,7 @@ struct ActiveUnit {
 
 	ActiveUnit(int, int, int);
 	bool isAvailable();
+	bool isSpawning();
 	bool exists() { return true; }
 	bool isBuilding() { return action == ActionName::Build; }
 	bool isIdle() { return action == ActionName::Idle; }

@@ -11,3 +11,9 @@ bool ActiveUnit::isAvailable() {
 		return true;
 	return false;
 }
+
+bool ActiveUnit::isSpawning() {
+	if (action == ActionName::Spawning || action == ActionName::Being_Built)
+		return true;
+	return false;
+}

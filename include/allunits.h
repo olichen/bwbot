@@ -27,10 +27,12 @@ class AllUnits {
 		int getMineralRate(char race) const;
 		int getGasRate() const;
 		int countUnit(bool (ActiveUnit::*)()) const;
+		void updateLarva();
 		void updateUnitAction(ActiveUnit&);
 
 		vector<ActiveUnit>::iterator unitListIterator;
 		vector<ActiveUnit> unitList;
 		UnitData unitData;
 		Expansions expansion;
+		LarvaHandler larvaHandler;
 };

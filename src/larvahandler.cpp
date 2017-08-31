@@ -34,3 +34,8 @@ int LarvaHandler::updateLarva() {
 	}
 	return spawnLarvaCount;
 }
+
+void LarvaHandler::clear() {
+	timer.clear();
+	larvaCount.clear();
+}

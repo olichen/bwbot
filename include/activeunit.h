@@ -14,7 +14,4 @@ struct ActiveUnit {
 	bool isIdle() { return action == ActionName::Idle; }
 	bool isMiningMinerals() { return action == ActionName::Gather_Minerals; }
 	bool isMiningGas() { return action == ActionName::Gather_Gas; }
-	//bool isZergProduction() { return (unit == UnitName::Zerg_Hatchery
-	//		|| unit == UnitName::Zerg_Lair || unit == UnitName::Zerg_Hive); }
-	//bool isZergSpire() { return (unit == UnitName::Zerg_Spire || unit == UnitName::Zerg_Greater_Spire); }
 };

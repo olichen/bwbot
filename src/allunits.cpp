@@ -88,14 +88,8 @@ vector<ActiveUnit>::iterator AllUnits::findAvailableUnit(UnitName unitName) {
 
 void AllUnits::spawn(UnitName unitName, ActionName actionName, int timer) {
 	UnitStatBlock unit = unitData.getUnitFromId(unitName);
-	// spawn larva for hatch
-	if(unitName==UnitName::Zerg_Hatchery) {
-		unitList.push_back(ActiveUnit(unitName, actionName, timer));
-		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva, actionName, timer));
-	}
-	else {
-		unitList.push_back(ActiveUnit(unitName, actionName, timer));
-	}
+
+	unitList.push_back(ActiveUnit(unitName, actionName, timer));
 	unitListIterator = unitList.begin();
 }
 

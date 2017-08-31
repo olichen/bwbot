@@ -2,6 +2,7 @@
 #include "unitdata.h"
 #include "activeunit.h"
 #include "expansions.h"
+#include "larvahandler.h"
 #include <vector>
 #include <iterator>
 using namespace std;

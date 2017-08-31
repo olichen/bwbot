@@ -29,6 +29,7 @@ class AllUnits {
 		int countUnit(bool (ActiveUnit::*)()) const;
 		void updateLarva();
 		void updateUnitAction(ActiveUnit&);
+		void updateWorkerAction(ActiveUnit&);
 
 		vector<ActiveUnit>::iterator unitListIterator;
 		vector<ActiveUnit> unitList;

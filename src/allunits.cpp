@@ -47,8 +47,7 @@ void AllUnits::build(UnitName unitBeingBuiltName) {
 		unitList.erase(builderunitit);
 	}
 	else if (unitBeingBuilt.isWarp()) {
-		builderunit.action = ActionName::Travelling;
-		builderunit.timer = 64;
+		builderunit.setTravelling();
 	}
 	else {
 		builderunit.action = ActionName::Build;
@@ -120,20 +119,19 @@ int AllUnits::countUnit(bool (ActiveUnit::*function)()) const {
 	return count;
 }
 
-
 //returns actions if they are completed
 ActiveUnit AllUnits::update() {
 	for(;unitListIterator != unitList.end();unitListIterator++) {
 		ActiveUnit &activeUnit = *unitListIterator;
-		if(activeUnit.timer == 0 && activeUnit.action != ActionName::Idle) {
+		if(activeUnit.timer == 0) {
 			ActiveUnit activeUnitCopy = activeUnit;
 			updateUnitAction(activeUnit);
 			return activeUnitCopy;
 		}
 		activeUnit.timer--;
 	}
-	unitListIterator = unitList.begin();
 	updateLarva();
+	unitListIterator = unitList.begin();
 	return ActiveUnit(UnitName::UNIT_NULL,ActionName::Next_Frame,0);
 }
 
@@ -143,21 +141,23 @@ void AllUnits::updateLarva() {
 }
 
 void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {
-	if(activeUnit.isMiningGas())
-		activeUnit.timer = expansion.getGasRate();
-	else if(unitData.getUnitFromId(activeUnit.unit).isWorker()) {
-		if(activeUnit.isBuilding()) {
-			activeUnit.action = ActionName::Travelling;
-			activeUnit.timer = 64;
-		}
-		else {
-			activeUnit.action = ActionName::Gather_Minerals;
-			activeUnit.timer = getMineralRate(unitData.getUnitFromId(activeUnit.unit).race);
-		}
-	}
+	if(unitData.getUnitFromId(activeUnit.unit).isWorker())
+		updateWorkerAction(activeUnit);
 	else {
 		activeUnit.action = ActionName::Idle;
 		activeUnit.timer = -1;
+	}
+}
+
+void AllUnits::updateWorkerAction(ActiveUnit &activeWorker) {
+	if(activeWorker.isMiningGas())
+		activeWorker.timer = expansion.getGasRate();
+	else if(activeWorker.isBuilding()) {
+		activeWorker.setTravelling();
+	}
+	else {
+		activeWorker.action = ActionName::Gather_Minerals;
+		activeWorker.timer = getMineralRate(unitData.getUnitFromId(activeWorker.unit).race);
 	}
 }
 

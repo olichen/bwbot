@@ -11,3 +11,8 @@ bool ActiveUnit::isAvailable() {
 		return true;
 	return false;
 }
+
+void ActiveUnit::setTravelling(int time) {
+	action = ActionName::Travelling;
+	timer = time;
+}

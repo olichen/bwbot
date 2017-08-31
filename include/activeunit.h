@@ -8,6 +8,8 @@ struct ActiveUnit {
 	short int timer;
 
 	ActiveUnit(int, int, int);
+	void setTravelling(int time = 64);
+
 	bool isAvailable();
 	bool exists() { return true; }
 	bool isBuilding() { return action == ActionName::Build; }

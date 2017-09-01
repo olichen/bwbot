@@ -5,16 +5,19 @@
 struct ActiveUnit {
 	UnitName unit;
 	ActionName action;
-	short int timer, count;
+	short int timer;
 
-	ActiveUnit(int, int, int, int count = 0);
+	ActiveUnit(int, int, int);
+	void setActionTravelling(int time = 64);
+	void setActionBuild(int);
+	void setActionIdle();
+	void setActionGatherMinerals(int);
+	void setActionGatherGas(int);
+
 	bool isAvailable();
 	bool exists() { return true; }
 	bool isBuilding() { return action == ActionName::Build; }
 	bool isIdle() { return action == ActionName::Idle; }
 	bool isMiningMinerals() { return action == ActionName::Gather_Minerals; }
 	bool isMiningGas() { return action == ActionName::Gather_Gas; }
-	bool isZergProduction() { return (unit == UnitName::Zerg_Hatchery
-			|| unit == UnitName::Zerg_Lair || unit == UnitName::Zerg_Hive); }
-	bool isZergSpire() { return (unit == UnitName::Zerg_Spire || unit == UnitName::Zerg_Greater_Spire); }
 };

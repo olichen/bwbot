@@ -153,7 +153,6 @@ enum UnitName : unsigned char {
 	Zerg_Guardian,
 	Zerg_Devourer,
 	Zerg_Hatchery,
-	Zerg_Larva_Spawner,
 	Zerg_Extractor,
 	Zerg_Spawning_Pool,
 	Zerg_Evolution_Chamber,

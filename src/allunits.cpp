@@ -42,17 +42,19 @@ void AllUnits::build(UnitName unitBeingBuiltName) {
 	//update builder
 	UnitName unitBuilderName = unitBeingBuilt.buildsFrom;
 	ActiveUnit &builderunit = *findAvailableUnit(unitBuilderName);
-	if(unitBeingBuilt.isMorph()) {
-		vector<ActiveUnit>::iterator builderunitit = findAvailableUnit(unitBuilderName);
+	if(unitBeingBuilt.isMorph())
+		removeMorphingUnit(unitBuilderName);
+	else if (unitBeingBuilt.isWarp())
+		builderunit.setActionTravelling();
+	else
+		builderunit.setActionBuild(buildTime);
+}
+
+void AllUnits::removeMorphingUnit(UnitName unitname) {
+		vector<ActiveUnit>::iterator builderunitit = findAvailableUnit(unitname);
 		unitList.erase(builderunitit);
-	}
-	else if (unitBeingBuilt.isWarp()) {
-		builderunit.setTravelling();
-	}
-	else {
-		builderunit.action = ActionName::Build;
-		builderunit.timer = buildTime;
-	}
+		if(unitname == UnitName::Zerg_Larva)
+			larvaHandler.useLarva();
 }
 
 int AllUnits::getBuildTime(UnitStatBlock unit) {
@@ -86,12 +88,16 @@ vector<ActiveUnit>::iterator AllUnits::findAvailableUnit(UnitName unitName) {
 }
 
 void AllUnits::spawn(UnitName unitName, ActionName actionName, int timer) {
-	UnitStatBlock unit = unitData.getUnitFromId(unitName);
-
 	unitList.push_back(ActiveUnit(unitName, actionName, timer));
-	if(unitName==UnitName::Zerg_Hatchery)
+	if(unitName==UnitName::Zerg_Hatchery) {
+		larvaHandler.addHatch();
 		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva, actionName, timer));
+	}
 	unitListIterator = unitList.begin();
+}
+
+int AllUnits::getMineralRate(UnitName unitname) const {
+	return getMineralRate(unitData.getUnitFromId(unitname).race);
 }
 
 int AllUnits::getMineralRate(char race) const {
@@ -119,7 +125,8 @@ int AllUnits::countUnit(bool (ActiveUnit::*function)()) const {
 	return count;
 }
 
-//returns actions if they are completed
+//iterates through units and returns an action if it is completed
+//updates larva and returns next frame if all units have been iterated through
 ActiveUnit AllUnits::update() {
 	for(;unitListIterator != unitList.end();unitListIterator++) {
 		ActiveUnit &activeUnit = *unitListIterator;
@@ -135,6 +142,7 @@ ActiveUnit AllUnits::update() {
 	return ActiveUnit(UnitName::UNIT_NULL,ActionName::Next_Frame,0);
 }
 
+//updates the states of all larva spawners and spawns larva
 void AllUnits::updateLarva() {
 	for(int i=0; i<larvaHandler.updateLarva(); i++)
 		spawn(UnitName::Zerg_Larva);
@@ -143,22 +151,17 @@ void AllUnits::updateLarva() {
 void AllUnits::updateUnitAction(ActiveUnit &activeUnit) {
 	if(unitData.getUnitFromId(activeUnit.unit).isWorker())
 		updateWorkerAction(activeUnit);
-	else {
-		activeUnit.action = ActionName::Idle;
-		activeUnit.timer = -1;
-	}
+	else
+		activeUnit.setActionIdle();
 }
 
 void AllUnits::updateWorkerAction(ActiveUnit &activeWorker) {
 	if(activeWorker.isMiningGas())
-		activeWorker.timer = expansion.getGasRate();
-	else if(activeWorker.isBuilding()) {
-		activeWorker.setTravelling();
-	}
-	else {
-		activeWorker.action = ActionName::Gather_Minerals;
-		activeWorker.timer = getMineralRate(unitData.getUnitFromId(activeWorker.unit).race);
-	}
+		activeWorker.setActionGatherGas(expansion.getGasRate());
+	else if(activeWorker.isBuilding())
+		activeWorker.setActionTravelling();
+	else
+		activeWorker.setActionGatherMinerals(getMineralRate(activeWorker.unit));
 }
 
 void AllUnits::clear() {

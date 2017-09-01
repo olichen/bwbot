@@ -8,7 +8,11 @@ struct ActiveUnit {
 	short int timer;
 
 	ActiveUnit(int, int, int);
-	void setTravelling(int time = 64);
+	void setActionTravelling(int time = 64);
+	void setActionBuild(int);
+	void setActionIdle();
+	void setActionGatherMinerals(int);
+	void setActionGatherGas(int);
 
 	bool isAvailable();
 	bool exists() { return true; }

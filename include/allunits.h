@@ -22,8 +22,10 @@ class AllUnits {
 		bool hasAvailableUnit(UnitName) const;
 		bool hasUnit(UnitName, bool (ActiveUnit::*)()) const;
 		bool isNonNullUnit(UnitName) const;
+		void removeMorphingUnit(UnitName);
 		int getBuildTime(UnitStatBlock);
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
+		int getMineralRate(UnitName) const;
 		int getMineralRate(char race) const;
 		int getGasRate() const;
 		int countUnit(bool (ActiveUnit::*)()) const;

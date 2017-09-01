@@ -12,7 +12,27 @@ bool ActiveUnit::isAvailable() {
 	return false;
 }
 
-void ActiveUnit::setTravelling(int time) {
+void ActiveUnit::setActionTravelling(int time) {
 	action = ActionName::Travelling;
+	timer = time;
+}
+
+void ActiveUnit::setActionBuild(int time) {
+	action = ActionName::Build;
+	timer = time;
+}
+
+void ActiveUnit::setActionIdle() {
+	action = ActionName::Idle;
+	timer = -1;
+}
+
+void ActiveUnit::setActionGatherMinerals(int time) {
+	action = ActionName::Gather_Minerals;
+	timer = time;
+}
+
+void ActiveUnit::setActionGatherGas(int time) {
+	action = ActionName::Gather_Gas;
 	timer = time;
 }

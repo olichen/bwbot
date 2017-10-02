@@ -7,7 +7,7 @@ bool AllUnits::canBuild(UnitName unitName) const {
 		return false;
 	if(hasUnit(unit.prerequisite[0]) == false)
 		return false;
-	if(isNonNullUnit(unit.prerequisite[1]))
+	if(unit.prerequisite[1] != UnitName::UNIT_NULL)
 		if(hasUnit(unit.prerequisite[1]) == false)
 			return false;
 	return true;
@@ -27,10 +27,6 @@ bool AllUnits::hasUnit(UnitName unitName, bool (ActiveUnit::*function)()) const 
 			return true;
 	}
 	return false;
-}
-
-bool AllUnits::isNonNullUnit(UnitName unitName) const {
-	return unitName != UnitName::UNIT_NULL;
 }
 
 void AllUnits::build(UnitName unitBeingBuiltName) {

@@ -21,7 +21,6 @@ class AllUnits {
 		bool hasUnit(UnitName) const;
 		bool hasAvailableUnit(UnitName) const;
 		bool hasUnit(UnitName, bool (ActiveUnit::*)()) const;
-		bool isNonNullUnit(UnitName) const;
 		void removeMorphingUnit(UnitName);
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
 		int getMineralRate(UnitName) const;

@@ -36,7 +36,7 @@ bool AllUnits::isNonNullUnit(UnitName unitName) const {
 void AllUnits::build(UnitName unitBeingBuiltName) {
 	//spawn unit
 	UnitStatBlock unitBeingBuilt = unitData.getUnitFromId(unitBeingBuiltName);
-	int buildTime = getBuildTime(unitBeingBuilt);
+	int buildTime = unitBeingBuilt.getBuildTime();
 	spawn(unitBeingBuiltName, ActionName::Being_Built, buildTime);
 
 	//update builder
@@ -55,14 +55,6 @@ void AllUnits::removeMorphingUnit(UnitName unitname) {
 		unitList.erase(builderunitit);
 		if(unitname == UnitName::Zerg_Larva)
 			larvaHandler.useLarva();
-}
-
-int AllUnits::getBuildTime(UnitStatBlock unit) {
-	if(unit.isMorph())
-		return unit.buildTime + 18;
-	if(unit.isWarp())
-		return unit.buildTime + 70;
-	return unit.buildTime;
 }
 
 //finds an available unit, including workers mining minerals

@@ -33,6 +33,12 @@ UnitStatBlock UnitData::getUnitForRace(char race, bool (UnitStatBlock::*function
 }
 
 // initialize all units in an array; no code below this point
+// race, name,
+// mineralcost, buildtime, supplycost, supplyprovided
+// {prereq, prereq}, buildsfrom
+// addon, morph
+// expansion, gas, worker
+// type: [u]nit, [b]uilding, [a]ddon, [r]esearch, [n]umerical upgrade
 UnitData::UnitData()
 	: unitStatsList {
 		{ 't', "Terran SCV",

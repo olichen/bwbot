@@ -7,7 +7,7 @@
 #include <iterator>
 using namespace std;
 
-class AllUnits {
+class BuildHandler {
 	public:
 		bool canBuild(UnitName) const;
 		void spawn(UnitName, ActionName actionName = ActionName::Spawning, int timer = 0);

@@ -31,4 +31,12 @@ struct UnitStatBlock {
 	bool isAddon() { return type=='a'; }
 	bool isResearch() { return type=='r'; }
 	bool isUpgrade() { return type=='n'; }
+
+	int getBuildTime() {
+		if(isMorph())
+			return buildTime + 18;
+		if(isWarp())
+			return buildTime + 70;
+		return buildTime;
+	}
 };

@@ -6,18 +6,14 @@ void LarvaHandler::addHatch() {
 }
 
 void LarvaHandler::useLarva() {
-	int hatchWithMostLarva = -1;
-	for(unsigned int i=0; i<timer.size(); i++) {
-		if(hatchWithMostLarva == -1 && larvaCount[i] > 0)
-			hatchWithMostLarva = i;
+	int hatchWithMostLarva = 0;
+	for(unsigned int i=1; i<timer.size(); i++) {
 		if(larvaCount[i] > larvaCount[hatchWithMostLarva])
 			hatchWithMostLarva = i;
 		if(larvaCount[i] == larvaCount[hatchWithMostLarva])
 			if(timer[i] > timer[hatchWithMostLarva])
 				hatchWithMostLarva = i;
 	}
-	if(hatchWithMostLarva == -1)
-		throw NotEnoughLarva();
 	larvaCount[hatchWithMostLarva] -= 1;
 }
 

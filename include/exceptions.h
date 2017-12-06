@@ -13,9 +13,3 @@ class UnitNotFound : public exception {
 		return "Unit Not Found";
 	}
 };
-
-class NotEnoughLarva : public exception {
-	virtual const char* what() const throw() {
-		return "Not Enough Larva";
-	}
-};

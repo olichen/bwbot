@@ -96,10 +96,6 @@ int AllUnits::getMineralRate(char race) const {
 	return expansion.getMineralRate(getMineralMinerCount(), race);
 }
 
-int AllUnits::getGasRate() const {
-	return expansion.getGasRate();
-}
-
 int AllUnits::getMineralMinerCount() const {
 	return countUnit(&ActiveUnit::isMiningMinerals);
 }

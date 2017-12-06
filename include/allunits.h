@@ -26,7 +26,6 @@ class AllUnits {
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
 		int getMineralRate(UnitName) const;
 		int getMineralRate(char race) const;
-		int getGasRate() const;
 		int countUnit(bool (ActiveUnit::*)()) const;
 		void updateLarva();
 		void updateUnitAction(ActiveUnit&);

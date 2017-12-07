@@ -3,12 +3,12 @@
 #include "unitdata.h"
 #include "activeunit.h"
 
-class CurrentFrame {
+class ResourceHandler {
 	public:
 		Frame update(ActiveUnit);
-		void clear();
+		Frame clear();
 
 	private:
-		Frame frame;
+		Frame currentFrame;
 		UnitData unitData;
 };

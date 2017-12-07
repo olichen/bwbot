@@ -14,5 +14,6 @@ enum ActionName : unsigned char {
 	Travelling, //10
 	Spawning,
 	Next_Frame,
-	ACTION_TOTAL
+	ACTION_TOTAL,
+	ACTION_NULL
 };

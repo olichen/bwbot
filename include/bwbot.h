@@ -1,6 +1,6 @@
 #pragma once
 #include "buildhandler.h"
-#include "currentframe.h"
+#include "resourcehandler.h"
 #include "buildorder2.h"
 #include <vector>
 #include <iterator>
@@ -13,7 +13,7 @@ class BWBOT {
 		BuildHandler buildHandler;
 
 		BuildOrder buildOrder;
-		CurrentFrame currentFrame;
+		ResourceHandler currentFrame;
 		vector<Frame> output;
 		UnitData unitData;
 };

@@ -13,21 +13,28 @@ Frame ResourceHandler::update(ActiveUnit activeunit) {
 		case (Spawning):
 			// use supply
 			break;
-		default:
+		case (Start_Build):
+			// use supply money
 			break;
-	//Idle, return nil
-	//Build,
-	//Start_Build, // use supply
-	//Scout, //5 return frame
-	//On_Gas, return frame
-	//Off_Gas, return frame
-	//Expand, return nil
-	//Extractor_Trick, add supply
-	//Travelling, //10
-	//Spawning,
-	//Next_Frame,
-	//ACTION_TOTAL,
-	//ACTION_NULL
+		case (Expand):
+			// give supply, add mineral patches
+			break;
+		case (Being_Built):
+			// give supply
+			break;
+		case (Extractor_Trick):
+			// use minerals
+			break;
+		case (On_Gas):
+		case (Off_Gas):
+		case (Scout):
+			// update miners
+			break;
+		default:
+			Frame newFrame;
+			newFrame.frame = -1;
+			return newFrame;
+			break;
 	}
 	return currentFrame;
 }

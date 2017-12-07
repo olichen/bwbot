@@ -13,6 +13,7 @@ enum ActionName : unsigned char {
 	Extractor_Trick,
 	Travelling, //10
 	Spawning,
+	Start_Build,
 	Next_Frame,
 	ACTION_TOTAL,
 	ACTION_NULL

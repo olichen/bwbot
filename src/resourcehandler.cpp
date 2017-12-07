@@ -6,25 +6,23 @@ Frame ResourceHandler::update(ActiveUnit activeunit) {
 			currentFrame.frame++;
 			break;
 		case (Gather_Minerals):
-			currentFrame.minerals++;
+			currentFrame.minerals += 8;
 			break;
 		case (Gather_Gas):
-			currentFrame.gas++;
+			currentFrame.gas += 8;
 		case (Spawning):
 			// use supply
 			break;
 		default:
 			break;
-	//Idle,
-	//Gather_Minerals,
-	//Gather_Gas,
+	//Idle, return nil
 	//Build,
-	//Being_Built,
-	//Scout, //5
-	//On_Gas,
-	//Off_Gas,
-	//Expand,
-	//Extractor_Trick,
+	//Start_Build, // use supply
+	//Scout, //5 return frame
+	//On_Gas, return frame
+	//Off_Gas, return frame
+	//Expand, return nil
+	//Extractor_Trick, add supply
 	//Travelling, //10
 	//Spawning,
 	//Next_Frame,

@@ -92,7 +92,7 @@ int BuildHandler::getMineralRate(char race) const {
 	return expansion.getMineralRate(getMineralMinerCount(), race);
 }
 
-int AllUnits::getMineralMinerCount() const {
+int BuildHandler::getMineralMinerCount() const {
 	return countUnit(&ActiveUnit::isMiningMinerals);
 }
 

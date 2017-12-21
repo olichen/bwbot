@@ -5,6 +5,7 @@
 
 class ResourceHandler {
 	public:
+		bool canBuild(UnitName);
 		Frame update(ActiveUnit);
 		Frame clear();
 

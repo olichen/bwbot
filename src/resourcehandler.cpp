@@ -1,6 +1,20 @@
 #include "resourcehandler.h"
 
+bool ResourceHandler::canBuild(UnitName unitName) {
+	UnitStatBlock unit = unitData.getUnitFromId(unitName);
+
+	if(currentFrame.supplymax - currentFrame.supply > unit.supplyCost)
+		if(currentFrame.minerals > unit.mineralCost)
+			if(currentFrame.gas > unit.gasCost)
+				return true;
+
+	return false;
+}
+
 Frame ResourceHandler::update(ActiveUnit activeunit) {
+	currentFrame.unit = activeunit.unit;
+	currentFrame.action = activeunit.action;
+
 	switch(activeunit.action) {
 		case (Next_Frame):
 			currentFrame.frame++;
@@ -11,19 +25,22 @@ Frame ResourceHandler::update(ActiveUnit activeunit) {
 		case (Gather_Gas):
 			currentFrame.gas += 8;
 		case (Spawning):
-			// use supply
+			currentFrame.supply += unitData.getUnitFromId(activeunit.unit).supplyCost;
+			currentFrame.supplymax += unitData.getUnitFromId(activeunit.unit).supplyProvided;
 			break;
 		case (Start_Build):
-			// use supply money
+			currentFrame.supply += unitData.getUnitFromId(activeunit.unit).supplyCost;
+			currentFrame.minerals -= unitData.getUnitFromId(activeunit.unit).mineralCost;
+			currentFrame.gas -= unitData.getUnitFromId(activeunit.unit).gasCost;
 			break;
 		case (Expand):
-			// give supply, add mineral patches
+			currentFrame.supplymax += unitData.getUnitFromId(activeunit.unit).supplyProvided;
 			break;
 		case (Being_Built):
-			// give supply
+			currentFrame.supplymax += unitData.getUnitFromId(activeunit.unit).supplyProvided;
 			break;
 		case (Extractor_Trick):
-			// use minerals
+			currentFrame.minerals -= 17;
 			break;
 		case (On_Gas):
 		case (Off_Gas):

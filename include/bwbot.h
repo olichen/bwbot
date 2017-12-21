@@ -9,11 +9,15 @@ using namespace std;
 class BWBOT {
 	public:
 
-	private:
-		BuildHandler buildHandler;
 
+	private:
+		void init(char);
+		bool tryToBuild(UnitName);
+		void clear();
+
+		BuildHandler buildHandler;
 		BuildOrder buildOrder;
-		ResourceHandler currentFrame;
+		ResourceHandler resourceHandler;
 		vector<Frame> output;
 		UnitData unitData;
 };

@@ -1,11 +1,15 @@
 #include "resourcehandler.h"
 
+ResourceHandler::ResourceHandler() {
+	clear();
+}
+
 bool ResourceHandler::canBuild(UnitName unitName) {
 	UnitStatBlock unit = unitData.getUnitFromId(unitName);
 
-	if(currentFrame.supplymax - currentFrame.supply > unit.supplyCost)
-		if(currentFrame.minerals > unit.mineralCost)
-			if(currentFrame.gas > unit.gasCost)
+	if(currentFrame.supplymax - currentFrame.supply >= unit.supplyCost)
+		if(currentFrame.minerals >= unit.mineralCost)
+			if(currentFrame.gas >= unit.gasCost)
 				return true;
 
 	return false;

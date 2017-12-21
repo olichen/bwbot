@@ -1,10 +1,12 @@
 #include "bwbot.h"
 
-void BWBOT::main() {
-	init('t');
-	testinit();
-	run();
-	testprint();
+int main() {
+	BWBOT bwbot;
+	bwbot.init('t');
+	bwbot.testinit();
+	bwbot.run();
+	bwbot.testprint();
+	return 0;
 }
 
 void BWBOT::run() {

@@ -11,7 +11,7 @@ int main() {
 
 void BWBOT::run() {
 	int i=0;
-	while(!buildOrder.atEnd()&&i<1000) {
+	while(!buildOrder.atEnd()&&i<10000) {
 		update();
 		i++;
 	}
@@ -23,7 +23,7 @@ void BWBOT::update() {
 	if(currentUnit.action == ActionName::Next_Frame)
 		if(tryToBuild(buildOrder.getUnit()))
 				buildOrder.nextUnit();
-	if(currentUnit.timer != -1 && currentUnit.action != ActionName::Next_Frame) {
+	if(currentUnit.action != ActionName::Next_Frame) {
 		currentFrame.miners = buildHandler.getMineralMinerCount();
 		currentFrame.gasminers = buildHandler.getGasMinerCount();
 		output.push_back(currentFrame);
@@ -34,11 +34,15 @@ void BWBOT::testinit() {
 	buildOrder.push_back(UnitName::Terran_SCV);
 	buildOrder.push_back(UnitName::Terran_SCV);
 	buildOrder.push_back(UnitName::Terran_SCV);
-	//buildOrder.push_back(UnitName::Terran_SCV);
-	//buildOrder.push_back(UnitName::Terran_SCV);
-	//buildOrder.push_back(UnitName::Terran_Supply_Depot);
-	//buildOrder.push_back(UnitName::Terran_SCV);
-	//buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_Supply_Depot);
+	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_Barracks);
+	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_Refinery);
+	buildOrder.push_back(UnitName::Terran_Command_Center);
 }
 
 void BWBOT::testprint() {
@@ -78,6 +82,8 @@ bool BWBOT::tryToBuild(UnitName unitname) {
 	if(resourceHandler.canBuild(unitname)) {
 		if(buildHandler.canBuild(unitname)) {
 			buildHandler.build(unitname);
+			ActiveUnit abcarg(unitname, ActionName::Start_Build, 150);
+			output.push_back(resourceHandler.update(abcarg));
 			return true;
 		}
 	}

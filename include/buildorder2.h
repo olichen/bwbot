@@ -7,13 +7,11 @@ using namespace std;
 class BuildOrder
 {
 	public:
-		BuildOrder();
-
 		UnitName getUnit() { return *buildOrderIterator; }
 		void nextUnit() { buildOrderIterator++; }
 		bool atEnd() { return buildOrderIterator == buildOrder.end(); }
 
-		void push_back(UnitName unit) { buildOrder.push_back(unit); }
+		void push_back(UnitName unit) { buildOrder.push_back(unit); buildOrderIterator = buildOrder.begin(); }
 		void pop() { buildOrder.pop_back(); }
 		void clear() { buildOrder.clear(); buildOrderIterator = buildOrder.begin(); }
 

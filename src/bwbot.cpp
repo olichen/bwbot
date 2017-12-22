@@ -10,29 +10,35 @@ int main() {
 }
 
 void BWBOT::run() {
-	while(!buildOrder.atEnd())
+	int i=0;
+	while(!buildOrder.atEnd()&&i<1000) {
 		update();
+		i++;
+	}
 }
 
 void BWBOT::update() {
 	ActiveUnit currentUnit = buildHandler.update();
 	Frame currentFrame = resourceHandler.update(currentUnit);
 	if(currentUnit.action == ActionName::Next_Frame)
-		while(tryToBuild(buildOrder.getUnit())&&!buildOrder.atEnd())
+		if(tryToBuild(buildOrder.getUnit()))
 				buildOrder.nextUnit();
-	if(currentUnit.timer != -1)
+	if(currentUnit.timer != -1 && currentUnit.action != ActionName::Next_Frame) {
+		currentFrame.miners = buildHandler.getMineralMinerCount();
+		currentFrame.gasminers = buildHandler.getGasMinerCount();
 		output.push_back(currentFrame);
+	}
 }
 
 void BWBOT::testinit() {
 	buildOrder.push_back(UnitName::Terran_SCV);
 	buildOrder.push_back(UnitName::Terran_SCV);
 	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_Supply_Depot);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_Supply_Depot);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
 }
 
 void BWBOT::testprint() {
@@ -41,7 +47,10 @@ void BWBOT::testprint() {
 		printf("%6d %3d %3d ", f.frame, f.minerals, f.gas);
 		printf("%3d/%3d ", f.supply, f.supplymax);
 		printf("%2d %2d ", f.miners, f.gasminers);
-		printf("%2d %s", f.action, unitData.getUnitFromId(f.unit).name.c_str());
+		string uname = "NULL";
+		if(f.unit != UnitName::UNIT_NULL)
+			uname = unitData.getUnitFromId(f.unit).name;
+		printf("%2d %s\n", f.action, uname.c_str());
 	}
 }
 

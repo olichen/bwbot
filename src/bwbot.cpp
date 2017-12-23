@@ -41,8 +41,8 @@ void BWBOT::testinit() {
 	buildOrder.push_back(UnitName::Terran_SCV);
 	buildOrder.push_back(UnitName::Terran_Barracks);
 	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_Refinery);
-	buildOrder.push_back(UnitName::Terran_Command_Center);
+	//buildOrder.push_back(UnitName::Terran_Refinery);
+	//buildOrder.push_back(UnitName::Terran_Command_Center);
 }
 
 void BWBOT::testprint() {

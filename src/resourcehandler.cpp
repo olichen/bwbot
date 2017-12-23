@@ -49,12 +49,13 @@ Frame ResourceHandler::update(ActiveUnit activeunit) {
 		case (On_Gas):
 		case (Off_Gas):
 		case (Scout):
+		case (Idle):
 			// update miners
-			break;
+			//break;
 		default:
-			Frame newFrame;
-			newFrame.frame = -1;
-			return newFrame;
+			//Frame newFrame;
+			//newFrame.frame = -1;
+			//return newFrame;
 			break;
 	}
 	return currentFrame;

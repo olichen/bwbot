@@ -58,7 +58,34 @@ void BWBOT::testprint() {
 		string uname = "NULL";
 		if(f.unit != UnitName::UNIT_NULL)
 			uname = unitData.getUnitFromId(f.unit).name;
-		printf("%2d %s\n", f.action, uname.c_str());
+		string action = "NULL ";
+		if(f.action==ActionName::Idle)
+			action = "IDLE ";
+		if(f.action==ActionName::Gather_Minerals)
+			action = "GATHM";
+		if(f.action==ActionName::Gather_Gas)
+			action = "GATHG";
+		if(f.action==ActionName::Build)
+			action = "BUILD";
+		if(f.action==ActionName::Being_Built)
+			action = "BEING";
+		if(f.action==ActionName::Scout)
+			action = "SCOUT";
+		if(f.action==ActionName::On_Gas)
+			action = "ONGAS";
+		if(f.action==ActionName::Off_Gas)
+			action = "OFGAS";
+		if(f.action==ActionName::Expand)
+			action = "EXPND";
+		if(f.action==ActionName::Extractor_Trick)
+			action = "TRICK";
+		if(f.action==ActionName::Travelling)
+			action = "TRAVL";
+		if(f.action==ActionName::Spawning)
+			action = "SPAWN";
+		if(f.action==ActionName::Start_Build)
+			action = "START";
+		printf("%s %s\n", action.c_str(), uname.c_str());
 	}
 }
 

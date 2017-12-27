@@ -15,8 +15,6 @@ class BuildOrder
 		void pop() { buildOrder.pop_back(); }
 		void clear() { buildOrder.clear(); buildOrderIterator = buildOrder.begin(); }
 
-		//void printBuildOrder() const;
-		
 	private:
 		vector<UnitName>::iterator buildOrderIterator;
 		vector<UnitName> buildOrder;

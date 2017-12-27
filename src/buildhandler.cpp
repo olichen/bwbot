@@ -152,6 +152,8 @@ void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 			for(int i=0;i<3;i++)
 				(*findAvailableMiner()).setActionGatherGas(((3+i)*expansion.getGasRate())/3);
 		}
+		if(activeUnit.action==ActionName::Expand)
+			expansion.expand();
 		activeUnit.setActionIdle();
 	}
 }

@@ -36,13 +36,17 @@ void BWBOT::testinit() {
 	buildOrder.push_back(UnitName::Terran_SCV);
 	buildOrder.push_back(UnitName::Terran_SCV);
 	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_SCV);
 	buildOrder.push_back(UnitName::Terran_Supply_Depot);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
 	buildOrder.push_back(UnitName::Terran_Barracks);
+	buildOrder.push_back(UnitName::Terran_Refinery);
 	buildOrder.push_back(UnitName::Terran_SCV);
-	//buildOrder.push_back(UnitName::Terran_Refinery);
-	//buildOrder.push_back(UnitName::Terran_Command_Center);
+	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_Factory);
+	buildOrder.push_back(UnitName::Terran_SCV);
+	buildOrder.push_back(UnitName::Terran_Command_Center);
 }
 
 void BWBOT::testprint() {
@@ -82,8 +86,8 @@ bool BWBOT::tryToBuild(UnitName unitname) {
 	if(resourceHandler.canBuild(unitname)) {
 		if(buildHandler.canBuild(unitname)) {
 			buildHandler.build(unitname);
-			ActiveUnit abcarg(unitname, ActionName::Start_Build, 150);
-			output.push_back(resourceHandler.update(abcarg));
+			ActiveUnit startBuildUnitFrame(unitname, ActionName::Start_Build, -1);
+			output.push_back(resourceHandler.update(startBuildUnitFrame));
 			return true;
 		}
 	}

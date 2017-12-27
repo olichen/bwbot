@@ -22,6 +22,7 @@ class BuildHandler {
 		bool hasAvailableUnit(UnitName) const;
 		bool hasUnit(UnitName, bool (ActiveUnit::*)()) const;
 		void removeMorphingUnit(UnitName);
+		vector<ActiveUnit>::iterator findAvailableMiner();
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
 		int getMineralRate(UnitName) const;
 		int getMineralRate(char race) const;

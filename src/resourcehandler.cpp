@@ -28,6 +28,7 @@ Frame ResourceHandler::update(ActiveUnit activeunit) {
 			break;
 		case (Gather_Gas):
 			currentFrame.gas += 8;
+			break;
 		case (Spawning):
 			currentFrame.supply += unitData.getUnitFromId(activeunit.unit).supplyCost;
 			currentFrame.supplymax += unitData.getUnitFromId(activeunit.unit).supplyProvided;

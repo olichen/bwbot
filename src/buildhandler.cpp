@@ -53,6 +53,16 @@ void BuildHandler::removeMorphingUnit(UnitName unitname) {
 			larvaHandler.useLarva();
 }
 
+vector<ActiveUnit>::iterator BuildHandler::findAvailableMiner() {
+	if(hasAvailableUnit(UnitName::Terran_SCV))
+		return findAvailableUnit(UnitName::Terran_SCV);
+	if(hasAvailableUnit(UnitName::Protoss_Probe))
+		return findAvailableUnit(UnitName::Protoss_Probe);
+	if(hasAvailableUnit(UnitName::Zerg_Drone))
+		return findAvailableUnit(UnitName::Zerg_Drone);
+	throw UnitNotFound();
+}
+
 //finds an available unit, including workers mining minerals
 vector<ActiveUnit>::iterator BuildHandler::findAvailableUnit(UnitName unitName) {
 	vector<ActiveUnit>::iterator miningWorker;
@@ -78,6 +88,7 @@ vector<ActiveUnit>::iterator BuildHandler::findAvailableUnit(UnitName unitName) 
 void BuildHandler::spawn(UnitName unitName, ActionName actionName, int timer) {
 	unitList.push_back(ActiveUnit(unitName, actionName, timer));
 	if(unitName==UnitName::Zerg_Hatchery) {
+		//TODO: three larva for spawned
 		larvaHandler.addHatch();
 		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva, actionName, timer));
 	}
@@ -133,10 +144,16 @@ void BuildHandler::updateLarva() {
 }
 
 void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
-	if(unitData.getUnitFromId(activeUnit.unit).isWorker())
+	UnitStatBlock unitStats = unitData.getUnitFromId(activeUnit.unit);
+	if(unitStats.isWorker())
 		updateWorkerAction(activeUnit);
-	else
+	else {
+		if(unitStats.isGas() && activeUnit.action==ActionName::Being_Built) {
+			for(int i=0;i<3;i++)
+				(*findAvailableMiner()).setActionGatherGas(((3+i)*expansion.getGasRate())/3);
+		}
 		activeUnit.setActionIdle();
+	}
 }
 
 void BuildHandler::updateWorkerAction(ActiveUnit &activeWorker) {

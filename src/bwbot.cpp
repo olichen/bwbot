@@ -20,9 +20,14 @@ void BWBOT::run() {
 void BWBOT::update() {
 	ActiveUnit currentUnit = buildHandler.update();
 	Frame currentFrame = resourceHandler.update(currentUnit);
-	if(currentUnit.action == ActionName::Next_Frame)
-		if(tryToBuild(buildOrder.getUnit()))
-				buildOrder.nextUnit();
+	if(currentUnit.action == ActionName::Next_Frame) {
+		if(buildOrder.getUnit()<UnitName::UNIT_TOTAL) {
+			if(tryToBuild(buildOrder.getUnit()))
+					buildOrder.nextUnit();
+		}
+		else {}
+			// need to handle scout, on gas, off gas, expand
+	}
 	if(currentUnit.action != ActionName::Next_Frame) {
 		currentFrame.miners = buildHandler.getMineralMinerCount();
 		currentFrame.gasminers = buildHandler.getGasMinerCount();

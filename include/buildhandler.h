@@ -23,14 +23,14 @@ class BuildHandler {
 		bool hasUnit(UnitName) const;
 		bool hasAvailableUnit(UnitName) const;
 		bool hasUnit(UnitName, bool (ActiveUnit::*)()) const;
-		void findAndUseBuilder(UnitStatBlock);
+		void useBuilder(UnitStatBlock);
 		void removeMorphingUnit(UnitName);
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
 		vector<ActiveUnit>::iterator findIdleUnit(UnitName);
 		vector<ActiveUnit>::iterator findMiner(UnitName);
 		vector<ActiveUnit>::iterator findMineralMiner();
 		vector<ActiveUnit>::iterator findGasMiner();
-		vector<ActiveUnit>::iterator findUnitByAction(bool (ActiveUnit::*)());
+		vector<ActiveUnit>::iterator findMinerByAction(bool (ActiveUnit::*)(), UnitName unitName = UnitName::UNIT_NULL);
 		int getMineralRate(UnitName) const;
 		int getMineralRate(char race) const;
 		int countUnit(bool (ActiveUnit::*)()) const;

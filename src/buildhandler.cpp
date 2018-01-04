@@ -32,10 +32,10 @@ bool BuildHandler::hasUnit(UnitName unitName, bool (ActiveUnit::*function)()) co
 void BuildHandler::build(UnitName unitName) {
 	UnitStatBlock unitStats = unitData.getUnitFromId(unitName);
 	spawn(unitName, ActionName::Being_Built, unitStats.getBuildTime());
-	findAndUseBuilder(unitStats);
+	useBuilder(unitStats);
 }
 
-void BuildHandler::findAndUseBuilder(UnitStatBlock unit) {
+void BuildHandler::useBuilder(UnitStatBlock unit) {
 	ActiveUnit &builderunit = *findAvailableUnit(unit.buildsFrom);
 	if(unit.isMorph())
 		removeMorphingUnit(unit.buildsFrom);
@@ -70,39 +70,26 @@ vector<ActiveUnit>::iterator BuildHandler::findIdleUnit(UnitName unitName) {
 }
 
 vector<ActiveUnit>::iterator BuildHandler::findMiner(UnitName unitName) {
-	vector<ActiveUnit>::iterator miningWorker;
-	int miningTimer = -1;
-
-	vector<ActiveUnit>::iterator unitIterator = unitList.begin();
-	for(;unitIterator != unitList.end();unitIterator++) {
-		ActiveUnit activeUnit = *unitIterator;
-		if(activeUnit.unit != unitName)
-			continue;
-		if(activeUnit.isMiningMinerals() && activeUnit.timer > miningTimer) {
-			miningWorker = unitIterator;
-			miningTimer = activeUnit.timer;
-		}
-	}
-	if(miningTimer != -1)
-		return miningWorker;
-	throw UnitNotFound();
+	return findMinerByAction(&ActiveUnit::isMiningMinerals, unitName);
 }
 
 vector<ActiveUnit>::iterator BuildHandler::findMineralMiner() {
-	return findUnitByAction(&ActiveUnit::isMiningMinerals);
+	return findMinerByAction(&ActiveUnit::isMiningMinerals);
 }
 
 vector<ActiveUnit>::iterator BuildHandler::findGasMiner() {
-	return findUnitByAction(&ActiveUnit::isMiningGas);
+	return findMinerByAction(&ActiveUnit::isMiningGas);
 }
 
-vector<ActiveUnit>::iterator BuildHandler::findUnitByAction(bool (ActiveUnit::*function)()) {
+vector<ActiveUnit>::iterator BuildHandler::findMinerByAction(bool (ActiveUnit::*function)(), UnitName unitName) {
 	vector<ActiveUnit>::iterator miningWorker;
 	int miningTimer = -1;
 
 	vector<ActiveUnit>::iterator unitIterator = unitList.begin();
 	for(;unitIterator != unitList.end();unitIterator++) {
 		ActiveUnit activeUnit = *unitIterator;
+		if(unitName != UnitName::UNIT_NULL && activeUnit.unit != unitName)
+			continue;
 		if((activeUnit.*function)() && activeUnit.timer > miningTimer) {
 			miningWorker = unitIterator;
 			miningTimer = activeUnit.timer;

@@ -46,24 +46,30 @@ void BuildHandler::findAndUseBuilder(UnitStatBlock unit) {
 }
 
 void BuildHandler::removeMorphingUnit(UnitName unitname) {
-		vector<ActiveUnit>::iterator builderunitit = findAvailableUnit(unitname);
-		unitList.erase(builderunitit);
-		if(unitname == UnitName::Zerg_Larva)
-			larvaHandler.useLarva();
-}
-
-vector<ActiveUnit>::iterator BuildHandler::findAvailableMiner() {
-	if(hasAvailableUnit(UnitName::Terran_SCV))
-		return findAvailableUnit(UnitName::Terran_SCV);
-	if(hasAvailableUnit(UnitName::Protoss_Probe))
-		return findAvailableUnit(UnitName::Protoss_Probe);
-	if(hasAvailableUnit(UnitName::Zerg_Drone))
-		return findAvailableUnit(UnitName::Zerg_Drone);
-	throw UnitNotFound();
+	unitList.erase(findAvailableUnit(unitname));
+	if(unitname == UnitName::Zerg_Larva)
+		larvaHandler.useLarva();
 }
 
 //finds an available unit, including workers mining minerals
 vector<ActiveUnit>::iterator BuildHandler::findAvailableUnit(UnitName unitName) {
+	if(unitData.getUnitFromId(unitName).isWorker())
+		return findMiner(unitName);
+
+	return findIdleUnit(unitName);
+}
+
+vector<ActiveUnit>::iterator BuildHandler::findIdleUnit(UnitName unitName) {
+	vector<ActiveUnit>::iterator unitIterator = unitList.begin();
+	for(;unitIterator != unitList.end();unitIterator++) {
+		ActiveUnit activeUnit = *unitIterator;
+		if(activeUnit.unit == unitName && activeUnit.isIdle())
+			return unitIterator;
+	}
+	throw UnitNotFound();
+}
+
+vector<ActiveUnit>::iterator BuildHandler::findMiner(UnitName unitName) {
 	vector<ActiveUnit>::iterator miningWorker;
 	int miningTimer = -1;
 
@@ -72,8 +78,6 @@ vector<ActiveUnit>::iterator BuildHandler::findAvailableUnit(UnitName unitName) 
 		ActiveUnit activeUnit = *unitIterator;
 		if(activeUnit.unit != unitName)
 			continue;
-		if(activeUnit.isIdle())
-			return unitIterator;
 		if(activeUnit.isMiningMinerals() && activeUnit.timer > miningTimer) {
 			miningWorker = unitIterator;
 			miningTimer = activeUnit.timer;
@@ -84,15 +88,22 @@ vector<ActiveUnit>::iterator BuildHandler::findAvailableUnit(UnitName unitName) 
 	throw UnitNotFound();
 }
 
-//find gas miner
+vector<ActiveUnit>::iterator BuildHandler::findMineralMiner() {
+	return findUnitByAction(&ActiveUnit::isMiningMinerals);
+}
+
 vector<ActiveUnit>::iterator BuildHandler::findGasMiner() {
+	return findUnitByAction(&ActiveUnit::isMiningGas);
+}
+
+vector<ActiveUnit>::iterator BuildHandler::findUnitByAction(bool (ActiveUnit::*function)()) {
 	vector<ActiveUnit>::iterator miningWorker;
 	int miningTimer = -1;
 
 	vector<ActiveUnit>::iterator unitIterator = unitList.begin();
 	for(;unitIterator != unitList.end();unitIterator++) {
 		ActiveUnit activeUnit = *unitIterator;
-		if(activeUnit.isMiningGas() && activeUnit.timer > miningTimer) {
+		if((activeUnit.*function)() && activeUnit.timer > miningTimer) {
 			miningWorker = unitIterator;
 			miningTimer = activeUnit.timer;
 		}
@@ -155,7 +166,7 @@ ActiveUnit BuildHandler::update() {
 }
 
 void BuildHandler::onGas() {
-	(*findAvailableMiner()).setActionGatherGas(expansion.getGasRate());
+	(*findMineralMiner()).setActionGatherGas(expansion.getGasRate());
 }
 
 void BuildHandler::offGas() {
@@ -176,7 +187,7 @@ void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 	else {
 		if(unitStats.isGas() && activeUnit.action==ActionName::Being_Built) {
 			for(int i=0;i<3;i++)
-				(*findAvailableMiner()).setActionGatherGas(((3+i)*expansion.getGasRate())/3);
+				(*findMineralMiner()).setActionGatherGas(((3+i)*expansion.getGasRate())/3);
 		}
 		if(activeUnit.action==ActionName::Expand)
 			expansion.expand();

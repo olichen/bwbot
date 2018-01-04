@@ -15,6 +15,8 @@ class BuildHandler {
 		int getMineralMinerCount() const;
 		int getGasMinerCount() const;
 		ActiveUnit update();
+		void onGas();
+		void offGas();
 		void clear();
 
 	private:
@@ -24,6 +26,7 @@ class BuildHandler {
 		void removeMorphingUnit(UnitName);
 		vector<ActiveUnit>::iterator findAvailableMiner();
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
+		vector<ActiveUnit>::iterator findGasMiner();
 		int getMineralRate(UnitName) const;
 		int getMineralRate(char race) const;
 		int countUnit(bool (ActiveUnit::*)()) const;

@@ -85,6 +85,24 @@ vector<ActiveUnit>::iterator BuildHandler::findAvailableUnit(UnitName unitName) 
 	throw UnitNotFound();
 }
 
+//find gas miner
+vector<ActiveUnit>::iterator BuildHandler::findGasMiner() {
+	vector<ActiveUnit>::iterator miningWorker;
+	int miningTimer = -1;
+
+	vector<ActiveUnit>::iterator unitIterator = unitList.begin();
+	for(;unitIterator != unitList.end();unitIterator++) {
+		ActiveUnit activeUnit = *unitIterator;
+		if(activeUnit.isMiningGas() && activeUnit.timer > miningTimer) {
+			miningWorker = unitIterator;
+			miningTimer = activeUnit.timer;
+		}
+	}
+	if(miningTimer != -1)
+		return miningWorker;
+	throw UnitNotFound();
+}
+
 void BuildHandler::spawn(UnitName unitName, ActionName actionName, int timer) {
 	unitList.push_back(ActiveUnit(unitName, actionName, timer));
 	if(unitName==UnitName::Zerg_Hatchery) {
@@ -135,6 +153,10 @@ ActiveUnit BuildHandler::update() {
 	updateLarva();
 	unitListIterator = unitList.begin();
 	return ActiveUnit(UnitName::UNIT_NULL,ActionName::Next_Frame,0);
+}
+
+void BuildHandler::onGas() {
+	(*findAvailableMiner()).setActionGatherGas(expansion.getGasRate());
 }
 
 //updates the states of all larva spawners and spawns larva

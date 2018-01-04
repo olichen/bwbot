@@ -20,6 +20,7 @@ void BWBOT::run() {
 void BWBOT::update() {
 	ActiveUnit currentUnit = buildHandler.update();
 	Frame currentFrame = resourceHandler.update(currentUnit);
+
 	if(currentUnit.action == ActionName::Next_Frame) {
 		// if the unit is a unit and not an action
 		if(buildOrder.getUnit()<UnitName::UNIT_TOTAL) {

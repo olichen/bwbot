@@ -159,6 +159,11 @@ void BuildHandler::onGas() {
 	(*findAvailableMiner()).setActionGatherGas(expansion.getGasRate());
 }
 
+void BuildHandler::offGas() {
+	ActiveUnit gasMiner = (*findGasMiner());
+	gasMiner.setActionGatherMinerals(getMineralRate(gasMiner.unit));
+}
+
 //updates the states of all larva spawners and spawns larva
 void BuildHandler::updateLarva() {
 	for(int i=0; i<larvaHandler.updateLarva(); i++)

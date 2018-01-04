@@ -23,6 +23,7 @@ class BuildHandler {
 		bool hasUnit(UnitName) const;
 		bool hasAvailableUnit(UnitName) const;
 		bool hasUnit(UnitName, bool (ActiveUnit::*)()) const;
+		void findAndUseBuilder(UnitStatBlock);
 		void removeMorphingUnit(UnitName);
 		vector<ActiveUnit>::iterator findAvailableMiner();
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);

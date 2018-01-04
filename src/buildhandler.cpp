@@ -29,21 +29,20 @@ bool BuildHandler::hasUnit(UnitName unitName, bool (ActiveUnit::*function)()) co
 	return false;
 }
 
-void BuildHandler::build(UnitName unitBeingBuiltName) {
-	//spawn unit
-	UnitStatBlock unitBeingBuilt = unitData.getUnitFromId(unitBeingBuiltName);
-	int buildTime = unitBeingBuilt.getBuildTime();
-	spawn(unitBeingBuiltName, ActionName::Being_Built, buildTime);
+void BuildHandler::build(UnitName unitName) {
+	UnitStatBlock unitStats = unitData.getUnitFromId(unitName);
+	spawn(unitName, ActionName::Being_Built, unitStats.getBuildTime());
+	findAndUseBuilder(unitStats);
+}
 
-	//update builder
-	UnitName unitBuilderName = unitBeingBuilt.buildsFrom;
-	ActiveUnit &builderunit = *findAvailableUnit(unitBuilderName);
-	if(unitBeingBuilt.isMorph())
-		removeMorphingUnit(unitBuilderName);
-	else if (unitBeingBuilt.isWarp())
+void BuildHandler::findAndUseBuilder(UnitStatBlock unit) {
+	ActiveUnit &builderunit = *findAvailableUnit(unit.buildsFrom);
+	if(unit.isMorph())
+		removeMorphingUnit(unit.buildsFrom);
+	else if (unit.isWarp())
 		builderunit.setActionTravelling();
 	else
-		builderunit.setActionBuild(buildTime);
+		builderunit.setActionBuild(unit.getBuildTime());
 }
 
 void BuildHandler::removeMorphingUnit(UnitName unitname) {

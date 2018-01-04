@@ -10,13 +10,13 @@ using namespace std;
 class BuildHandler {
 	public:
 		bool canBuild(UnitName) const;
-		void spawn(UnitName, ActionName actionName = ActionName::Spawning, int timer = 0);
 		void build(UnitName);
+		void spawn(UnitName, ActionName actionName = ActionName::Spawning, int timer = 0);
 		int getMineralMinerCount() const;
 		int getGasMinerCount() const;
-		ActiveUnit update();
 		void onGas();
 		void offGas();
+		ActiveUnit update();
 		void clear();
 
 	private:
@@ -27,13 +27,13 @@ class BuildHandler {
 		void removeMorphingUnit(UnitName);
 		vector<ActiveUnit>::iterator findAvailableUnit(UnitName);
 		vector<ActiveUnit>::iterator findIdleUnit(UnitName);
-		vector<ActiveUnit>::iterator findMiner(UnitName);
+		vector<ActiveUnit>::iterator findAvailableMiner(UnitName);
 		vector<ActiveUnit>::iterator findMineralMiner();
 		vector<ActiveUnit>::iterator findGasMiner();
 		vector<ActiveUnit>::iterator findMinerByAction(bool (ActiveUnit::*)(), UnitName unitName = UnitName::UNIT_NULL);
 		int getMineralRate(UnitName) const;
 		int getMineralRate(char race) const;
-		int countUnit(bool (ActiveUnit::*)()) const;
+		int countUnitByAction(bool (ActiveUnit::*)()) const;
 		void updateLarva();
 		void updateUnitAction(ActiveUnit&);
 		void updateWorkerAction(ActiveUnit&);

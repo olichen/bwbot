@@ -35,6 +35,11 @@ void BuildHandler::build(UnitName unitName) {
 	useBuilder(unitStats);
 }
 
+void BuildHandler::spawn(UnitName unitName, ActionName actionName, int timer) {
+	unitList.push_back(ActiveUnit(unitName, actionName, timer));
+	unitListIterator = unitList.begin();
+}
+
 void BuildHandler::useBuilder(UnitStatBlock unit) {
 	ActiveUnit &builderunit = *findAvailableUnit(unit.buildsFrom);
 	if(unit.isMorph())
@@ -51,10 +56,9 @@ void BuildHandler::removeMorphingUnit(UnitName unitname) {
 		larvaHandler.useLarva();
 }
 
-//finds an available unit, including workers mining minerals
 vector<ActiveUnit>::iterator BuildHandler::findAvailableUnit(UnitName unitName) {
 	if(unitData.getUnitFromId(unitName).isWorker())
-		return findMiner(unitName);
+		return findAvailableMiner(unitName);
 
 	return findIdleUnit(unitName);
 }
@@ -69,8 +73,8 @@ vector<ActiveUnit>::iterator BuildHandler::findIdleUnit(UnitName unitName) {
 	throw UnitNotFound();
 }
 
-vector<ActiveUnit>::iterator BuildHandler::findMiner(UnitName unitName) {
-	return findMinerByAction(&ActiveUnit::isMiningMinerals, unitName);
+vector<ActiveUnit>::iterator BuildHandler::findAvailableMiner(UnitName unitName) {
+	return findMinerByAction(&ActiveUnit::isAvailable, unitName);
 }
 
 vector<ActiveUnit>::iterator BuildHandler::findMineralMiner() {
@@ -100,14 +104,16 @@ vector<ActiveUnit>::iterator BuildHandler::findMinerByAction(bool (ActiveUnit::*
 	throw UnitNotFound();
 }
 
-void BuildHandler::spawn(UnitName unitName, ActionName actionName, int timer) {
-	unitList.push_back(ActiveUnit(unitName, actionName, timer));
-	if(unitName==UnitName::Zerg_Hatchery) {
-		//TODO: three larva for spawned
-		larvaHandler.addHatch();
-		unitList.push_back(ActiveUnit(UnitName::Zerg_Larva, actionName, timer));
-	}
-	unitListIterator = unitList.begin();
+void BuildHandler::onGas() {
+	int miningTime = expansion.getGasRate();
+	if(getGasMinerCount()>0)
+		miningTime = (*findGasMiner()).timer + 37;
+	(*findMineralMiner()).setActionGatherGas(miningTime);
+}
+
+void BuildHandler::offGas() {
+	ActiveUnit gasMiner = (*findGasMiner());
+	gasMiner.setActionGatherMinerals(getMineralRate(gasMiner.unit));
 }
 
 int BuildHandler::getMineralRate(UnitName unitname) const {
@@ -119,14 +125,14 @@ int BuildHandler::getMineralRate(char race) const {
 }
 
 int BuildHandler::getMineralMinerCount() const {
-	return countUnit(&ActiveUnit::isMiningMinerals);
+	return countUnitByAction(&ActiveUnit::isMiningMinerals);
 }
 
 int BuildHandler::getGasMinerCount() const {
-	return countUnit(&ActiveUnit::isMiningGas);
+	return countUnitByAction(&ActiveUnit::isMiningGas);
 }
 
-int BuildHandler::countUnit(bool (ActiveUnit::*function)()) const {
+int BuildHandler::countUnitByAction(bool (ActiveUnit::*function)()) const {
 	int count = 0;
 	for(ActiveUnit activeunit : unitList) {
 		if((activeunit.*function)())
@@ -152,18 +158,10 @@ ActiveUnit BuildHandler::update() {
 	return ActiveUnit(UnitName::UNIT_NULL,ActionName::Next_Frame,0);
 }
 
-void BuildHandler::onGas() {
-	(*findMineralMiner()).setActionGatherGas(expansion.getGasRate());
-}
-
-void BuildHandler::offGas() {
-	ActiveUnit gasMiner = (*findGasMiner());
-	gasMiner.setActionGatherMinerals(getMineralRate(gasMiner.unit));
-}
-
 //updates the states of all larva spawners and spawns larva
 void BuildHandler::updateLarva() {
-	for(int i=0; i<larvaHandler.updateLarva(); i++)
+	int numLarvaSpawned = larvaHandler.updateLarva();
+	for(int i=0; i<numLarvaSpawned; i++)
 		spawn(UnitName::Zerg_Larva);
 }
 
@@ -174,10 +172,17 @@ void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 	else {
 		if(unitStats.isGas() && activeUnit.action==ActionName::Being_Built) {
 			for(int i=0;i<3;i++)
-				(*findMineralMiner()).setActionGatherGas(((3+i)*expansion.getGasRate())/3);
+				onGas();
 		}
-		if(activeUnit.action==ActionName::Expand)
-			expansion.expand();
+		//if(activeUnit.action==ActionName::Expand)
+			//expansion.expand();
+		if(activeUnit.unit==UnitName::Zerg_Hatchery) {
+			if(activeUnit.action==ActionName::Spawning) {
+				larvaHandler.addHatch();
+				spawn(UnitName::Zerg_Larva);
+		activeUnit.setActionIdle();
+			}
+		}
 		activeUnit.setActionIdle();
 	}
 }

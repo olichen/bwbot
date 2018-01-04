@@ -8,9 +8,8 @@ bool ResourceHandler::canBuild(UnitName unitName) {
 	UnitStatBlock unit = unitData.getUnitFromId(unitName);
 
 	if(currentFrame.supplymax - currentFrame.supply >= unit.supplyCost)
-		if(currentFrame.minerals >= unit.mineralCost)
-			if(currentFrame.gas >= unit.gasCost)
-				return true;
+		if(currentFrame.minerals >= unit.mineralCost && currentFrame.gas >= unit.gasCost)
+			return true;
 
 	return false;
 }
@@ -55,6 +54,11 @@ Frame ResourceHandler::update(ActiveUnit activeunit) {
 			break;
 	}
 	return currentFrame;
+}
+
+Frame ResourceHandler::startBuild(UnitName unitname) {
+		ActiveUnit startBuildUnit(unitname, ActionName::Start_Build, -1);
+		return update(startBuildUnit);
 }
 
 Frame ResourceHandler::clear() {

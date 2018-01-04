@@ -21,6 +21,7 @@ void BWBOT::update() {
 	ActiveUnit currentUnit = buildHandler.update();
 	Frame currentFrame = resourceHandler.update(currentUnit);
 	if(currentUnit.action == ActionName::Next_Frame) {
+		// if the unit is a unit and not an action
 		if(buildOrder.getUnit()<UnitName::UNIT_TOTAL) {
 			if(tryToBuild(buildOrder.getUnit()))
 					buildOrder.nextUnit();
@@ -28,11 +29,15 @@ void BWBOT::update() {
 		else {}
 			// need to handle scout, on gas, off gas, expand
 	}
-	if(currentUnit.action != ActionName::Next_Frame) {
-		currentFrame.miners = buildHandler.getMineralMinerCount();
-		currentFrame.gasminers = buildHandler.getGasMinerCount();
-		output.push_back(currentFrame);
+	else {
+		addFrameToOutput(currentFrame);
 	}
+}
+
+void BWBOT::addFrameToOutput(Frame frame) {
+		frame.miners = buildHandler.getMineralMinerCount();
+		frame.gasminers = buildHandler.getGasMinerCount();
+		output.push_back(frame);
 }
 
 void BWBOT::testinit() {
@@ -115,13 +120,10 @@ void BWBOT::init(char race) {
 }
 
 bool BWBOT::tryToBuild(UnitName unitname) {
-	if(resourceHandler.canBuild(unitname)) {
-		if(buildHandler.canBuild(unitname)) {
-			buildHandler.build(unitname);
-			ActiveUnit startBuildUnitFrame(unitname, ActionName::Start_Build, -1);
-			output.push_back(resourceHandler.update(startBuildUnitFrame));
-			return true;
-		}
+	if(resourceHandler.canBuild(unitname) && buildHandler.canBuild(unitname)) {
+		buildHandler.build(unitname);
+		addFrameToOutput(resourceHandler.startBuild(unitname));
+		return true;
 	}
 	return false;
 }

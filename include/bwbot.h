@@ -15,6 +15,7 @@ class BWBOT {
 
 	private:
 		void update();
+		void addFrameToOutput(Frame);
 		bool tryToBuild(UnitName);
 		void clear();
 

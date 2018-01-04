@@ -8,6 +8,7 @@ class ResourceHandler {
 		ResourceHandler();
 		bool canBuild(UnitName);
 		Frame update(ActiveUnit);
+		Frame startBuild(UnitName);
 		Frame clear();
 
 	private:

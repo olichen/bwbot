@@ -176,14 +176,15 @@ void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 		}
 		//if(activeUnit.action==ActionName::Expand)
 			//expansion.expand();
-		if(activeUnit.unit==UnitName::Zerg_Hatchery) {
+		else if(activeUnit.unit==UnitName::Zerg_Hatchery) {
 			if(activeUnit.action==ActionName::Spawning) {
 				larvaHandler.addHatch();
+				activeUnit.setActionIdle();
 				spawn(UnitName::Zerg_Larva);
-		activeUnit.setActionIdle();
 			}
 		}
-		activeUnit.setActionIdle();
+		else
+			activeUnit.setActionIdle();
 	}
 }
 

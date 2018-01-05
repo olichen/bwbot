@@ -2,7 +2,7 @@
 
 int main() {
 	BWBOT bwbot;
-	bwbot.init('t');
+	bwbot.init('z');
 	bwbot.testinit();
 	bwbot.run();
 	bwbot.testprint();
@@ -42,22 +42,24 @@ void BWBOT::addFrameToOutput(Frame frame) {
 }
 
 void BWBOT::testinit() {
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_Supply_Depot);
-	buildOrder.push_back(UnitName::Terran_Barracks);
-	buildOrder.push_back(UnitName::Terran_Refinery);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_Factory);
-	buildOrder.push_back(UnitName::Terran_SCV);
-	buildOrder.push_back(UnitName::Terran_Command_Center);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_Supply_Depot);
+	//buildOrder.push_back(UnitName::Terran_Barracks);
+	//buildOrder.push_back(UnitName::Terran_Refinery);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_Factory);
+	//buildOrder.push_back(UnitName::Terran_SCV);
+	//buildOrder.push_back(UnitName::Terran_Command_Center);
 }
 
 void BWBOT::testprint() {

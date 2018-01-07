@@ -9,6 +9,8 @@ using namespace std;
 
 class BuildHandler {
 	public:
+		BuildHandler();
+
 		bool canBuild(UnitName) const;
 		void build(UnitName);
 		void spawn(UnitName, ActionName actionName = ActionName::Spawning, int timer = 0);

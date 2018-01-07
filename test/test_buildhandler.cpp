@@ -74,15 +74,16 @@ TEST_CASE("buildhandler") {
 			REQUIRE(buildhandler.update().action==ActionName::Next_Frame);
 		REQUIRE(buildhandler.update().action==ActionName::Build);
 		REQUIRE(buildhandler.update().action==ActionName::Being_Built);
+		REQUIRE(buildhandler.update().action==ActionName::Next_Frame);
 		buildhandler.build(UnitName::Terran_SCV);
-		for(int i=0;i<MINE_RATE_T;i++)
+		for(int i=0;i<MINE_RATE_T-1;i++)
 			REQUIRE(buildhandler.update().action==ActionName::Next_Frame);
 		REQUIRE(buildhandler.update().action==ActionName::Gather_Minerals);
-		for(int i=0;i<(300-MINE_RATE_T);i++)
+		for(int i=0;i<(301-MINE_RATE_T);i++)
 			REQUIRE(buildhandler.update().action==ActionName::Next_Frame);
 		REQUIRE(buildhandler.update().action==ActionName::Build);
 		REQUIRE(buildhandler.update().action==ActionName::Being_Built);
-		for(int i=0;i<(MINE_RATE_T*2-300);i++)
+		for(int i=0;i<(MINE_RATE_T*2-301);i++)
 			REQUIRE(buildhandler.update().action==ActionName::Next_Frame);
 		REQUIRE(buildhandler.update().action==ActionName::Gather_Minerals);
 	}

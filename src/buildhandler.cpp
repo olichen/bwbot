@@ -1,5 +1,9 @@
 #include "buildhandler.h"
 
+BuildHandler::BuildHandler() {
+	unitListIterator = unitList.begin();
+}
+
 bool BuildHandler::canBuild(UnitName unitName) const {
 	UnitStatBlock unit = unitData.getUnitFromId(unitName);
 
@@ -36,8 +40,10 @@ void BuildHandler::build(UnitName unitName) {
 }
 
 void BuildHandler::spawn(UnitName unitName, ActionName actionName, int timer) {
+	int i = unitListIterator - unitList.begin();
 	unitList.push_back(ActiveUnit(unitName, actionName, timer));
-	unitListIterator = unitList.begin();
+	//in case the vector resizes
+	unitListIterator = unitList.begin() + i;
 }
 
 void BuildHandler::useBuilder(UnitStatBlock unit) {

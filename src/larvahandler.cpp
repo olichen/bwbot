@@ -1,7 +1,10 @@
 #include "larvahandler.h"
 
-void LarvaHandler::addHatch() {
-	larvaCount.push_back(1);
+void LarvaHandler::addHatch(bool isSpawning) {
+	if(isSpawning)
+		larvaCount.push_back(3);
+	else
+		larvaCount.push_back(1);
 	timer.push_back(LARVA_SPAWN_TIME);
 }
 

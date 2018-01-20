@@ -5,7 +5,7 @@ using namespace std;
 
 class LarvaHandler {
 	public:
-		void addHatch();
+		void addHatch(bool isSpawning = false);
 		void useLarva();
 		int updateLarva();
 		void clear();

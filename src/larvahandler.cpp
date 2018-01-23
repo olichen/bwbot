@@ -9,7 +9,7 @@ void LarvaHandler::addHatch(bool isSpawning) {
 }
 
 void LarvaHandler::useLarva() {
-	int hatchWithMostLarva = 0;
+	int hatchWithMostLarva = -1;
 	for(unsigned int i=1; i<timer.size(); i++) {
 		if(larvaCount[i] > larvaCount[hatchWithMostLarva])
 			hatchWithMostLarva = i;
@@ -17,6 +17,8 @@ void LarvaHandler::useLarva() {
 			if(timer[i] > timer[hatchWithMostLarva])
 				hatchWithMostLarva = i;
 	}
+	if(hatchWithMostLarva == -1)
+		throw UnitNotFound();
 	larvaCount[hatchWithMostLarva] -= 1;
 }
 

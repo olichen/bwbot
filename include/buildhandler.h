@@ -1,7 +1,7 @@
 #pragma once
 #include "unitdata.h"
 #include "activeunit.h"
-#include "expansions.h"
+#include "expansionhandler.h"
 #include "larvahandler.h"
 #include <vector>
 #include <iterator>
@@ -43,6 +43,6 @@ class BuildHandler {
 		vector<ActiveUnit>::iterator unitListIterator;
 		vector<ActiveUnit> unitList;
 		UnitData unitData;
-		Expansions expansion;
+		ExpansionHandler expansionHandler;
 		LarvaHandler larvaHandler;
 };

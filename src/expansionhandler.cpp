@@ -1,22 +1,22 @@
-#include "expansions.h"
+#include "expansionhandler.h"
 
-Expansions::Expansions(int mineralcount)
+ExpansionHandler::ExpansionHandler(int mineralcount)
 	: numBases(1), numMineralPatch(mineralcount)
 {
 	//
 }
 
-void Expansions::init(int mineralcount) {
+void ExpansionHandler::init(int mineralcount) {
 	numBases = 1;
 	numMineralPatch = mineralcount;
 }
 
-void Expansions::expand(int mineralcount) {
+void ExpansionHandler::expand(int mineralcount) {
 	numBases++;
 	numMineralPatch += mineralcount;
 }
 
-int Expansions::getMineralRate(int mineralminercount, char race) const {
+int ExpansionHandler::getMineralRate(int mineralminercount, char race) const {
 	int baserate = getRaceMineralRate(race);
 	if (mineralminercount <= numMineralPatch)
 		return baserate;
@@ -27,7 +27,7 @@ int Expansions::getMineralRate(int mineralminercount, char race) const {
 	return baserate;
 }
 
-int Expansions::getRaceMineralRate(char race) const {
+int ExpansionHandler::getRaceMineralRate(char race) const {
 	if (race=='t')
 		return 176;
 	if (race=='z')
@@ -37,6 +37,6 @@ int Expansions::getRaceMineralRate(char race) const {
 	throw BadRace();
 }
 
-int Expansions::getGasRate() const {
+int ExpansionHandler::getGasRate() const {
 	return 111;
 }

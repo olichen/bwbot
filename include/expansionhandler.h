@@ -1,9 +1,9 @@
 #pragma once
 #include "exceptions.h"
 
-class Expansions {
+class ExpansionHandler {
 	public:
-		Expansions(int mineralcount = 9);
+		ExpansionHandler(int mineralcount = 9);
 		void init(int mineralcount = 9);
 		void expand(int mineralcount = 7);
 

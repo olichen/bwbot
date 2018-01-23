@@ -111,7 +111,7 @@ vector<ActiveUnit>::iterator BuildHandler::findMinerByAction(bool (ActiveUnit::*
 }
 
 void BuildHandler::onGas() {
-	int miningTime = expansion.getGasRate();
+	int miningTime = expansionHandler.getGasRate();
 	if(getGasMinerCount()>0)
 		miningTime = (*findGasMiner()).timer + 37;
 	(*findMineralMiner()).setActionGatherGas(miningTime);
@@ -127,7 +127,7 @@ int BuildHandler::getMineralRate(UnitName unitname) const {
 }
 
 int BuildHandler::getMineralRate(char race) const {
-	return expansion.getMineralRate(getMineralMinerCount(), race);
+	return expansionHandler.getMineralRate(getMineralMinerCount(), race);
 }
 
 int BuildHandler::getMineralMinerCount() const {
@@ -181,7 +181,7 @@ void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 				onGas();
 		}
 		//if(activeUnit.action==ActionName::Expand)
-			//expansion.expand();
+			//expansionHandler.expand();
 		else if(activeUnit.unit==UnitName::Zerg_Hatchery) {
 			if(activeUnit.action==ActionName::Spawning) {
 				larvaHandler.addHatch();
@@ -196,7 +196,7 @@ void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 
 void BuildHandler::updateWorkerAction(ActiveUnit &activeWorker) {
 	if(activeWorker.isMiningGas())
-		activeWorker.setActionGatherGas(expansion.getGasRate());
+		activeWorker.setActionGatherGas(expansionHandler.getGasRate());
 	else if(activeWorker.isBuilding())
 		activeWorker.setActionTravelling();
 	else
@@ -206,6 +206,6 @@ void BuildHandler::updateWorkerAction(ActiveUnit &activeWorker) {
 void BuildHandler::clear() {
 	unitList.clear();
 	unitListIterator = unitList.begin();
-	expansion.init();
+	expansionHandler.init();
 	larvaHandler.clear();
 }

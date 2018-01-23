@@ -6,12 +6,6 @@ ActiveUnit::ActiveUnit(int unit, int action, int timer)
 	//
 }
 
-bool ActiveUnit::isAvailable() {
-	if (action == ActionName::Idle || action == ActionName::Gather_Minerals)
-		return true;
-	return false;
-}
-
 void ActiveUnit::setActionTravelling(int time) {
 	action = ActionName::Travelling;
 	timer = time;
@@ -35,4 +29,10 @@ void ActiveUnit::setActionGatherMinerals(int time) {
 void ActiveUnit::setActionGatherGas(int time) {
 	action = ActionName::Gather_Gas;
 	timer = time;
+}
+
+bool ActiveUnit::isAvailable() {
+	if (action == ActionName::Idle || action == ActionName::Gather_Minerals)
+		return true;
+	return false;
 }

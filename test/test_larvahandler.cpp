@@ -6,12 +6,12 @@ TEST_CASE("larvahandler") {
 	const int LARVA_SPAWN_TIME = 342;
 
 	SECTION("check that spawning larva works properly") {
-		larvahandler.addHatch();
+		larvahandler.buildHatch();
 		for(int i=0; i<LARVA_SPAWN_TIME; i++) {
 			CHECK(larvahandler.updateLarva() == 0);
 		}
 		CHECK(larvahandler.updateLarva() == 1);
-		larvahandler.addHatch();
+		larvahandler.buildHatch();
 		for(int i=0; i<LARVA_SPAWN_TIME; i++) {
 			CHECK(larvahandler.updateLarva() == 0);
 		}
@@ -26,12 +26,12 @@ TEST_CASE("larvahandler") {
 		CHECK(larvahandler.updateLarva() == 0);
 	}
 	SECTION("check that using larva works properly") {
-		larvahandler.addHatch();
+		larvahandler.buildHatch();
 		for(int i=0; i<LARVA_SPAWN_TIME; i++) {
 			CHECK(larvahandler.updateLarva() == 0);
 		}
 		CHECK(larvahandler.updateLarva() == 1);
-		larvahandler.addHatch();
+		larvahandler.buildHatch();
 		for(int i=0; i<LARVA_SPAWN_TIME; i++) {
 			CHECK(larvahandler.updateLarva() == 0);
 		}

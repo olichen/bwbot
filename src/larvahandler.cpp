@@ -1,16 +1,18 @@
 #include "larvahandler.h"
 
-void LarvaHandler::addHatch(bool isSpawning) {
-	if(isSpawning)
-		larvaCount.push_back(3);
-	else
-		larvaCount.push_back(1);
+void LarvaHandler::buildHatch() {
+	larvaCount.push_back(1);
+	timer.push_back(LARVA_SPAWN_TIME);
+}
+
+void LarvaHandler::spawnHatch() {
+	larvaCount.push_back(3);
 	timer.push_back(LARVA_SPAWN_TIME);
 }
 
 void LarvaHandler::useLarva() {
 	int hatchWithMostLarva = -1;
-	for(unsigned int i=1; i<timer.size(); i++) {
+	for(unsigned int i=0; i<timer.size(); i++) {
 		if(larvaCount[i] > larvaCount[hatchWithMostLarva])
 			hatchWithMostLarva = i;
 		if(larvaCount[i] == larvaCount[hatchWithMostLarva])

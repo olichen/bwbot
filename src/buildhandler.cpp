@@ -159,7 +159,10 @@ ActiveUnit BuildHandler::update() {
 		}
 		activeUnit.timer--;
 	}
-	updateLarva();
+	if(larvaHandler.updateLarva()) {
+		spawn(UnitName::Zerg_Larva);
+		return update();
+	}
 	unitListIterator = unitList.begin();
 	return ActiveUnit(UnitName::UNIT_NULL,ActionName::Next_Frame,0);
 }
@@ -184,8 +187,10 @@ void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 			//expansionHandler.expand();
 		else if(activeUnit.unit==UnitName::Zerg_Hatchery) {
 			if(activeUnit.action==ActionName::Spawning) {
-				larvaHandler.addHatch();
+				larvaHandler.spawnHatch();
 				activeUnit.setActionIdle();
+				spawn(UnitName::Zerg_Larva);
+				spawn(UnitName::Zerg_Larva);
 				spawn(UnitName::Zerg_Larva);
 			}
 		}

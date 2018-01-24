@@ -44,6 +44,13 @@ void BWBOT::addFrameToOutput(Frame frame) {
 void BWBOT::testinit() {
 	buildOrder.push_back(UnitName::Zerg_Drone);
 	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Overlord);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Drone);
 	//buildOrder.push_back(UnitName::Terran_SCV);
 	//buildOrder.push_back(UnitName::Terran_SCV);
 	//buildOrder.push_back(UnitName::Terran_SCV);

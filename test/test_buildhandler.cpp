@@ -118,16 +118,18 @@ TEST_CASE("buildhandler") {
 		buildhandler.spawn(UnitName::Zerg_Hatchery);
 		REQUIRE(buildhandler.update().action==ActionName::Spawning);
 		REQUIRE(buildhandler.update().action==ActionName::Spawning);
+		REQUIRE(buildhandler.update().action==ActionName::Spawning);
+		REQUIRE(buildhandler.update().action==ActionName::Spawning);
 		REQUIRE(buildhandler.update().action==ActionName::Next_Frame);
 		buildhandler.build(UnitName::Zerg_Drone);
 		for(int i=0;i<318;i++)
 			REQUIRE(buildhandler.update().action==ActionName::Next_Frame);
 		REQUIRE(buildhandler.update().action==ActionName::Being_Built);
-		for(int i=0;i<24;i++)
+		for(int i=0;i<342-318;i++)
 			REQUIRE(buildhandler.update().action==ActionName::Next_Frame);
 		//larva spawns
 		REQUIRE(buildhandler.update().action==ActionName::Spawning);
-		for(int i=0;i<MINE_RATE_Z-24;i++)
+		for(int i=0;i<MINE_RATE_Z-(342-318);i++)
 			REQUIRE(buildhandler.update().action==ActionName::Next_Frame);
 		REQUIRE(buildhandler.update().action==ActionName::Gather_Minerals);
 	}

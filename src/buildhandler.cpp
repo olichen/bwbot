@@ -167,13 +167,6 @@ ActiveUnit BuildHandler::update() {
 	return ActiveUnit(UnitName::UNIT_NULL,ActionName::Next_Frame,0);
 }
 
-//updates the states of all larva spawners and spawns larva
-void BuildHandler::updateLarva() {
-	int numLarvaSpawned = larvaHandler.updateLarva();
-	for(int i=0; i<numLarvaSpawned; i++)
-		spawn(UnitName::Zerg_Larva);
-}
-
 void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 	UnitStatBlock unitStats = unitData.getUnitFromId(activeUnit.unit);
 	if(unitStats.isWorker())

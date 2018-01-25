@@ -36,7 +36,6 @@ class BuildHandler {
 		int getMineralRate(UnitName) const;
 		int getMineralRate(char race) const;
 		int countUnitByAction(bool (ActiveUnit::*)()) const;
-		void updateLarva();
 		void updateUnitAction(ActiveUnit&);
 		void updateWorkerAction(ActiveUnit&);
 

@@ -175,6 +175,7 @@ void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 		if(unitStats.isGas() && activeUnit.action==ActionName::Being_Built) {
 			for(int i=0;i<3;i++)
 				onGas();
+			activeUnit.setActionIdle();
 		}
 		//if(activeUnit.action==ActionName::Expand)
 			//expansionHandler.expand();
@@ -184,6 +185,11 @@ void BuildHandler::updateUnitAction(ActiveUnit &activeUnit) {
 				activeUnit.setActionIdle();
 				spawn(UnitName::Zerg_Larva);
 				spawn(UnitName::Zerg_Larva);
+				spawn(UnitName::Zerg_Larva);
+			}
+			else if (activeUnit.action==ActionName::Being_Built) {
+				larvaHandler.buildHatch();
+				activeUnit.setActionIdle();
 				spawn(UnitName::Zerg_Larva);
 			}
 		}

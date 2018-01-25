@@ -51,6 +51,13 @@ void BWBOT::testinit() {
 	buildOrder.push_back(UnitName::Zerg_Drone);
 	buildOrder.push_back(UnitName::Zerg_Drone);
 	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Spawning_Pool);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Extractor);
+	buildOrder.push_back(UnitName::Zerg_Hatchery);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Drone);
+	buildOrder.push_back(UnitName::Zerg_Drone);
 	//buildOrder.push_back(UnitName::Terran_SCV);
 	//buildOrder.push_back(UnitName::Terran_SCV);
 	//buildOrder.push_back(UnitName::Terran_SCV);

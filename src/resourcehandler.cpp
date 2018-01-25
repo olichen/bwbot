@@ -33,10 +33,15 @@ Frame ResourceHandler::update(ActiveUnit activeunit) {
 			currentFrame.supplymax += unitData.getUnitFromId(activeunit.unit).supplyProvided;
 			break;
 		case (Start_Build):
-			currentFrame.supply += unitData.getUnitFromId(activeunit.unit).supplyCost;
-			currentFrame.minerals -= unitData.getUnitFromId(activeunit.unit).mineralCost;
-			currentFrame.gas -= unitData.getUnitFromId(activeunit.unit).gasCost;
-			break;
+			{
+				UnitStatBlock unitStats = unitData.getUnitFromId(activeunit.unit);
+				currentFrame.supply += unitData.getUnitFromId(activeunit.unit).supplyCost;
+				if(unitStats.isMorph())
+					currentFrame.supply -= unitData.getUnitFromId(unitStats.buildsFrom).supplyCost;
+				currentFrame.minerals -= unitData.getUnitFromId(activeunit.unit).mineralCost;
+				currentFrame.gas -= unitData.getUnitFromId(activeunit.unit).gasCost;
+				break;
+			}
 		case (Expand):
 			currentFrame.supplymax += unitData.getUnitFromId(activeunit.unit).supplyProvided;
 			break;

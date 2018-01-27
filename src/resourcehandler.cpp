@@ -17,6 +17,9 @@ bool ResourceHandler::canBuild(UnitName unitName) {
 Frame ResourceHandler::update(ActiveUnit activeunit) {
 	currentFrame.unit = activeunit.unit;
 	currentFrame.action = activeunit.action;
+	UnitStatBlock unitStats;
+	if(activeunit.unit<UnitName::UNIT_NULL)
+		unitStats = unitData.getUnitFromId(activeunit.unit);
 
 	switch(activeunit.action) {
 		case (Next_Frame):
@@ -29,24 +32,21 @@ Frame ResourceHandler::update(ActiveUnit activeunit) {
 			currentFrame.gas += 8;
 			break;
 		case (Spawning):
-			currentFrame.supply += unitData.getUnitFromId(activeunit.unit).supplyCost;
-			currentFrame.supplymax += unitData.getUnitFromId(activeunit.unit).supplyProvided;
+			currentFrame.supply += unitStats.supplyCost;
+			currentFrame.supplymax += unitStats.supplyProvided;
 			break;
 		case (Start_Build):
-			{
-				UnitStatBlock unitStats = unitData.getUnitFromId(activeunit.unit);
-				currentFrame.supply += unitData.getUnitFromId(activeunit.unit).supplyCost;
+				currentFrame.supply += unitStats.supplyCost;
 				if(unitStats.isMorph())
 					currentFrame.supply -= unitData.getUnitFromId(unitStats.buildsFrom).supplyCost;
-				currentFrame.minerals -= unitData.getUnitFromId(activeunit.unit).mineralCost;
-				currentFrame.gas -= unitData.getUnitFromId(activeunit.unit).gasCost;
+				currentFrame.minerals -= unitStats.mineralCost;
+				currentFrame.gas -= unitStats.gasCost;
 				break;
-			}
 		case (Expand):
-			currentFrame.supplymax += unitData.getUnitFromId(activeunit.unit).supplyProvided;
+			currentFrame.supplymax += unitStats.supplyProvided;
 			break;
 		case (Being_Built):
-			currentFrame.supplymax += unitData.getUnitFromId(activeunit.unit).supplyProvided;
+			currentFrame.supplymax += unitStats.supplyProvided;
 			break;
 		case (Extractor_Trick):
 			currentFrame.minerals -= 17;

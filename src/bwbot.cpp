@@ -1,48 +1,5 @@
 #include "bwbot.h"
 
-int main() {
-	BWBOT bwbot;
-	bwbot.init('z');
-	bwbot.testinit();
-	bwbot.run();
-	bwbot.testprint();
-	return 0;
-}
-
-void BWBOT::run() {
-	int i=0;
-	while(!buildOrder.atEnd()&&i<10000) {
-		update();
-		i++;
-	}
-}
-
-void BWBOT::update() {
-	ActiveUnit currentUnit = buildHandler.update();
-	Frame currentFrame = resourceHandler.update(currentUnit);
-
-	if(currentUnit.action == ActionName::Next_Frame)
-		useBuildOrder();
-	else
-		addFrameToOutput(currentFrame);
-}
-
-void BWBOT::useBuildOrder() {
-		// if the unit is a unit and not an action
-		if(buildOrder.getUnit()<UnitName::UNIT_TOTAL) {
-			if(tryToBuild(buildOrder.getUnit()))
-					buildOrder.nextUnit();
-		}
-		else {}
-			// need to handle scout, on gas, off gas, expand
-}
-
-void BWBOT::addFrameToOutput(Frame frame) {
-		frame.miners = buildHandler.getMineralMinerCount();
-		frame.gasminers = buildHandler.getGasMinerCount();
-		output.push_back(frame);
-}
-
 void BWBOT::testinit() {
 	buildOrder.push_back(UnitName::Zerg_Drone);
 	buildOrder.push_back(UnitName::Zerg_Drone);
@@ -116,6 +73,49 @@ void BWBOT::testprint() {
 			action = "START";
 		printf("%s %s\n", action.c_str(), uname.c_str());
 	}
+}
+
+int main() {
+	BWBOT bwbot;
+	bwbot.init('z');
+	bwbot.testinit();
+	bwbot.run();
+	bwbot.testprint();
+	return 0;
+}
+
+void BWBOT::run() {
+	int i=0;
+	while(!buildOrder.atEnd()&&i<10000) {
+		update();
+		i++;
+	}
+}
+
+void BWBOT::update() {
+	ActiveUnit currentUnit = buildHandler.update();
+	Frame currentFrame = resourceHandler.update(currentUnit);
+
+	if(currentUnit.action == ActionName::Next_Frame)
+		useBuildOrder();
+	else
+		addFrameToOutput(currentFrame);
+}
+
+void BWBOT::useBuildOrder() {
+		// if the unit is a unit and not an action
+		if(buildOrder.getUnit()<UnitName::UNIT_TOTAL) {
+			if(tryToBuild(buildOrder.getUnit()))
+					buildOrder.nextUnit();
+		}
+		else {}
+			// need to handle scout, on gas, off gas, expand
+}
+
+void BWBOT::addFrameToOutput(Frame frame) {
+		frame.miners = buildHandler.getMineralMinerCount();
+		frame.gasminers = buildHandler.getGasMinerCount();
+		output.push_back(frame);
 }
 
 void BWBOT::init(char race) {

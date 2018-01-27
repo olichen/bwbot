@@ -8,10 +8,10 @@ using namespace std;
 
 class BWBOT {
 	public:
-		void run();
-		void init(char);
 		void testinit();
 		void testprint();
+		void run();
+		void init(char);
 
 	private:
 		void update();

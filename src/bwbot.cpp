@@ -21,7 +21,13 @@ void BWBOT::update() {
 	ActiveUnit currentUnit = buildHandler.update();
 	Frame currentFrame = resourceHandler.update(currentUnit);
 
-	if(currentUnit.action == ActionName::Next_Frame) {
+	if(currentUnit.action == ActionName::Next_Frame)
+		useBuildOrder();
+	else
+		addFrameToOutput(currentFrame);
+}
+
+void BWBOT::useBuildOrder() {
 		// if the unit is a unit and not an action
 		if(buildOrder.getUnit()<UnitName::UNIT_TOTAL) {
 			if(tryToBuild(buildOrder.getUnit()))
@@ -29,10 +35,6 @@ void BWBOT::update() {
 		}
 		else {}
 			// need to handle scout, on gas, off gas, expand
-	}
-	else {
-		addFrameToOutput(currentFrame);
-	}
 }
 
 void BWBOT::addFrameToOutput(Frame frame) {

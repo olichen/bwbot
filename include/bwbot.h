@@ -10,14 +10,16 @@ class BWBOT {
 	public:
 		void testinit();
 		void testprint();
-		void run();
 		void init(char);
+		void run();
 
 	private:
 		void update();
-		void useBuildOrder();
 		void addFrameToOutput(Frame);
-		bool tryToBuild(UnitName);
+		void useBuildOrder(Frame);
+		void doAction(UnitName);
+		bool canBuild(UnitName);
+		Frame build(UnitName);
 		void clear();
 
 		BuildHandler buildHandler;

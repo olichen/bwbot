@@ -84,40 +84,6 @@ int main() {
 	return 0;
 }
 
-void BWBOT::run() {
-	int i=0;
-	while(!buildOrder.atEnd()&&i<10000) {
-		update();
-		i++;
-	}
-}
-
-void BWBOT::update() {
-	ActiveUnit currentUnit = buildHandler.update();
-	Frame currentFrame = resourceHandler.update(currentUnit);
-
-	if(currentUnit.action == ActionName::Next_Frame)
-		useBuildOrder();
-	else
-		addFrameToOutput(currentFrame);
-}
-
-void BWBOT::useBuildOrder() {
-		// if the unit is a unit and not an action
-		if(buildOrder.getUnit()<UnitName::UNIT_TOTAL) {
-			if(tryToBuild(buildOrder.getUnit()))
-					buildOrder.nextUnit();
-		}
-		else {}
-			// need to handle scout, on gas, off gas, expand
-}
-
-void BWBOT::addFrameToOutput(Frame frame) {
-		frame.miners = buildHandler.getMineralMinerCount();
-		frame.gasminers = buildHandler.getGasMinerCount();
-		output.push_back(frame);
-}
-
 void BWBOT::init(char race) {
 	clear();
 	if(race=='t') {
@@ -138,13 +104,58 @@ void BWBOT::init(char race) {
 	}
 }
 
-bool BWBOT::tryToBuild(UnitName unitname) {
-	if(resourceHandler.canBuild(unitname) && buildHandler.canBuild(unitname)) {
-		buildHandler.build(unitname);
-		addFrameToOutput(resourceHandler.startBuild(unitname));
-		return true;
+
+void BWBOT::run() {
+	int i=0;
+	while(!buildOrder.atEnd()&&i<10000) {
+		update();
+		i++;
 	}
-	return false;
+}
+
+void BWBOT::update() {
+	ActiveUnit currentUnit = buildHandler.update();
+	Frame currentFrame = resourceHandler.update(currentUnit);
+
+	if(currentUnit.action == ActionName::Next_Frame)
+		useBuildOrder(currentFrame);
+	else
+		addFrameToOutput(currentFrame);
+}
+
+void BWBOT::addFrameToOutput(Frame frame) {
+		frame.miners = buildHandler.getMineralMinerCount();
+		frame.gasminers = buildHandler.getGasMinerCount();
+		output.push_back(frame);
+}
+
+void BWBOT::useBuildOrder(Frame currentFrame) {
+	UnitName nextOnBuildOrder = buildOrder.getUnit();
+
+	// if the unit is a unit and not an action
+	if(buildOrder.getUnit()<UnitName::UNIT_TOTAL) {
+		if(canBuild(nextOnBuildOrder)) {
+			currentFrame = build(nextOnBuildOrder);
+			buildOrder.nextUnit();
+			addFrameToOutput(currentFrame);
+		}
+	}
+	else
+		doAction(nextOnBuildOrder);
+	//on gas, off gas, expand, search
+}
+
+void BWBOT::doAction(UnitName unitname) {
+	//on gas, off gas, expand, search
+}
+
+bool BWBOT::canBuild(UnitName unitname) {
+	return (resourceHandler.canBuild(unitname) && buildHandler.canBuild(unitname));
+}
+
+Frame BWBOT::build(UnitName unitname) {
+	buildHandler.build(unitname);
+	return resourceHandler.startBuild(unitname);
 }
 
 void BWBOT::clear() {

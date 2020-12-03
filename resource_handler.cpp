@@ -8,27 +8,29 @@ public:
     ResourceHandler();
     void next_frame();
     void add_worker() { mineral_workers.push_back(get_mineral_frames()); }
-    void use_supply(int supply = 1) { s += supply; }
-    void use_minerals(int minerals) { m -= minerals; }
-    int minerals() const { return m; }
-    int gas() const { return g; }
-    int supply() const { return s; }
-    int supply_max() const { return s_m; }
+    void add_sup_max(int s = 8) { sup_max += s; }
+    void use_sup(int s = 1) { sup += s; }
+    void use_min(int m) { min -= m; } // check
+    void use_gas(int g) { gas -= g; }
+    int get_min() const { return min; }
+    int get_gas() const { return gas; }
+    int get_sup() const { return sup; }
+    int get_sup_max() const { return sup_max; }
 private:
-    int mineral_patches = 9;
-    int m = 50, g = 0;
-    int s = 4, s_m = 10;
+    int min_count = 9;
+    int min = 50, gas = 0;
+    int sup = 4, sup_max = 10;
     const int MINERAL_FRAMES = 176;
     const int GAS_FRAMES = 111;
     vector <int> mineral_workers;
     vector <int> gas_workers;
     int get_mineral_frames() {
         int worker_count = mineral_workers.size();
-        if (worker_count <= mineral_patches) return MINERAL_FRAMES;
-        if (worker_count <= mineral_patches * 3) {
-            return 144 + 32 * worker_count / mineral_patches;
+        if (worker_count <= min_count) return MINERAL_FRAMES;
+        if (worker_count <= min_count * 3) {
+            return 144 + 32 * worker_count / min_count;
         }
-        return (240 * worker_count / mineral_patches * 3);
+        return (240 * worker_count / min_count * 3);
     }
 };
 
@@ -44,15 +46,15 @@ void ResourceHandler::next_frame() {
     for (int &w : mineral_workers) {
         w--;
         if (w == 0) {
-            m += 8;
+            min += 8;
             w = get_mineral_frames();
         }
     }
 }
 
 std::ostream& operator<<(std::ostream& os, ResourceHandler& rh) {
-    os << "M" << setw(5) << rh.minerals() << " | G" << setw(5) << rh.gas();
-    os << " | S" << setw(3) << rh.supply() << "/" << setw(3) << rh.supply_max() << endl;
+    os << "M" << setw(5) << rh.get_min() << " | G" << setw(5) << rh.get_gas();
+    os << " | S" << setw(3) << rh.get_sup() << "/" << setw(3) << rh.get_sup_max();
     return os;
 }
 
@@ -61,12 +63,12 @@ int main() {
     for (int i = 0; i < 1000; i++) {
         int s = i * 42 / 1000;
         cout << setw(4) << i << setw(4) << s << " : ";
-        cout << rh;
+        cout << rh << endl;
         rh.next_frame();
         if (i % 300 == 0) {
             rh.add_worker();
-            rh.use_supply();
-            rh.use_minerals(50);
+            rh.use_sup();
+            rh.use_min(50);
         }
     }
 }

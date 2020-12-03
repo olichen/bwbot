@@ -13,10 +13,9 @@ class ResourceHandler {
     vector <int> gas_workers;
 public:
     ResourceHandler() {
-        mineral_workers.push_back(173);
         mineral_workers.push_back(175);
+        mineral_workers.push_back(176);
         mineral_workers.push_back(177);
-        mineral_workers.push_back(179);
     }
     void print() {
         cout << "M" << setw(5) << minerals << " | G" << setw(5) << gas;
@@ -31,6 +30,15 @@ public:
             }
         }
     }
+    void add_worker() {
+        mineral_workers.push_back(get_mineral_frames());
+    }
+    void use_supply(int s = 1) {
+        supply += s;
+    }
+    void use_minerals(int m) {
+        minerals -= m;
+    }
 private:
     int get_mineral_frames() {
         int worker_count = mineral_workers.size();
@@ -44,10 +52,15 @@ private:
 
 int main() {
     ResourceHandler rh;
-    for (int i = 0; i < 200; i++) {
+    for (int i = 0; i < 1000; i++) {
         int s = i * 42 / 1000;
         cout << setw(4) << i << setw(4) << s << " : ";
         rh.print();
         rh.next_frame();
+        if (i % 300 == 0) {
+            rh.add_worker();
+            rh.use_supply();
+            rh.use_minerals(50);
+        }
     }
 }

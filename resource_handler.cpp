@@ -1,74 +1,114 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include "unit.h"
 using namespace std;
+
+class Resources {
+public:
+    int get_min() const { return min; }
+    void use_min(int m) { min -= m; } // check
+    void add_min(int m = 8) { min += m; }
+
+    int get_gas() const { return gas; }
+    void use_gas(int g) { gas -= g; }
+    void add_gas(int g = 8) { gas += g; }
+
+    int get_sup() const { return sup; }
+    void use_sup(int s = 1) { sup += s; }
+
+    int get_sup_max() const { return sup_max; }
+    void add_sup_max(int s = 8) { sup_max += s; }
+private:
+    int min = 50, gas = 0;
+    int sup = 4, sup_max = 10;
+};
 
 class ResourceHandler {
 public:
     ResourceHandler();
     void next_frame();
-    void add_worker() { mineral_workers.push_back(get_mineral_frames()); }
-    void add_sup_max(int s = 8) { sup_max += s; }
-    void use_sup(int s = 1) { sup += s; }
-    void use_min(int m) { min -= m; } // check
-    void use_gas(int g) { gas -= g; }
-    int get_min() const { return min; }
-    int get_gas() const { return gas; }
-    int get_sup() const { return sup; }
-    int get_sup_max() const { return sup_max; }
-private:
-    int min_count = 9;
-    int min = 50, gas = 0;
-    int sup = 4, sup_max = 10;
-    const int MINERAL_FRAMES = 176;
-    const int GAS_FRAMES = 111;
-    vector <int> mineral_workers;
-    vector <int> gas_workers;
-    int get_mineral_frames() {
-        int worker_count = mineral_workers.size();
-        if (worker_count <= min_count) return MINERAL_FRAMES;
-        if (worker_count <= min_count * 3) {
-            return 144 + 32 * worker_count / min_count;
-        }
-        return (240 * worker_count / min_count * 3);
+    void add_worker() { min_workers.push_back(get_mineral_frames()); }
+    void remove_worker();
+    void print();
+
+    bool can_build(int min = 50, int sup = 1) {
+        return resources.get_min() >= min && (resources.get_sup_max() - resources.get_sup()) >= sup;
     }
+    void build_unit(int min = 50, int sup = 1) {
+        resources.use_min(min);
+        resources.use_sup(sup);
+    }
+private:
+    Resources resources;
+    int min_count = 9;
+    vector <int> min_workers;
+    vector <int> gas_workers;
+    int get_mineral_frames();
 };
 
-std::ostream& operator<<(std::ostream& os, ResourceHandler& rh);
+void ResourceHandler::print() {
+    cout << "M" << setw(5) << resources.get_min() << " | G" << setw(5) << resources.get_gas();
+    cout << " | S" << setw(3) << resources.get_sup() << "/" << setw(3) << resources.get_sup_max();
+}
+std::ostream& operator<<(std::ostream& os, ResourceHandler& rh) {
+    rh.print();
+    return os;
+}
 
 ResourceHandler::ResourceHandler() {
-    mineral_workers.push_back(175);
-    mineral_workers.push_back(176);
-    mineral_workers.push_back(177);
+    add_worker();
+    add_worker();
+    add_worker();
+    add_worker();
+}
+
+void ResourceHandler::remove_worker() {
+    int max = 0;
+    for (int i=1; i < min_workers.size(); i++) {
+        if (min_workers[i] > min_workers[max])
+            max = i;
+    }
+    min_workers[max] = min_workers.back();
+    min_workers.pop_back();
 }
 
 void ResourceHandler::next_frame() {
-    for (int &w : mineral_workers) {
+    for (int &w : min_workers) {
         w--;
         if (w == 0) {
-            min += 8;
+            resources.add_min();
             w = get_mineral_frames();
         }
     }
 }
 
-std::ostream& operator<<(std::ostream& os, ResourceHandler& rh) {
-    os << "M" << setw(5) << rh.get_min() << " | G" << setw(5) << rh.get_gas();
-    os << " | S" << setw(3) << rh.get_sup() << "/" << setw(3) << rh.get_sup_max();
-    return os;
+int ResourceHandler::get_mineral_frames() {
+    int worker_count = min_workers.size();
+    if (worker_count <= min_count) return 176;
+    if (worker_count <= min_count * 3) {
+        return 144 + 32 * worker_count / min_count;
+    }
+    return (240 * worker_count) / (min_count * 3);
 }
 
+
 int main() {
+    int worker_queue = -1;
     ResourceHandler rh;
-    for (int i = 0; i < 1000; i++) {
-        int s = i * 42 / 1000;
-        cout << setw(4) << i << setw(4) << s << " : ";
+    for (int f = 0; f < 1500; f++) {
+        int s = f * 42 / 1000;
+        cout << setw(4) << f << setw(4) << s << " : ";
         cout << rh << endl;
         rh.next_frame();
-        if (i % 300 == 0) {
+        if (worker_queue-- == 0)
             rh.add_worker();
-            rh.use_sup();
-            rh.use_min(50);
+        if (rh.can_build() && worker_queue <= 0) {
+            rh.build_unit();
+            worker_queue = 300;
+        }
+        if (f == 750) {
+            rh.remove_worker();
         }
     }
 }

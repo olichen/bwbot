@@ -10,8 +10,6 @@ public:
     UnitStats();
     Unit& operator[](UnitName u) { return units[(int)u]; }
 
-    // operator overload on unitname
-
 private:
     vector <Unit> units;
 };

@@ -29,9 +29,15 @@ UnitTree::UnitTree() {
 }
 
 #include <iostream>
+#include <iomanip>
+#include "unit_stats.h"
 
 int main() {
     UnitTree ut;
-    cout << (int) ut[UnitName::Terran_SCV] << endl;
+    UnitStats us;
+    for (int i=0; i <= (int)UnitName::Terran_Starport; i++) {
+        UnitName u = (UnitName) i;
+        cout << setw(23) <<us[u].get_name() << ' ' << us[ut[u]].get_name() << endl;
+    }
     return 0;
 }

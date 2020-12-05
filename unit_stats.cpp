@@ -81,6 +81,7 @@ ostream& operator<<(ostream& os, const Unit& u) {
     return os;
 }
 
+/*
 int main() {
     UnitStats ul;
     for (int i=0; i <= (int)UnitName::Terran_Starport; i++) {
@@ -89,4 +90,4 @@ int main() {
         cout << setw(5) << u.get_time() << setw(2) << u.get_sup() << setw(3) << u.get_sup_max() << endl;
     }
 }
-//Unit::Unit(UnitName u, string n, int m, int g, int s, int sm, int t)
+*/

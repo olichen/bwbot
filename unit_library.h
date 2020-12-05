@@ -6,8 +6,11 @@
 
 class UnitLibrary {
 public:
+    UnitLibrary();
+    Unit &operator[](UnitName);
+
     // operator overload on unitname
 
 private:
-    vector <Unit> units;
+    std::vector <Unit> units;
 };

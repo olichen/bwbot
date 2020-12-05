@@ -1,12 +1,10 @@
 #include "unit.h"
+#include <iostream>
+using namespace std;
 
-Unit::Unit(UnitName u, std::string n, int m, int g, int s, int sm, int t)
-    : unit{u}, name{n}, min{m}, gas{g}, sup{s}, sup_max{sm}, time{t}
+Unit::Unit(UnitName u, std::string n, int m, int g, int t, int s, int sm)
+    : unit{u}, name{n}, min{m}, gas{g}, time{t}, sup{s}, sup_max{sm}
 {
-}
-
-int main() {
-    return 0;
 }
 
 /*

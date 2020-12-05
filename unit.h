@@ -2,6 +2,7 @@
 
 #include <string>
 #include "unit_name.h"
+using namespace std;
 
 class Unit {
 public:
@@ -10,7 +11,7 @@ public:
     {}
 
     UnitName get_unit() const { return unit; }
-    std::string get_name() const { return name; }
+    string get_name() const { return name; }
     int get_min() const { return min; }
     int get_gas() const { return gas; }
     int get_sup() const { return sup; }
@@ -19,7 +20,7 @@ public:
 
 private:
     UnitName unit;
-	std::string name;
+	string name;
 	int min;
 	int gas;
 	int time;

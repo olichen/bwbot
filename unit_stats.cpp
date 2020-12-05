@@ -1,6 +1,6 @@
-#include "unit_library.h"
+#include "unit_stats.h"
 
-UnitLibrary::UnitLibrary() {
+UnitStats::UnitStats() {
     units.emplace_back(UnitName::Terran_SCV, "Terran SCV", 50, 0, 300, 1);
     units.emplace_back(UnitName::Terran_Marine, "Terran Marine", 50, 0, 360, 1);
 	units.emplace_back(UnitName::Terran_Firebat, "Terran Firebat", 50, 25, 360, 1);
@@ -28,13 +28,8 @@ UnitLibrary::UnitLibrary() {
 	units.emplace_back(UnitName::Terran_Starport, "Terran Starport", 150, 100, 1050);
 }
 
-Unit &UnitLibrary::operator[](UnitName u) {
-    return units[(int) u];
-}
-
 #include <iostream>
 #include <iomanip>
-using namespace std;
 
 ostream& operator<<(ostream& os, const Unit& u) {
     os << u.get_name();
@@ -42,7 +37,7 @@ ostream& operator<<(ostream& os, const Unit& u) {
 }
 
 int main() {
-    UnitLibrary ul;
+    UnitStats ul;
     for (int i=0; i <= (int)UnitName::Terran_Starport; i++) {
         Unit &u = ul[(UnitName)i];
         cout << setw(25) << u << setw(4) << u.get_min() << setw(4) << u.get_gas();

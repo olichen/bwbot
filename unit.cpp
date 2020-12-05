@@ -1,41 +1,4 @@
-#include "unit.h"
-#include <iostream>
-using namespace std;
-
-
 /*
-UnitName UnitData::getUnitIdFromName(string name) const {
-	for(int i=0; i<UnitName::UNIT_TOTAL; i++)
-		if(unitStatsList[i].name == name)
-			return (UnitName)i;
-	throw UnitNotFound();
-}
-
-UnitStatBlock UnitData::getUnitFromId(UnitName unitname) const {
-	if(unitname >= UnitName::UNIT_TOTAL)
-		throw UnitNotFound();
-	return unitStatsList[unitname];
-}
-
-UnitStatBlock UnitData::getRaceWorker(char race) const {
-	return getUnitForRace(race, &UnitStatBlock::isWorker);
-}
-
-UnitStatBlock UnitData::getRaceExpansion(char race) const {
-	return getUnitForRace(race, &UnitStatBlock::isExpansion);
-}
-
-UnitStatBlock UnitData::getRaceGas(char race) const {
-	return getUnitForRace(race, &UnitStatBlock::isGas);
-}
-
-UnitStatBlock UnitData::getUnitForRace(char race, bool (UnitStatBlock::*function)()) const {
-	for (UnitStatBlock unit : unitStatsList)
-		if(unit.race == race && (unit.*function)())
-			return unit;
-	throw UnitNotFound();
-}
-
 // initialize all units in an array; no code below this point
 // race, name,
 // mineralcost, buildtime, supplycost, supplyprovided

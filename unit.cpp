@@ -2,10 +2,6 @@
 #include <iostream>
 using namespace std;
 
-Unit::Unit(UnitName u, std::string n, int m, int g, int t, int s, int sm)
-    : unit{u}, name{n}, min{m}, gas{g}, time{t}, sup{s}, sup_max{sm}
-{
-}
 
 /*
 UnitName UnitData::getUnitIdFromName(string name) const {

@@ -5,7 +5,9 @@
 
 class Unit {
 public:
-    Unit(UnitName u, std::string n, int m, int g, int t, int s = 0, int sm = 0);
+    Unit(UnitName u, std::string n, int m, int g, int t, int s = 0, int sm = 0)
+        : unit{u}, name{n}, min{m}, gas{g}, time{t}, sup{s}, sup_max{sm}
+    {}
 
     UnitName get_unit() const { return unit; }
     std::string get_name() const { return name; }
@@ -20,8 +22,8 @@ private:
 	std::string name;
 	int min;
 	int gas;
-	int sup;
 	int time;
+	int sup;
 	int sup_max;
 	UnitName prereq[2];
 	UnitName build_from;

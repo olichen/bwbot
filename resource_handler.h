@@ -1,11 +1,13 @@
 #include <vector>
 #include "unit_stats.h"
+#include "unit_name.h"
 using namespace std;
 
+// invariant: always positive?
 class Resources {
 public:
     int get_min() const { return min; }
-    void use_min(int m) { min -= m; } // check
+    void use_min(int m) { min -= m; }
     void add_min(int m = 8) { min += m; }
 
     int get_gas() const { return gas; }
@@ -30,13 +32,8 @@ public:
     void remove_worker();
     void print();
 
-    bool can_build(int min, int sup) {
-        return resources.get_min() >= min && (resources.get_sup_max() - resources.get_sup()) >= sup;
-    }
-    void build_unit(int min, int sup) {
-        resources.use_min(min);
-        resources.use_sup(sup);
-    }
+    bool can_build(UnitName un);
+    void build_unit(UnitName un);
 private:
     UnitStats unit_stats;
     Resources resources;

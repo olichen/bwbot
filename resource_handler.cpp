@@ -36,6 +36,20 @@ ResourceHandler::ResourceHandler() {
     add_worker();
 }
 
+bool ResourceHandler::can_build(UnitName un) {
+    const Unit &u = unit_stats[un];
+    return (resources.get_min() >= u.get_min()
+            && resources.get_gas() >= u.get_gas()
+            && (resources.get_sup_max() - resources.get_sup()) >= u.get_sup());
+}
+
+void ResourceHandler::build_unit(UnitName un) {
+    const Unit &u = unit_stats[un];
+    resources.use_min(u.get_min());
+    resources.use_gas(u.get_gas());
+    resources.use_sup(u.get_sup());
+}
+
 //DEBUG below
 #include <iostream>
 #include <iomanip>
@@ -51,8 +65,8 @@ int main() {
         rh.next_frame();
         if (worker_queue-- == 0)
             rh.add_worker();
-        if (rh.can_build(50, 1) && worker_queue <= 0) {
-            rh.build_unit(50, 1);
+        if (rh.can_build(UnitName::Terran_SCV) && worker_queue <= 0) {
+            rh.build_unit(UnitName::Terran_SCV);
             worker_queue = 300;
         }
         if (f == 750) {

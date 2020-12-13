@@ -1,7 +1,8 @@
 #pragma once
 
+#include <map>
+#include <deque>
 #include <vector>
-#include "unit.h"
 #include "unit_name.h"
 #include "unit_tree.h"
 #include "resource_handler.h"
@@ -16,7 +17,8 @@ public:
 
 private:
     ResourceHandler resource_handler;
-    vector <UnitName> build_order;
+    deque <UnitName> build_order;
     vector <UnitName> units;
+    multimap <UnitName, int> queue;
     UnitTree unit_tree;
 };

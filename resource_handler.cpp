@@ -48,6 +48,11 @@ void ResourceHandler::build_unit(UnitName un) {
     resources.use_min(u.get_min());
     resources.use_gas(u.get_gas());
     resources.use_sup(u.get_sup());
+    resources.add_sup_max(u.get_sup_max());
+}
+
+int ResourceHandler::get_build_time(UnitName un) {
+    return unit_stats[un].get_time();
 }
 
 //DEBUG below

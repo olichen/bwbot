@@ -34,6 +34,7 @@ public:
 
     bool can_build(UnitName un);
     void build_unit(UnitName un);
+    int get_build_time(UnitName un);
 private:
     UnitStats unit_stats;
     Resources resources;

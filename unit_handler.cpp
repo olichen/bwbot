@@ -2,6 +2,10 @@
 
 UnitHandler::UnitHandler() {
     // DEBUG
+    resource_handler.spawn_unit(UnitName::Terran_SCV);
+    resource_handler.spawn_unit(UnitName::Terran_SCV);
+    resource_handler.spawn_unit(UnitName::Terran_SCV);
+    resource_handler.spawn_unit(UnitName::Terran_SCV);
     units.push_back(UnitName::Terran_SCV);
     units.push_back(UnitName::Terran_SCV);
     units.push_back(UnitName::Terran_SCV);
@@ -27,6 +31,7 @@ void UnitHandler::next_frame() {
     for (auto it = queue.begin(); it != queue.end();) {
         it->second--;
         if (it->second == 0) {
+            resource_handler.spawn_unit(it->first);
             units.push_back(it->first);
             queue.erase(it++);
         } else {

@@ -30,10 +30,6 @@ int ResourceHandler::get_mineral_frames() {
 }
 
 ResourceHandler::ResourceHandler() {
-    add_worker();
-    add_worker();
-    add_worker();
-    add_worker();
 }
 
 bool ResourceHandler::can_build(UnitName un) {
@@ -48,7 +44,12 @@ void ResourceHandler::build_unit(UnitName un) {
     resources.use_min(u.get_min());
     resources.use_gas(u.get_gas());
     resources.use_sup(u.get_sup());
+}
+
+void ResourceHandler::spawn_unit(UnitName un) {
+    const Unit &u = unit_stats[un];
     resources.add_sup_max(u.get_sup_max());
+    if (un == UnitName::Terran_SCV) add_worker();
 }
 
 int ResourceHandler::get_build_time(UnitName un) {

@@ -15,10 +15,10 @@ public:
     void add_gas(int g = 8) { gas += g; }
 
     int get_sup() const { return sup; }
-    void use_sup(int s = 1) { sup += s; }
+    void use_sup(int s) { sup += s; }
 
     int get_sup_max() const { return sup_max; }
-    void add_sup_max(int s = 8) { sup_max += s; }
+    void add_sup_max(int s) { sup_max += s; }
 private:
     int min = 50, gas = 0;
     int sup = 4, sup_max = 10;
@@ -34,6 +34,7 @@ public:
 
     bool can_build(UnitName un);
     void build_unit(UnitName un);
+    void spawn_unit(UnitName un);
     int get_build_time(UnitName un);
 private:
     UnitStats unit_stats;

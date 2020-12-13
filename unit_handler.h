@@ -7,9 +7,12 @@ using namespace std;
 
 class UnitHandler {
 public:
+    UnitHandler();
 
 private:
     vector <UnitName> build_order;
     vector <UnitName> units;
-    UnitLibrary ul;
+    UnitStats ul;
+    UnitTree ut;
+
 };

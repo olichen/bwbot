@@ -92,7 +92,7 @@ bool UnitTree::is_upgrade(UnitName u) {
 #include <iomanip>
 #include "unit_stats.h"
 
-int main() {
+int unit_tree_test() {
     UnitTree ut;
     UnitStats us;
     for (int i=0; i <= (int)UnitName::Terran_Ship_Plating_3; i++) {

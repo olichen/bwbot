@@ -73,6 +73,8 @@ UnitStats::UnitStats() {
 	units.emplace_back(UnitName::Terran_Ship_Plating_3, "Terran Ship Plating 3", 250, 250, 4960);
 }
 
+// DEBUG below
+
 #include <iostream>
 #include <iomanip>
 
@@ -81,8 +83,7 @@ ostream& operator<<(ostream& os, const Unit& u) {
     return os;
 }
 
-/*
-int main() {
+void unit_stats_test() {
     UnitStats ul;
     for (int i=0; i <= (int)UnitName::Terran_Starport; i++) {
         Unit &u = ul[(UnitName)i];
@@ -90,4 +91,3 @@ int main() {
         cout << setw(5) << u.get_time() << setw(2) << u.get_sup() << setw(3) << u.get_sup_max() << endl;
     }
 }
-*/

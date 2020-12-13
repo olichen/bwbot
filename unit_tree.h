@@ -8,7 +8,10 @@ class UnitTree {
 public:
     UnitTree();
 
-    UnitName operator[](UnitName u) { return build[u]; }
+    UnitName get_builder(UnitName u) { return build[u]; }
+    bool is_addon(UnitName u);
+    bool req_addon(UnitName u);
+    bool is_upgrade(UnitName u);
 
 private:
     map <UnitName, UnitName> build;

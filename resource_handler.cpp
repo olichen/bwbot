@@ -54,7 +54,7 @@ void ResourceHandler::build_unit(UnitName un) {
 #include <iostream>
 #include <iomanip>
 
-int main() {
+void resource_handler_test() {
     int worker_queue = -1;
     ResourceHandler rh;
     for (int f = 0; f < 1500; f++) {

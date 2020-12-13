@@ -30,7 +30,7 @@ public:
     void next_frame();
     void add_worker() { min_workers.push_back(get_mineral_frames()); }
     void remove_worker();
-    void print();
+    void print(); // DEBUG
 
     bool can_build(UnitName un);
     void build_unit(UnitName un);

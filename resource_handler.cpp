@@ -49,7 +49,7 @@ void ResourceHandler::build_unit(UnitName un) {
 void ResourceHandler::spawn_unit(UnitName un) {
     const Unit &u = unit_stats[un];
     resources.add_sup_max(u.get_sup_max());
-    if (un == UnitName::Terran_SCV) add_worker();
+    if (un == UnitName::Terran_SCV) add_worker(32);
 }
 
 int ResourceHandler::get_build_time(UnitName un) {

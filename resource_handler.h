@@ -21,14 +21,14 @@ public:
     void add_sup_max(int s) { sup_max += s; }
 private:
     int min = 50, gas = 0;
-    int sup = 4, sup_max = 10;
+    int sup = 4, sup_max = 0;
 };
 
 class ResourceHandler {
 public:
     ResourceHandler();
     void next_frame();
-    void add_worker() { min_workers.push_back(get_mineral_frames()); }
+    void add_worker(int delay = 0) { min_workers.push_back(get_mineral_frames() + delay); }
     void remove_worker();
     void print(); // DEBUG
 

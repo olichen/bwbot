@@ -1,8 +1,8 @@
 #pragma once
 
 #include <map>
+#include <unordered_map>
 #include <deque>
-#include <vector>
 #include "unit_name.h"
 #include "unit_tree.h"
 #include "resource_handler.h"
@@ -15,10 +15,14 @@ public:
     void next_frame();
     void print();
 
+    bool can_build(UnitName);
+    void build_unit(UnitName);
+    void spawn_unit(UnitName);
+
 private:
     ResourceHandler resource_handler;
     deque <UnitName> build_order;
-    vector <UnitName> units;
-    multimap <UnitName, int> queue;
+    unordered_multimap <UnitName, int> units; // units to current task
+    multimap <UnitName, int> queue; // unit, build time
     UnitTree unit_tree;
 };

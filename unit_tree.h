@@ -15,5 +15,5 @@ public:
 
 private:
     map <UnitName, UnitName> build;
-    multimap <UnitName, UnitName> prereqs;
+    multimap <UnitName, UnitName> prereq;
 };

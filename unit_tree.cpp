@@ -160,29 +160,3 @@ bool UnitTree::req_addon(Unit u) {
 bool UnitTree::is_upgrade(Unit u) {
     return (u >= Unit::Terran_U238_Shells && u <= Unit::Terran_Ship_Plating_3);
 }
-
-// DEBUG below
-
-#include <iostream>
-#include <iomanip>
-#include "unit_stats.h"
-
-int unit_tree_test() {
-    UnitTree ut;
-    UnitStats us;
-    for (int i=0; i <= (int)Unit::Terran_Ship_Plating_3; i++) {
-        Unit u = (Unit) i;
-        cout << setw(25) << us[u].get_name() << ' ' << us[ut.get_builder(u)].get_name();
-        if (ut.is_addon(u)) cout << " a";
-        if (ut.req_addon(u)) cout << " r";
-        if (ut.is_upgrade(u)) cout << " u";
-        cout << endl;
-    }
-    UnitStats ul;
-    for (int i=0; i <= (int)Unit::Terran_Ship_Plating_3; i++) {
-        UnitCost &u = ul[(Unit)i];
-        cout << setw(25) << u.get_name() << setw(4) << u.get_min() << setw(4) << u.get_gas();
-        cout << setw(5) << u.get_time() << setw(2) << u.get_sup() << setw(3) << u.get_sup_max() << endl;
-    }
-    return 0;
-}

@@ -33,9 +33,9 @@ private:
 	bool morph;
 };
 
-class UnitStats {
+class UnitCosts {
 public:
-    UnitStats();
+    UnitCosts();
     UnitCost& operator[](Unit u) { return uc[(int)u]; }
 
 private:

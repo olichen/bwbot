@@ -1,6 +1,6 @@
-#include "unit_stats.h"
+#include "unit_costs.h"
 
-UnitStats::UnitStats() {
+UnitCosts::UnitCosts() {
     uc.emplace_back(Unit::Terran_SCV, "Terran SCV", 50, 0, 300, 1);
     uc.emplace_back(Unit::Terran_Marine, "Terran Marine", 50, 0, 360, 1);
 	uc.emplace_back(Unit::Terran_Firebat, "Terran Firebat", 50, 25, 360, 1);

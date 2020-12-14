@@ -1,5 +1,5 @@
 #include <vector>
-#include "unit_stats.h"
+#include "unit_costs.h"
 #include "unit.h"
 using namespace std;
 
@@ -37,7 +37,7 @@ public:
     void spawn_unit(Unit u);
     int get_build_time(Unit u);
 private:
-    UnitStats unit_stats;
+    UnitCosts unit_costs;
     Resources resources;
     int min_count = 9;
     vector <int> min_workers;

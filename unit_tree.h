@@ -1,19 +1,19 @@
 #pragma once
 
 #include <map>
-#include "unit_name.h"
+#include "unit.h"
 using namespace std;
 
 class UnitTree {
 public:
     UnitTree();
 
-    UnitName get_builder(UnitName u) { return build[u]; }
-    bool is_addon(UnitName u);
-    bool req_addon(UnitName u);
-    bool is_upgrade(UnitName u);
+    Unit get_builder(Unit u) { return build[u]; }
+    bool is_addon(Unit u);
+    bool req_addon(Unit u);
+    bool is_upgrade(Unit u);
 
 private:
-    map <UnitName, UnitName> build;
-    multimap <UnitName, UnitName> prereq;
+    map <Unit, Unit> build;
+    multimap <Unit, Unit> prereq;
 };

@@ -1,6 +1,6 @@
 #include <vector>
 #include "unit_stats.h"
-#include "unit_name.h"
+#include "unit.h"
 using namespace std;
 
 // invariant: always positive?
@@ -32,10 +32,10 @@ public:
     void remove_worker();
     void print(); // DEBUG
 
-    bool can_build(UnitName un);
-    void build_unit(UnitName un);
-    void spawn_unit(UnitName un);
-    int get_build_time(UnitName un);
+    bool can_build(Unit u);
+    void build_unit(Unit u);
+    void spawn_unit(Unit u);
+    int get_build_time(Unit u);
 private:
     UnitStats unit_stats;
     Resources resources;

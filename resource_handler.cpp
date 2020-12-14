@@ -32,28 +32,28 @@ int ResourceHandler::get_mineral_frames() {
 ResourceHandler::ResourceHandler() {
 }
 
-bool ResourceHandler::can_build(UnitName un) {
-    const Unit &u = unit_stats[un];
-    return (resources.get_min() >= u.get_min()
-            && resources.get_gas() >= u.get_gas()
-            && (resources.get_sup_max() - resources.get_sup()) >= u.get_sup());
+bool ResourceHandler::can_build(Unit u) {
+    const UnitCost &uc = unit_stats[u];
+    return (resources.get_min() >= uc.get_min()
+            && resources.get_gas() >= uc.get_gas()
+            && (resources.get_sup_max() - resources.get_sup()) >= uc.get_sup());
 }
 
-void ResourceHandler::build_unit(UnitName un) {
-    const Unit &u = unit_stats[un];
-    resources.use_min(u.get_min());
-    resources.use_gas(u.get_gas());
-    resources.use_sup(u.get_sup());
+void ResourceHandler::build_unit(Unit u) {
+    const UnitCost &uc = unit_stats[u];
+    resources.use_min(uc.get_min());
+    resources.use_gas(uc.get_gas());
+    resources.use_sup(uc.get_sup());
 }
 
-void ResourceHandler::spawn_unit(UnitName un) {
-    const Unit &u = unit_stats[un];
-    resources.add_sup_max(u.get_sup_max());
-    if (un == UnitName::Terran_SCV) add_worker(32);
+void ResourceHandler::spawn_unit(Unit u) {
+    const UnitCost &uc = unit_stats[u];
+    resources.add_sup_max(uc.get_sup_max());
+    if (u == Unit::Terran_SCV) add_worker(32);
 }
 
-int ResourceHandler::get_build_time(UnitName un) {
-    return unit_stats[un].get_time();
+int ResourceHandler::get_build_time(Unit u) {
+    return unit_stats[u].get_time();
 }
 
 //DEBUG below
@@ -71,8 +71,8 @@ void resource_handler_test() {
         rh.next_frame();
         if (worker_queue-- == 0)
             rh.add_worker();
-        if (rh.can_build(UnitName::Terran_SCV) && worker_queue <= 0) {
-            rh.build_unit(UnitName::Terran_SCV);
+        if (rh.can_build(Unit::Terran_SCV) && worker_queue <= 0) {
+            rh.build_unit(Unit::Terran_SCV);
             worker_queue = 300;
         }
         if (f == 750) {

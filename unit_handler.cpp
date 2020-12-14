@@ -5,30 +5,30 @@
 
 UnitHandler::UnitHandler() {
     // DEBUG
-    spawn_unit(UnitName::Terran_SCV);
-    spawn_unit(UnitName::Terran_SCV);
-    spawn_unit(UnitName::Terran_SCV);
-    spawn_unit(UnitName::Terran_SCV);
-    spawn_unit(UnitName::Terran_Command_Center);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_Supply_Depot);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_Barracks);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_Refinery);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_SCV);
-    build_order.push_back(UnitName::Terran_SCV);
+    spawn_unit(Unit::Terran_SCV);
+    spawn_unit(Unit::Terran_SCV);
+    spawn_unit(Unit::Terran_SCV);
+    spawn_unit(Unit::Terran_SCV);
+    spawn_unit(Unit::Terran_Command_Center);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_Supply_Depot);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_Barracks);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_Refinery);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_SCV);
 }
 
 void UnitHandler::next_frame() {
     resource_handler.next_frame();
-    UnitName next_unit = build_order.front();
+    Unit next_unit = build_order.front();
     for (auto it = queue.begin(); it != queue.end();) {
         it->second--;
         if (it->second == 0) {
@@ -43,35 +43,35 @@ void UnitHandler::next_frame() {
         build_unit(next_unit);
     }
     for (auto it = units.begin(); it != units.end(); it++) {
-        if (it->second == 1 && it->first == UnitName::Terran_SCV)
+        if (it->second == 1 && it->first == Unit::Terran_SCV)
             resource_handler.add_worker(64);
         if (it->second > 0)
             it->second--;
     }
 }
 
-bool UnitHandler::can_build(UnitName un) {
+bool UnitHandler::can_build(Unit un) {
     if (!resource_handler.can_build(un))
         return false;
-    UnitName builder = unit_tree.get_builder(un);
+    Unit builder = unit_tree.get_builder(un);
     for (auto [start, end] = units.equal_range(builder); start != end; start++)
         if (start->second == 0)
             return true;
     return false;
 }
 
-void UnitHandler::build_unit(UnitName un) {
+void UnitHandler::build_unit(Unit un) {
     resource_handler.build_unit(un);
-    UnitName builder = unit_tree.get_builder(un);
+    Unit builder = unit_tree.get_builder(un);
     for (auto [start, end] = units.equal_range(builder); start != end; start++)
         if (start->second == 0)
             start->second = resource_handler.get_build_time(un);
-    if (builder == UnitName::Terran_SCV)
+    if (builder == Unit::Terran_SCV)
         resource_handler.remove_worker();
     queue.emplace(un, resource_handler.get_build_time(un));
 }
 
-void UnitHandler::spawn_unit(UnitName un) {
+void UnitHandler::spawn_unit(Unit un) {
     resource_handler.spawn_unit(un);
     units.emplace(un, 0);
 }

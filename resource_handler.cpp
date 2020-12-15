@@ -25,6 +25,13 @@ void ResourceHandler::next_frame() {
             w = get_mineral_frames();
         }
     }
+    for (int &g : gas_workers) {
+        g--;
+        if (g == 0) {
+            resources.add_gas();
+            g = 111;
+        }
+    }
 }
 
 int ResourceHandler::get_mineral_frames() {
@@ -74,10 +81,10 @@ void pop_highest(vector<int>& v) {
 }
 
 // DEBUG below
-#include <iostream>
-#include <iomanip>
 
 void ResourceHandler::print() {
     cout << "M" << setw(5) << resources.get_min() << " | G" << setw(5) << resources.get_gas();
     cout << " | S" << setw(3) << resources.get_sup() << "/" << setw(3) << resources.get_sup_max();
+    cout << " | W" << setw(3) << min_workers.size() << " | G" << setw(3) << gas_workers.size();
+    cout << " |";
 }

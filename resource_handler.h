@@ -1,6 +1,8 @@
 #include <vector>
 #include "unit_costs.h"
 #include "unit.h"
+#include <iostream> // DEBUG
+#include <iomanip> // DEBUG
 using namespace std;
 
 // invariant: always positive?

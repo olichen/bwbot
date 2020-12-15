@@ -73,6 +73,12 @@ void UnitHandler::build_unit(Unit un) {
 
 void UnitHandler::spawn_unit(Unit un) {
     resource_handler.spawn_unit(un);
+    if (un == Unit::Terran_Refinery) {
+        for (int i = 0; i < 3; i++) {
+            resource_handler.add_gas_worker();
+            resource_handler.rem_min_worker();
+        }
+    }
     units.emplace(un, 0);
 }
 

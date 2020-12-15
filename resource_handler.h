@@ -28,9 +28,14 @@ class ResourceHandler {
 public:
     ResourceHandler();
     void next_frame();
-    void add_worker(int delay = 0) { min_workers.push_back(get_mineral_frames() + delay); }
-    void remove_worker();
-    void print(); // DEBUG
+
+    void add_min_worker(int delay = 0) { min_workers.push_back(get_mineral_frames() + delay); }
+    void rem_min_worker();
+
+    void add_gas_worker();
+    void rem_gas_worker();
+
+    void print(); //DEBUG
 
     bool can_build(Unit u);
     void build_unit(Unit u);
@@ -44,3 +49,5 @@ private:
     vector <int> gas_workers;
     int get_mineral_frames();
 };
+
+void pop_highest(vector<int>& v);

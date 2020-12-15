@@ -38,13 +38,13 @@ void UnitHandler::next_frame() {
             it++;
         }
     }
-    if (can_build(next_unit)) {
+    if (!build_order.empty() && can_build(next_unit)) {
         build_order.pop_front();
         build_unit(next_unit);
     }
     for (auto it = units.begin(); it != units.end(); it++) {
         if (it->second == 1 && it->first == Unit::Terran_SCV)
-            resource_handler.add_worker(64);
+            resource_handler.add_min_worker(64); // 64 is time to return to mins
         if (it->second > 0)
             it->second--;
     }
@@ -67,7 +67,7 @@ void UnitHandler::build_unit(Unit un) {
         if (start->second == 0)
             start->second = resource_handler.get_build_time(un);
     if (builder == Unit::Terran_SCV)
-        resource_handler.remove_worker();
+        resource_handler.rem_min_worker();
     queue.emplace(un, resource_handler.get_build_time(un));
 }
 

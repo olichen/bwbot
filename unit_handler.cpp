@@ -24,11 +24,18 @@ UnitHandler::UnitHandler() {
     build_order.push_back(Unit::Terran_SCV);
     build_order.push_back(Unit::Terran_SCV);
     build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_Supply_Depot);
+    build_order.push_back(Unit::Terran_Factory);
+    build_order.push_back(Unit::Terran_SCV);
+    build_order.push_back(Unit::Terran_Marine);
 }
 
 void UnitHandler::next_frame() {
     resource_handler.next_frame();
+    // get next unit from build order
     Unit next_unit = build_order.front();
+    // update unit queue
     for (auto it = queue.begin(); it != queue.end();) {
         it->second--;
         if (it->second == 0) {
@@ -38,10 +45,12 @@ void UnitHandler::next_frame() {
             it++;
         }
     }
+    // try to build
     if (!build_order.empty() && can_build(next_unit)) {
         build_order.pop_front();
         build_unit(next_unit);
     }
+    // update busy units
     for (auto it = units.begin(); it != units.end(); it++) {
         if (it->second == 1 && it->first == Unit::Terran_SCV)
             resource_handler.add_min_worker(64); // 64 is time to return to mins
@@ -63,9 +72,12 @@ bool UnitHandler::can_build(Unit un) {
 void UnitHandler::build_unit(Unit un) {
     resource_handler.build_unit(un);
     Unit builder = unit_tree.get_builder(un);
-    for (auto [start, end] = units.equal_range(builder); start != end; start++)
-        if (start->second == 0)
+    for (auto [start, end] = units.equal_range(builder); start != end; start++) {
+        if (start->second == 0) {
             start->second = resource_handler.get_build_time(un);
+            break;
+        }
+    }
     if (builder == Unit::Terran_SCV)
         resource_handler.rem_min_worker();
     queue.emplace(un, resource_handler.get_build_time(un));

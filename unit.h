@@ -66,16 +66,16 @@ public:
     bool is_addon() const;
     bool req_addon() const;
     bool is_upgrade() const;
-    UnitName get_unit_name() const { return u; }
-    int as_int() const { return static_cast<int>(u); }
 
-    int get_id() const { return unit_costs[u].id; }
+    UnitName get_unit_name() const { return u; }
+    int get_id() const { return static_cast<int>(u); }
     std::string get_name() const { return unit_costs[u].name; }
     int get_min() const { return unit_costs[u].min; }
     int get_gas() const { return unit_costs[u].gas; }
     int get_sup() const { return unit_costs[u].sup; }
     int get_time() const { return unit_costs[u].time; }
     int get_sup_max() const { return unit_costs[u].sup_max; }
+    Unit get_builder() const { return build.find(u)->second; }
 
     bool operator==(Unit uu) const { return u == uu.get_unit_name(); }
     bool operator<(Unit uu) const { return u < uu.get_unit_name(); }
@@ -85,15 +85,6 @@ private:
 
     UnitName u;
     static std::vector <UnitCost> unit_costs;
-};
-
-class UnitTree {
-public:
-    UnitTree();
-    Unit get_builder(Unit u) { return build.find(u)->second; }
-
-private:
-    void init();
     static std::map <Unit, Unit> build;
     static std::multimap <Unit, Unit> prereq;
 };

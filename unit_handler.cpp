@@ -62,7 +62,7 @@ void UnitHandler::next_frame() {
 bool UnitHandler::can_build(Unit u) {
     if (!resource_handler.can_build(u))
         return false;
-    Unit builder = unit_tree.get_builder(u);
+    Unit builder = u.get_builder();
     for (auto [start, end] = units.equal_range(builder); start != end; start++)
         if (start->second == 0)
             return true;
@@ -71,7 +71,7 @@ bool UnitHandler::can_build(Unit u) {
 
 void UnitHandler::build_unit(Unit u) {
     resource_handler.build_unit(u);
-    Unit builder = unit_tree.get_builder(u);
+    Unit builder = u.get_builder();
     for (auto [start, end] = units.equal_range(builder); start != end; start++) {
         if (start->second == 0) {
             start->second = u.get_time();
@@ -111,5 +111,5 @@ int main() {
 void UnitHandler::print() {
     resource_handler.print();
     for (const auto [u, t] : units)
-        std::cout << ' ' << u.as_int();
+        std::cout << ' ' << u.get_id();
 }

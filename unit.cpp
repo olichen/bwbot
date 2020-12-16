@@ -21,14 +21,9 @@ bool Unit::is_upgrade() const {
     return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3);
 }
 
-std::map <Unit, Unit> UnitTree::build;
-std::multimap <Unit, Unit> UnitTree::prereq;
-
-UnitTree::UnitTree() {
-    if (build.size() == 0) init();
-}
-
 std::vector <UnitCost> Unit::unit_costs;
+std::map <Unit, Unit> Unit::build;
+std::multimap <Unit, Unit> Unit::prereq;
 
 void Unit::init() {
     unit_costs.emplace_back(Unit::Terran_SCV, "Terran SCV", 50, 0, 300, 1);
@@ -101,10 +96,7 @@ void Unit::init() {
 	unit_costs.emplace_back(Unit::Terran_Ship_Plating_1, "Terran Ship Plating 1", 100, 100, 4000);
 	unit_costs.emplace_back(Unit::Terran_Ship_Plating_2, "Terran Ship Plating 2", 175, 175, 4480);
 	unit_costs.emplace_back(Unit::Terran_Ship_Plating_3, "Terran Ship Plating 3", 250, 250, 4960);
-}
 
-
-void UnitTree::init() {
     build.emplace(Unit::Terran_SCV, Unit::Terran_Command_Center);
     build.emplace(Unit::Terran_Marine, Unit::Terran_Barracks);
     build.emplace(Unit::Terran_Firebat, Unit::Terran_Barracks);

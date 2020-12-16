@@ -22,5 +22,4 @@ private:
     std::deque <Unit> build_order;
     std::multimap <Unit, int> units; // units to current task
     std::multimap <Unit, int> queue; // unit, build time
-    UnitTree unit_tree;
 };

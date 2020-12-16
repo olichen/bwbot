@@ -52,7 +52,7 @@ void UnitHandler::next_frame() {
     }
     // update busy units
     for (auto it = units.begin(); it != units.end(); it++) {
-        if (it->second == 1 && Unit::is_worker(it->first))
+        if (it->second == 1 && (it->first).is_worker())
             resource_handler.add_min_worker(64); // 64 is time to return to mins
         if (it->second > 0)
             it->second--;
@@ -71,14 +71,14 @@ bool UnitHandler::can_build(Unit::UnitName un) {
 
 void UnitHandler::build_unit(Unit::UnitName un) {
     resource_handler.build_unit(un);
-    Unit::UnitName builder = unit_tree.get_builder(un);
+    Unit builder = unit_tree.get_builder(un);
     for (auto [start, end] = units.equal_range(builder); start != end; start++) {
         if (start->second == 0) {
             start->second = resource_handler.get_build_time(un);
             break;
         }
     }
-    if (Unit::is_worker(builder))
+    if (builder.is_worker())
         resource_handler.rem_min_worker();
     queue.emplace(un, resource_handler.get_build_time(un));
 }
@@ -111,5 +111,6 @@ int main() {
 void UnitHandler::print() {
     resource_handler.print();
     for (const auto [u, t] : units)
-        std::cout << ' ' << (int)(u);
+        //std::cout << ' ' << (int)(u);
+        std::cout << ' ';
 }

@@ -1,6 +1,6 @@
 #include "unit.h"
 
-bool Unit::is_worker(UnitName u) {
+bool Unit::is_worker() const {
     return u == Terran_SCV;
 }
 

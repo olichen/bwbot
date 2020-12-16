@@ -6,7 +6,7 @@
 
 class Unit {
 public:
-    enum UnitName {
+    enum UnitName : unsigned char {
         Terran_SCV, Terran_Marine, Terran_Firebat, Terran_Ghost, Terran_Medic,
         Terran_Vulture, Terran_Goliath, Terran_Siege_Tank, Terran_Wraith, Terran_Dropship,
         Terran_Valkyrie, Terran_Science_Vessel, Terran_Battlecruiser, Terran_Command_Center, Terran_Supply_Depot,
@@ -49,15 +49,19 @@ public:
         Zerg_Flyer_Attacks_3, Zerg_Flyer_Carapace_1, Zerg_Flyer_Carapace_2, Zerg_Flyer_Carapace_3, UNIT_NULL
     };
 
-    enum UnitAction {
-        SEARCH, ON_GAS, OFF_GAS
-    };
+    Unit(UnitName un) : u{un} { }
 
-    static bool is_worker(UnitName u);
     static bool is_gas(UnitName u);
     static bool is_addon(UnitName u);
     static bool req_addon(UnitName u);
     static bool is_upgrade(UnitName u);
+    bool is_worker() const;
+    UnitName get_unit_name() const { return u; }
+    constexpr bool operator==(UnitName uu) const { return u == uu; }
+    bool operator==(Unit uu) const { return u == uu.get_unit_name(); }
+    bool operator<(Unit uu) const { return u < uu.get_unit_name(); }
+private:
+    UnitName u;
 };
 
 class UnitCost {

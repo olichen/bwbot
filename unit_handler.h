@@ -20,7 +20,7 @@ public:
 private:
     ResourceHandler resource_handler;
     std::deque <Unit::UnitName> build_order;
-    std::unordered_multimap <Unit::UnitName, int> units; // units to current task
+    std::multimap <Unit, int> units; // units to current task
     std::multimap <Unit::UnitName, int> queue; // unit, build time
     UnitTree unit_tree;
 };

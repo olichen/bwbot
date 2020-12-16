@@ -1,26 +1,24 @@
 #include "unit.h"
 
-namespace Unit {
-    bool is_worker(UnitName u) {
-        return u == Terran_SCV;
-    }
+bool Unit::is_worker(UnitName u) {
+    return u == Terran_SCV;
+}
 
-    bool is_gas(UnitName u) {
-        return u == Terran_Refinery;
-    }
+bool Unit::is_gas(UnitName u) {
+    return u == Terran_Refinery;
+}
 
-    bool is_addon(UnitName u) {
-        return (u >= Terran_Machine_Shop && u <= Terran_Covert_Ops);
-    }
+bool Unit::is_addon(UnitName u) {
+    return (u >= Terran_Machine_Shop && u <= Terran_Covert_Ops);
+}
 
-    bool req_addon(UnitName u) {
-        return ((u == Terran_Siege_Tank)
-                || (u >= Terran_Dropship && u <= Terran_Battlecruiser));
-    }
+bool Unit::req_addon(UnitName u) {
+    return ((u == Terran_Siege_Tank)
+            || (u >= Terran_Dropship && u <= Terran_Battlecruiser));
+}
 
-    bool is_upgrade(UnitName u) {
-        return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3);
-    }
+bool Unit::is_upgrade(UnitName u) {
+    return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3);
 }
 
 std::vector <UnitCost> UnitCosts::uc;

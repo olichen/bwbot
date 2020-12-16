@@ -4,7 +4,8 @@
 #include <vector>
 #include <map>
 
-namespace Unit {
+class Unit {
+public:
     enum UnitName {
         Terran_SCV, Terran_Marine, Terran_Firebat, Terran_Ghost, Terran_Medic,
         Terran_Vulture, Terran_Goliath, Terran_Siege_Tank, Terran_Wraith, Terran_Dropship,
@@ -48,11 +49,15 @@ namespace Unit {
         Zerg_Flyer_Attacks_3, Zerg_Flyer_Carapace_1, Zerg_Flyer_Carapace_2, Zerg_Flyer_Carapace_3, UNIT_NULL
     };
 
-    bool is_worker(UnitName u);
-    bool is_gas(UnitName u);
-    bool is_addon(UnitName u);
-    bool req_addon(UnitName u);
-    bool is_upgrade(UnitName u);
+    enum UnitAction {
+        SEARCH, ON_GAS, OFF_GAS
+    };
+
+    static bool is_worker(UnitName u);
+    static bool is_gas(UnitName u);
+    static bool is_addon(UnitName u);
+    static bool req_addon(UnitName u);
+    static bool is_upgrade(UnitName u);
 };
 
 class UnitCost {
@@ -88,7 +93,6 @@ private:
 class UnitTree {
 public:
     UnitTree();
-
     Unit::UnitName get_builder(Unit::UnitName u) { return build[u]; }
 
 private:

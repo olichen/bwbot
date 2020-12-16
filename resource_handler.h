@@ -42,6 +42,8 @@ public:
     void spawn_unit(Unit::UnitName u);
     int get_build_time(Unit::UnitName u);
 private:
+    void pop_highest(std::vector<int>& v);
+
     UnitCosts unit_costs;
     Resources resources;
     int min_count = 9;
@@ -49,5 +51,3 @@ private:
     std::vector <int> gas_workers;
     int get_mineral_frames();
 };
-
-void pop_highest(std::vector<int>& v);

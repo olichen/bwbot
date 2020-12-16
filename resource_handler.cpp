@@ -70,7 +70,7 @@ int ResourceHandler::get_build_time(Unit::UnitName u) {
     return unit_costs[u].get_time();
 }
 
-void pop_highest(std::vector<int>& v) {
+void ResourceHandler::pop_highest(std::vector<int>& v) {
     int i_max = 0;
     for (int i = 1; i < v.size(); i++) {
         if (v[i] > v[i_max])

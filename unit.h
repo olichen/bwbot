@@ -4,6 +4,16 @@
 #include <vector>
 #include <map>
 
+struct UnitCost {
+    UnitCost(int i, std::string n, int m, int g, int t, int s = 0, int sm = 0)
+        : id{i}, name{n}, min{m}, gas{g}, time{t}, sup{s}, sup_max{sm}
+    {}
+
+    int id;
+    std::string name;
+	int min, gas, time, sup, sup_max;
+};
+
 class Unit {
 public:
     enum UnitName : unsigned char {
@@ -49,58 +59,44 @@ public:
         Zerg_Flyer_Attacks_3, Zerg_Flyer_Carapace_1, Zerg_Flyer_Carapace_2, Zerg_Flyer_Carapace_3, UNIT_NULL
     };
 
-    Unit(UnitName un) : u{un} { }
+    Unit(UnitName un) : u{un} { if (unit_costs.size() == 0) init(); }
 
-    static bool is_gas(UnitName u);
-    static bool is_addon(UnitName u);
-    static bool req_addon(UnitName u);
-    static bool is_upgrade(UnitName u);
     bool is_worker() const;
+    bool is_gas() const;
+    bool is_addon() const;
+    bool req_addon() const;
+    bool is_upgrade() const;
     UnitName get_unit_name() const { return u; }
-    constexpr bool operator==(UnitName uu) const { return u == uu; }
+    int as_int() const { return static_cast<int>(u); }
+
+    int get_id() const { return unit_costs[u].id; }
+    std::string get_name() const { return unit_costs[u].name; }
+    int get_min() const { return unit_costs[u].min; }
+    int get_gas() const { return unit_costs[u].gas; }
+    int get_sup() const { return unit_costs[u].sup; }
+    int get_time() const { return unit_costs[u].time; }
+    int get_sup_max() const { return unit_costs[u].sup_max; }
+
     bool operator==(Unit uu) const { return u == uu.get_unit_name(); }
     bool operator<(Unit uu) const { return u < uu.get_unit_name(); }
-private:
-    UnitName u;
-};
-
-class UnitCost {
-public:
-    UnitCost(Unit::UnitName u, std::string n, int m, int g, int t, int s = 0, int sm = 0)
-        : unit{u}, name{n}, min{m}, gas{g}, time{t}, sup{s}, sup_max{sm}
-    {}
-
-    Unit::UnitName get_unit() const { return unit; }
-    std::string get_name() const { return name; }
-    int get_min() const { return min; }
-    int get_gas() const { return gas; }
-    int get_sup() const { return sup; }
-    int get_time() const { return time; }
-    int get_sup_max() const { return sup_max; }
-
-private:
-    Unit::UnitName unit;
-    std::string name;
-	int min, gas, time, sup, sup_max;
-};
-
-class UnitCosts {
-public:
-    UnitCosts();
-    UnitCost& operator[](Unit::UnitName u) { return uc[static_cast<int>(u)]; }
 
 private:
     void init();
-    static std::vector <UnitCost> uc;
+
+    UnitName u;
+    static std::vector <UnitCost> unit_costs;
 };
+int main() {
+    return 0;
+}
 
 class UnitTree {
 public:
     UnitTree();
-    Unit::UnitName get_builder(Unit::UnitName u) { return build[u]; }
+    Unit get_builder(Unit u) { return build.find(u)->second; }
 
 private:
     void init();
-    static std::map <Unit::UnitName, Unit::UnitName> build;
-    static std::multimap <Unit::UnitName, Unit::UnitName> prereq;
+    static std::map <Unit, Unit> build;
+    static std::multimap <Unit, Unit> prereq;
 };

@@ -34,7 +34,7 @@ UnitHandler::UnitHandler() {
 void UnitHandler::next_frame() {
     resource_handler.next_frame();
     // get next unit from build order
-    Unit::UnitName next_unit = build_order.front();
+    Unit next_unit = build_order.front();
     // update unit queue
     for (auto it = queue.begin(); it != queue.end();) {
         it->second--;
@@ -59,39 +59,39 @@ void UnitHandler::next_frame() {
     }
 }
 
-bool UnitHandler::can_build(Unit::UnitName un) {
-    if (!resource_handler.can_build(un))
+bool UnitHandler::can_build(Unit u) {
+    if (!resource_handler.can_build(u))
         return false;
-    Unit::UnitName builder = unit_tree.get_builder(un);
+    Unit builder = unit_tree.get_builder(u);
     for (auto [start, end] = units.equal_range(builder); start != end; start++)
         if (start->second == 0)
             return true;
     return false;
 }
 
-void UnitHandler::build_unit(Unit::UnitName un) {
-    resource_handler.build_unit(un);
-    Unit builder = unit_tree.get_builder(un);
+void UnitHandler::build_unit(Unit u) {
+    resource_handler.build_unit(u);
+    Unit builder = unit_tree.get_builder(u);
     for (auto [start, end] = units.equal_range(builder); start != end; start++) {
         if (start->second == 0) {
-            start->second = resource_handler.get_build_time(un);
+            start->second = resource_handler.get_build_time(u);
             break;
         }
     }
     if (builder.is_worker())
         resource_handler.rem_min_worker();
-    queue.emplace(un, resource_handler.get_build_time(un));
+    queue.emplace(u, resource_handler.get_build_time(u));
 }
 
-void UnitHandler::spawn_unit(Unit::UnitName un) {
-    resource_handler.spawn_unit(un);
-    if (Unit::is_gas(un)) {
+void UnitHandler::spawn_unit(Unit u) {
+    resource_handler.spawn_unit(u);
+    if (u.is_gas()) {
         for (int i = 0; i < 3; i++) {
             resource_handler.add_gas_worker();
             resource_handler.rem_min_worker();
         }
     }
-    units.emplace(un, 0);
+    units.emplace(u, 0);
 }
 
 // DEBUG

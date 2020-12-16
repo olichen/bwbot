@@ -52,7 +52,7 @@ void UnitHandler::next_frame() {
     }
     // update busy units
     for (auto it = units.begin(); it != units.end(); it++) {
-        if (it->second == 1 && it->first == Unit::Terran_SCV)
+        if (it->second == 1 && Unit::is_worker(it->first))
             resource_handler.add_min_worker(64); // 64 is time to return to mins
         if (it->second > 0)
             it->second--;
@@ -78,14 +78,14 @@ void UnitHandler::build_unit(Unit::UnitName un) {
             break;
         }
     }
-    if (builder == Unit::Terran_SCV)
+    if (Unit::is_worker(builder))
         resource_handler.rem_min_worker();
     queue.emplace(un, resource_handler.get_build_time(un));
 }
 
 void UnitHandler::spawn_unit(Unit::UnitName un) {
     resource_handler.spawn_unit(un);
-    if (un == Unit::Terran_Refinery) {
+    if (Unit::is_gas(un)) {
         for (int i = 0; i < 3; i++) {
             resource_handler.add_gas_worker();
             resource_handler.rem_min_worker();
@@ -95,7 +95,6 @@ void UnitHandler::spawn_unit(Unit::UnitName un) {
 }
 
 // DEBUG
-
 
 int main() {
     UnitHandler uh;

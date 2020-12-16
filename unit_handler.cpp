@@ -34,7 +34,7 @@ UnitHandler::UnitHandler() {
 void UnitHandler::next_frame() {
     resource_handler.next_frame();
     // get next unit from build order
-    Unit next_unit = build_order.front();
+    Unit::UnitName next_unit = build_order.front();
     // update unit queue
     for (auto it = queue.begin(); it != queue.end();) {
         it->second--;
@@ -59,19 +59,19 @@ void UnitHandler::next_frame() {
     }
 }
 
-bool UnitHandler::can_build(Unit un) {
+bool UnitHandler::can_build(Unit::UnitName un) {
     if (!resource_handler.can_build(un))
         return false;
-    Unit builder = unit_tree.get_builder(un);
+    Unit::UnitName builder = unit_tree.get_builder(un);
     for (auto [start, end] = units.equal_range(builder); start != end; start++)
         if (start->second == 0)
             return true;
     return false;
 }
 
-void UnitHandler::build_unit(Unit un) {
+void UnitHandler::build_unit(Unit::UnitName un) {
     resource_handler.build_unit(un);
-    Unit builder = unit_tree.get_builder(un);
+    Unit::UnitName builder = unit_tree.get_builder(un);
     for (auto [start, end] = units.equal_range(builder); start != end; start++) {
         if (start->second == 0) {
             start->second = resource_handler.get_build_time(un);
@@ -83,7 +83,7 @@ void UnitHandler::build_unit(Unit un) {
     queue.emplace(un, resource_handler.get_build_time(un));
 }
 
-void UnitHandler::spawn_unit(Unit un) {
+void UnitHandler::spawn_unit(Unit::UnitName un) {
     resource_handler.spawn_unit(un);
     if (un == Unit::Terran_Refinery) {
         for (int i = 0; i < 3; i++) {
@@ -101,9 +101,9 @@ int main() {
     UnitHandler uh;
     for (int f = 0; f < 4000; f++) {
         int s = f * 42 / 1000;
-        cout << setw(4) << f << setw(4) << s << " : ";
+        std::cout << std::setw(4) << f << std::setw(4) << s << " : ";
         uh.print();
-        cout << endl;
+        std::cout << std::endl;
         uh.next_frame();
     }
     return 0;
@@ -111,7 +111,6 @@ int main() {
 
 void UnitHandler::print() {
     resource_handler.print();
-    cout << ' ';
     for (const auto [u, t] : units)
-        cout << (int)(u) << ' ';
+        std::cout << ' ' << (int)(u);
 }

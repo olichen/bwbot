@@ -1,9 +1,7 @@
+#pragma once
+
 #include <vector>
-#include "unit_costs.h"
 #include "unit.h"
-#include <iostream> // DEBUG
-#include <iomanip> // DEBUG
-using namespace std;
 
 // invariant: always positive?
 class Resources {
@@ -39,17 +37,17 @@ public:
 
     void print(); //DEBUG
 
-    bool can_build(Unit u);
-    void build_unit(Unit u);
-    void spawn_unit(Unit u);
-    int get_build_time(Unit u);
+    bool can_build(Unit::UnitName u);
+    void build_unit(Unit::UnitName u);
+    void spawn_unit(Unit::UnitName u);
+    int get_build_time(Unit::UnitName u);
 private:
     UnitCosts unit_costs;
     Resources resources;
     int min_count = 9;
-    vector <int> min_workers;
-    vector <int> gas_workers;
+    std::vector <int> min_workers;
+    std::vector <int> gas_workers;
     int get_mineral_frames();
 };
 
-void pop_highest(vector<int>& v);
+void pop_highest(std::vector<int>& v);

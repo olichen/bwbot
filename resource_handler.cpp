@@ -46,31 +46,31 @@ int ResourceHandler::get_mineral_frames() {
 ResourceHandler::ResourceHandler() {
 }
 
-bool ResourceHandler::can_build(Unit u) {
+bool ResourceHandler::can_build(Unit::UnitName u) {
     const UnitCost &uc = unit_costs[u];
     return (resources.get_min() >= uc.get_min()
             && resources.get_gas() >= uc.get_gas()
             && (resources.get_sup_max() - resources.get_sup()) >= uc.get_sup());
 }
 
-void ResourceHandler::build_unit(Unit u) {
+void ResourceHandler::build_unit(Unit::UnitName u) {
     const UnitCost &uc = unit_costs[u];
     resources.use_min(uc.get_min());
     resources.use_gas(uc.get_gas());
     resources.use_sup(uc.get_sup());
 }
 
-void ResourceHandler::spawn_unit(Unit u) {
+void ResourceHandler::spawn_unit(Unit::UnitName u) {
     const UnitCost &uc = unit_costs[u];
     resources.add_sup_max(uc.get_sup_max());
     if (u == Unit::Terran_SCV) add_min_worker(32);
 }
 
-int ResourceHandler::get_build_time(Unit u) {
+int ResourceHandler::get_build_time(Unit::UnitName u) {
     return unit_costs[u].get_time();
 }
 
-void pop_highest(vector<int>& v) {
+void pop_highest(std::vector<int>& v) {
     int i_max = 0;
     for (int i = 1; i < v.size(); i++) {
         if (v[i] > v[i_max])
@@ -82,9 +82,12 @@ void pop_highest(vector<int>& v) {
 
 // DEBUG below
 
+#include <iostream> // DEBUG
+#include <iomanip> // DEBUG
+
 void ResourceHandler::print() {
-    cout << "M" << setw(5) << resources.get_min() << " | G" << setw(5) << resources.get_gas();
-    cout << " | S" << setw(3) << resources.get_sup() << "/" << setw(3) << resources.get_sup_max();
-    cout << " | W" << setw(3) << min_workers.size() << " | G" << setw(3) << gas_workers.size();
-    cout << " |";
+    std::cout << "M" << std::setw(5) << resources.get_min() << " | G" << std::setw(5) << resources.get_gas();
+    std::cout << " | S" << std::setw(3) << resources.get_sup() << "/" << std::setw(3) << resources.get_sup_max();
+    std::cout << " | W" << std::setw(3) << min_workers.size() << " | G" << std::setw(3) << gas_workers.size();
+    std::cout << " |";
 }

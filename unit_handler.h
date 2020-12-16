@@ -4,9 +4,7 @@
 #include <unordered_map>
 #include <deque>
 #include "unit.h"
-#include "unit_tree.h"
 #include "resource_handler.h"
-using namespace std;
 
 class UnitHandler {
 public:
@@ -15,14 +13,14 @@ public:
     void next_frame();
     void print();
 
-    bool can_build(Unit);
-    void build_unit(Unit);
-    void spawn_unit(Unit);
+    bool can_build(Unit::UnitName);
+    void build_unit(Unit::UnitName);
+    void spawn_unit(Unit::UnitName);
 
 private:
     ResourceHandler resource_handler;
-    deque <Unit> build_order;
-    unordered_multimap <Unit, int> units; // units to current task
-    multimap <Unit, int> queue; // unit, build time
+    std::deque <Unit::UnitName> build_order;
+    std::unordered_multimap <Unit::UnitName, int> units; // units to current task
+    std::multimap <Unit::UnitName, int> queue; // unit, build time
     UnitTree unit_tree;
 };

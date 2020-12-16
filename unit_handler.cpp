@@ -74,13 +74,13 @@ void UnitHandler::build_unit(Unit u) {
     Unit builder = unit_tree.get_builder(u);
     for (auto [start, end] = units.equal_range(builder); start != end; start++) {
         if (start->second == 0) {
-            start->second = resource_handler.get_build_time(u);
+            start->second = u.get_time();
             break;
         }
     }
     if (builder.is_worker())
         resource_handler.rem_min_worker();
-    queue.emplace(u, resource_handler.get_build_time(u));
+    queue.emplace(u, u.get_time());
 }
 
 void UnitHandler::spawn_unit(Unit u) {
@@ -111,6 +111,5 @@ int main() {
 void UnitHandler::print() {
     resource_handler.print();
     for (const auto [u, t] : units)
-        //std::cout << ' ' << (int)(u);
-        std::cout << ' ';
+        std::cout << ' ' << u.as_int();
 }

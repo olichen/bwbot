@@ -40,11 +40,9 @@ public:
     bool can_build(Unit u);
     void build_unit(Unit u);
     void spawn_unit(Unit u);
-    int get_build_time(Unit u);
 private:
     void pop_highest(std::vector<int>& v);
 
-    UnitCosts unit_costs;
     Resources resources;
     int min_count = 9;
     std::vector <int> min_workers;

@@ -47,27 +47,20 @@ ResourceHandler::ResourceHandler() {
 }
 
 bool ResourceHandler::can_build(Unit u) {
-    const UnitCost &uc = unit_costs[u];
-    return (resources.get_min() >= uc.get_min()
-            && resources.get_gas() >= uc.get_gas()
-            && (resources.get_sup_max() - resources.get_sup()) >= uc.get_sup());
+    return (resources.get_min() >= u.get_min()
+            && resources.get_gas() >= u.get_gas()
+            && (resources.get_sup_max() - resources.get_sup()) >= u.get_sup());
 }
 
 void ResourceHandler::build_unit(Unit u) {
-    const UnitCost &uc = unit_costs[u];
-    resources.use_min(uc.get_min());
-    resources.use_gas(uc.get_gas());
-    resources.use_sup(uc.get_sup());
+    resources.use_min(u.get_min());
+    resources.use_gas(u.get_gas());
+    resources.use_sup(u.get_sup());
 }
 
 void ResourceHandler::spawn_unit(Unit u) {
-    const UnitCost &uc = unit_costs[u];
-    resources.add_sup_max(uc.get_sup_max());
+    resources.add_sup_max(u.get_sup_max());
     if (u.is_worker()) add_min_worker(32);
-}
-
-int ResourceHandler::get_build_time(Unit u) {
-    return unit_costs[u].get_time();
 }
 
 void ResourceHandler::pop_highest(std::vector<int>& v) {

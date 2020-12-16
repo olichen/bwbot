@@ -86,9 +86,6 @@ private:
     UnitName u;
     static std::vector <UnitCost> unit_costs;
 };
-int main() {
-    return 0;
-}
 
 class UnitTree {
 public:

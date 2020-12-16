@@ -1,5 +1,28 @@
 #include "unit.h"
 
+namespace Unit {
+    bool is_worker(UnitName u) {
+        return u == Terran_SCV;
+    }
+
+    bool is_gas(UnitName u) {
+        return u == Terran_Refinery;
+    }
+
+    bool is_addon(UnitName u) {
+        return (u >= Terran_Machine_Shop && u <= Terran_Covert_Ops);
+    }
+
+    bool req_addon(UnitName u) {
+        return ((u == Terran_Siege_Tank)
+                || (u >= Terran_Dropship && u <= Terran_Battlecruiser));
+    }
+
+    bool is_upgrade(UnitName u) {
+        return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3);
+    }
+}
+
 std::vector <UnitCost> UnitCosts::uc;
 std::map <Unit::UnitName, Unit::UnitName> UnitTree::build;
 std::multimap <Unit::UnitName, Unit::UnitName> UnitTree::prereq;
@@ -10,19 +33,6 @@ UnitCosts::UnitCosts() {
 
 UnitTree::UnitTree() {
     if (build.size() == 0) init();
-}
-
-bool UnitTree::is_addon(Unit::UnitName u) {
-    return (u >= Unit::Terran_Machine_Shop && u <= Unit::Terran_Covert_Ops);
-}
-
-bool UnitTree::req_addon(Unit::UnitName u) {
-    return ((u == Unit::Terran_Siege_Tank)
-            || (u >= Unit::Terran_Dropship && u <= Unit::Terran_Battlecruiser));
-}
-
-bool UnitTree::is_upgrade(Unit::UnitName u) {
-    return (u >= Unit::Terran_U238_Shells && u <= Unit::Terran_Ship_Plating_3);
 }
 
 void UnitCosts::init() {

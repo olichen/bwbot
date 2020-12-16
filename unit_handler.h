@@ -16,6 +16,7 @@ public:
     bool can_build(Unit);
     void build_unit(Unit);
     void spawn_unit(Unit);
+    void try_to_build();
 
 private:
     ResourceHandler resource_handler;

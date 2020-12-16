@@ -56,7 +56,8 @@ public:
         Zerg_Chitinous_Plating, Zerg_Plague, Zerg_Consume, Zerg_Metasynaptic_Node, Zerg_Melee_Attacks_1,
         Zerg_Melee_Attacks_2, Zerg_Melee_Attacks_3, Zerg_Missile_Attacks_1, Zerg_Missile_Attacks_2, Zerg_Missile_Attacks_3,
         Zerg_Carapace_1, Zerg_Carapace_2, Zerg_Carapace_3, Zerg_Flyer_Attacks_1, Zerg_Flyer_Attacks_2,
-        Zerg_Flyer_Attacks_3, Zerg_Flyer_Carapace_1, Zerg_Flyer_Carapace_2, Zerg_Flyer_Carapace_3, UNIT_NULL
+        Zerg_Flyer_Attacks_3, Zerg_Flyer_Carapace_1, Zerg_Flyer_Carapace_2, Zerg_Flyer_Carapace_3, UNIT_NULL,
+        SEARCH, ON_GAS, OFF_GAS
     };
 
     Unit(UnitName un) : u{un} { if (unit_costs.size() == 0) init(); }
@@ -66,6 +67,7 @@ public:
     bool is_addon() const;
     bool req_addon() const;
     bool is_upgrade() const;
+    bool is_action() const { return u > UNIT_NULL; }
 
     UnitName get_unit_name() const { return u; }
     int get_id() const { return static_cast<int>(u); }
@@ -78,6 +80,7 @@ public:
     Unit get_builder() const { return build.find(u)->second; }
 
     bool operator==(Unit uu) const { return u == uu.get_unit_name(); }
+    bool operator==(UnitName uu) const { return u == uu; }
     bool operator<(Unit uu) const { return u < uu.get_unit_name(); }
 
 private:

@@ -37,9 +37,9 @@ public:
 
     void print(); //DEBUG
 
-    bool can_build(Unit u);
-    void build_unit(Unit u);
-    void spawn_unit(Unit u);
+    bool can_build(Unit::UnitName u);
+    void build_unit(Unit::UnitName u);
+    void spawn_unit(Unit::UnitName u);
 private:
     void pop_highest(std::vector<int>& v);
 

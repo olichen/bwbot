@@ -46,21 +46,21 @@ int ResourceHandler::get_mineral_frames() {
 ResourceHandler::ResourceHandler() {
 }
 
-bool ResourceHandler::can_build(Unit u) {
-    return (resources.get_min() >= u.get_min()
-            && resources.get_gas() >= u.get_gas()
-            && (resources.get_sup_max() - resources.get_sup()) >= u.get_sup());
+bool ResourceHandler::can_build(Unit::UnitName un) {
+    return (resources.get_min() >= Unit::get_min(un)
+            && resources.get_gas() >= Unit::get_gas(un)
+            && (resources.get_sup_max() - resources.get_sup()) >= Unit::get_sup(un));
 }
 
-void ResourceHandler::build_unit(Unit u) {
-    resources.use_min(u.get_min());
-    resources.use_gas(u.get_gas());
-    resources.use_sup(u.get_sup());
+void ResourceHandler::build_unit(Unit::UnitName un) {
+    resources.use_min(Unit::get_min(un));
+    resources.use_gas(Unit::get_gas(un));
+    resources.use_sup(Unit::get_sup(un));
 }
 
-void ResourceHandler::spawn_unit(Unit u) {
-    resources.add_sup_max(u.get_sup_max());
-    if (u.is_worker()) add_min_worker(32);
+void ResourceHandler::spawn_unit(Unit::UnitName un) {
+    resources.add_sup_max(Unit::get_sup_max(un));
+    //if (Unit::is_worker(un)) add_min_worker(32);
 }
 
 void ResourceHandler::pop_highest(std::vector<int>& v) {
@@ -83,4 +83,10 @@ void ResourceHandler::print() {
     std::cout << " | S" << std::setw(3) << resources.get_sup() << "/" << std::setw(3) << resources.get_sup_max();
     std::cout << " | W" << std::setw(3) << min_workers.size() << " | G" << std::setw(3) << gas_workers.size();
     std::cout << " |";
+}
+
+int main() {
+    std::cout << Unit::Terran_SCV;
+    std::cout << Unit::get_name(Unit::Terran_SCV);
+    return 0;
 }

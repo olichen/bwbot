@@ -1,245 +1,253 @@
 #include "unit.h"
 
-bool Unit::is_worker() const {
+namespace Unit {
+bool is_worker(UnitName u) {
     return u == Terran_SCV;
 }
 
-bool Unit::is_gas() const {
+bool is_gas(UnitName u) {
     return u == Terran_Refinery;
 }
 
-bool Unit::is_addon() const {
+bool is_addon(UnitName u) {
     return (u >= Terran_Machine_Shop && u <= Terran_Covert_Ops);
 }
 
-bool Unit::req_addon() const {
+bool req_addon(UnitName u) {
     return ((u == Terran_Siege_Tank)
             || (u >= Terran_Dropship && u <= Terran_Battlecruiser));
 }
 
-bool Unit::is_upgrade() const {
+bool is_upgrade(UnitName u) {
     return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3);
 }
 
-std::vector <UnitCost> Unit::unit_costs;
-std::map <Unit, Unit> Unit::build;
-std::multimap <Unit, Unit> Unit::prereq;
+namespace {
+    UnitCost::UnitCost(UnitName u, std::string n, int m, int g, int t, int s, int sm)
+        : un{u}, name{n}, min{m}, gas{g}, time{t}, sup{s}, sup_max{sm}
+    { }
 
-void Unit::init() {
-    unit_costs.emplace_back(Unit::Terran_SCV, "Terran SCV", 50, 0, 300, 1);
-    unit_costs.emplace_back(Unit::Terran_Marine, "Terran Marine", 50, 0, 360, 1);
-	unit_costs.emplace_back(Unit::Terran_Firebat, "Terran Firebat", 50, 25, 360, 1);
-	unit_costs.emplace_back(Unit::Terran_Ghost, "Terran Ghost", 25, 75, 750, 1);
-	unit_costs.emplace_back(Unit::Terran_Medic, "Terran Medic", 50, 25, 450, 1);
-	unit_costs.emplace_back(Unit::Terran_Vulture, "Terran Vulture", 75, 0, 450, 2);
-	unit_costs.emplace_back(Unit::Terran_Goliath, "Terran Goliath", 100, 50, 600, 2);
-	unit_costs.emplace_back(Unit::Terran_Siege_Tank, "Terran Siege Tank", 150, 100, 750, 2);
-	unit_costs.emplace_back(Unit::Terran_Wraith, "Terran Wraith", 150, 100, 900, 2);
-	unit_costs.emplace_back(Unit::Terran_Dropship, "Terran Dropship", 100, 100, 750, 2);
-	unit_costs.emplace_back(Unit::Terran_Valkyrie, "Terran Valkyrie", 250, 125, 750, 3);
-	unit_costs.emplace_back(Unit::Terran_Science_Vessel, "Terran Science Vessel", 100, 225, 1200, 2);
-	unit_costs.emplace_back(Unit::Terran_Battlecruiser, "Terran Battlecruiser", 400, 300, 2000, 6);
-	unit_costs.emplace_back(Unit::Terran_Command_Center, "Terran Command Center", 400, 0, 1800, 0, 10);
-	unit_costs.emplace_back(Unit::Terran_Supply_Depot, "Terran Supply Depot", 100, 0, 600, 0, 8);
-	unit_costs.emplace_back(Unit::Terran_Refinery, "Terran Refinery", 100, 0, 600);
-	unit_costs.emplace_back(Unit::Terran_Barracks, "Terran Barracks", 150, 0, 1200);
-	unit_costs.emplace_back(Unit::Terran_Engineering_Bay, "Terran Engineering Bay", 125, 0, 900);
-	unit_costs.emplace_back(Unit::Terran_Missile_Turret, "Terran Missile Turret", 75, 0, 450);
-	unit_costs.emplace_back(Unit::Terran_Academy, "Terran Academy", 150, 0, 1200);
-	unit_costs.emplace_back(Unit::Terran_Bunker, "Terran Bunker", 100, 0, 450);
-	unit_costs.emplace_back(Unit::Terran_Factory, "Terran Factory", 200, 100, 1200);
-	unit_costs.emplace_back(Unit::Terran_Armory, "Terran Armory", 100, 50, 1200);
-	unit_costs.emplace_back(Unit::Terran_Science_Facility, "Terran Science Facility", 100, 150, 900);
-	unit_costs.emplace_back(Unit::Terran_Starport, "Terran Starport", 150, 100, 1050);
-	unit_costs.emplace_back(Unit::Terran_Machine_Shop, "Terran Machine Shop", 50, 50, 600);
-	unit_costs.emplace_back(Unit::Terran_Control_Tower, "Terran Control Tower", 50, 50, 600);
-	unit_costs.emplace_back(Unit::Terran_Comsat_Station, "Terran Comsat Station", 50, 50, 600);
-	unit_costs.emplace_back(Unit::Terran_Nuclear_Silo, "Terran Nuclear Silo", 100, 100, 1200);
-	unit_costs.emplace_back(Unit::Terran_Physics_Lab, "Terran Physics Lab", 50, 50, 600);
-	unit_costs.emplace_back(Unit::Terran_Covert_Ops, "Terran Covert Ops", 50, 50, 600);
-	unit_costs.emplace_back(Unit::Terran_Nuclear_Missile, "Terran Nuclear Missile", 200, 200, 1500, 8);
-	unit_costs.emplace_back(Unit::Terran_U238_Shells, "Terran U-238 Shells", 150, 150, 1500);
-	unit_costs.emplace_back(Unit::Terran_Stim_Pack, "Terran Stim Pack", 100, 100, 1200);
-	unit_costs.emplace_back(Unit::Terran_Restoration, "Terran Restoration", 100, 100, 1200);
-	unit_costs.emplace_back(Unit::Terran_Optical_Flare, "Terran Optical Flare", 100, 100, 1200);
-	unit_costs.emplace_back(Unit::Terran_Caduceus_Reactor, "Terran Caduceus Reactor", 150, 150, 2500);
-	unit_costs.emplace_back(Unit::Terran_Ion_Thrusters, "Terran Ion Thrusters", 100, 100, 1500);
-	unit_costs.emplace_back(Unit::Terran_Spider_Mines, "Terran Spider Mines", 100, 100, 1200);
-	unit_costs.emplace_back(Unit::Terran_Siege_Tech, "Terran Siege Tech", 150, 150, 1200);
-	unit_costs.emplace_back(Unit::Terran_Charon_Boosters, "Terran Charon Boosters", 100, 100, 2000);
-	unit_costs.emplace_back(Unit::Terran_Cloaking_Field, "Terran Cloaking Field", 150, 150, 1500);
-	unit_costs.emplace_back(Unit::Terran_Apollo_Reactor, "Terran Apollo Reactor", 200, 200, 2500);
-	unit_costs.emplace_back(Unit::Terran_EMP_Shockwave, "Terran EMP Shockwave", 200, 200, 1800);
-	unit_costs.emplace_back(Unit::Terran_Irradiate, "Terran Irradiate", 200, 200, 1200);
-	unit_costs.emplace_back(Unit::Terran_Titan_Reactor, "Terran Titan Reactor", 150, 150, 2500);
-	unit_costs.emplace_back(Unit::Terran_Lockdown, "Terran Lockdown", 200, 200, 1500);
-	unit_costs.emplace_back(Unit::Terran_Personnel_Cloaking, "Terran Personnel Cloaking", 100, 100, 1200);
-	unit_costs.emplace_back(Unit::Terran_Ocular_Implants, "Terran Ocular Implants", 100, 100, 2500);
-	unit_costs.emplace_back(Unit::Terran_Moebius_Reactor, "Terran Moebius Reactor", 150, 150, 2500);
-	unit_costs.emplace_back(Unit::Terran_Yamato_Gun, "Terran Yamato Gun", 100, 100, 1800);
-	unit_costs.emplace_back(Unit::Terran_Colossus_Reactor, "Terran Colossus Reactor", 150, 150, 2500);
-	unit_costs.emplace_back(Unit::Terran_Infantry_Weapons_1, "Terran Infantry Weapons 1", 100, 100, 4000);
-	unit_costs.emplace_back(Unit::Terran_Infantry_Weapons_2, "Terran Infantry Weapons 2", 175, 175, 4480);
-	unit_costs.emplace_back(Unit::Terran_Infantry_Weapons_3, "Terran Infantry Weapons 3", 250, 250, 4960);
-	unit_costs.emplace_back(Unit::Terran_Infantry_Armor_1, "Terran Infantry Armor 1", 100, 100, 4000);
-	unit_costs.emplace_back(Unit::Terran_Infantry_Armor_2, "Terran Infantry Armor 2", 175, 175, 4480);
-	unit_costs.emplace_back(Unit::Terran_Infantry_Armor_3, "Terran Infantry Armor 3", 250, 250, 4960);
-	unit_costs.emplace_back(Unit::Terran_Vehicle_Weapons_1, "Terran Vehicle Weapons 1", 100, 100, 4000);
-	unit_costs.emplace_back(Unit::Terran_Vehicle_Weapons_2, "Terran Vehicle Weapons 2", 175, 175, 4480);
-	unit_costs.emplace_back(Unit::Terran_Vehicle_Weapons_3, "Terran Vehicle Weapons 3", 250, 250, 4960);
-	unit_costs.emplace_back(Unit::Terran_Vehicle_Plating_1, "Terran Vehicle Plating 1", 100, 100, 4000);
-	unit_costs.emplace_back(Unit::Terran_Vehicle_Plating_2, "Terran Vehicle Plating 2", 175, 175, 4480);
-	unit_costs.emplace_back(Unit::Terran_Vehicle_Plating_3, "Terran Vehicle Plating 3", 250, 250, 4960);
-	unit_costs.emplace_back(Unit::Terran_Ship_Weapons_1, "Terran Ship Weapons 1", 100, 100, 4000);
-	unit_costs.emplace_back(Unit::Terran_Ship_Weapons_2, "Terran Ship Weapons 2", 175, 175, 4480);
-	unit_costs.emplace_back(Unit::Terran_Ship_Weapons_3, "Terran Ship Weapons 3", 250, 250, 4960);
-	unit_costs.emplace_back(Unit::Terran_Ship_Plating_1, "Terran Ship Plating 1", 100, 100, 4000);
-	unit_costs.emplace_back(Unit::Terran_Ship_Plating_2, "Terran Ship Plating 2", 175, 175, 4480);
-	unit_costs.emplace_back(Unit::Terran_Ship_Plating_3, "Terran Ship Plating 3", 250, 250, 4960);
+    std::vector<UnitCost> unit_costs {
+        { Terran_SCV, "Terran SCV", 50, 0, 300, 1 },
+        { Terran_Marine, "Terran Marine", 50, 0, 360, 1 },
+	    { Terran_Firebat, "Terran Firebat", 50, 25, 360, 1 },
+	    { Terran_Ghost, "Terran Ghost", 25, 75, 750, 1 },
+	    { Terran_Medic, "Terran Medic", 50, 25, 450, 1 },
+	    { Terran_Vulture, "Terran Vulture", 75, 0, 450, 2 },
+	    { Terran_Goliath, "Terran Goliath", 100, 50, 600, 2 },
+	    { Terran_Siege_Tank, "Terran Siege Tank", 150, 100, 750, 2 },
+	    { Terran_Wraith, "Terran Wraith", 150, 100, 900, 2 },
+	    { Terran_Dropship, "Terran Dropship", 100, 100, 750, 2 },
+	    { Terran_Valkyrie, "Terran Valkyrie", 250, 125, 750, 3 },
+	    { Terran_Science_Vessel, "Terran Science Vessel", 100, 225, 1200, 2 },
+	    { Terran_Battlecruiser, "Terran Battlecruiser", 400, 300, 2000, 6 },
+	    { Terran_Command_Center, "Terran Command Center", 400, 0, 1800, 0, 10 },
+	    { Terran_Supply_Depot, "Terran Supply Depot", 100, 0, 600, 0, 8 },
+	    { Terran_Refinery, "Terran Refinery", 100, 0, 600 },
+	    { Terran_Barracks, "Terran Barracks", 150, 0, 1200 },
+	    { Terran_Engineering_Bay, "Terran Engineering Bay", 125, 0, 900 },
+	    { Terran_Missile_Turret, "Terran Missile Turret", 75, 0, 450 },
+	    { Terran_Academy, "Terran Academy", 150, 0, 1200 },
+	    { Terran_Bunker, "Terran Bunker", 100, 0, 450 },
+	    { Terran_Factory, "Terran Factory", 200, 100, 1200 },
+	    { Terran_Armory, "Terran Armory", 100, 50, 1200 },
+	    { Terran_Science_Facility, "Terran Science Facility", 100, 150, 900 },
+	    { Terran_Starport, "Terran Starport", 150, 100, 1050 },
+	    { Terran_Machine_Shop, "Terran Machine Shop", 50, 50, 600 },
+	    { Terran_Control_Tower, "Terran Control Tower", 50, 50, 600 },
+	    { Terran_Comsat_Station, "Terran Comsat Station", 50, 50, 600 },
+	    { Terran_Nuclear_Silo, "Terran Nuclear Silo", 100, 100, 1200 },
+	    { Terran_Physics_Lab, "Terran Physics Lab", 50, 50, 600 },
+	    { Terran_Covert_Ops, "Terran Covert Ops", 50, 50, 600 },
+	    { Terran_Nuclear_Missile, "Terran Nuclear Missile", 200, 200, 1500, 8 },
+	    { Terran_U238_Shells, "Terran U-238 Shells", 150, 150, 1500 },
+	    { Terran_Stim_Pack, "Terran Stim Pack", 100, 100, 1200 },
+	    { Terran_Restoration, "Terran Restoration", 100, 100, 1200 },
+	    { Terran_Optical_Flare, "Terran Optical Flare", 100, 100, 1200 },
+	    { Terran_Caduceus_Reactor, "Terran Caduceus Reactor", 150, 150, 2500 },
+	    { Terran_Ion_Thrusters, "Terran Ion Thrusters", 100, 100, 1500 },
+	    { Terran_Spider_Mines, "Terran Spider Mines", 100, 100, 1200 },
+	    { Terran_Siege_Tech, "Terran Siege Tech", 150, 150, 1200 },
+	    { Terran_Charon_Boosters, "Terran Charon Boosters", 100, 100, 2000 },
+	    { Terran_Cloaking_Field, "Terran Cloaking Field", 150, 150, 1500 },
+	    { Terran_Apollo_Reactor, "Terran Apollo Reactor", 200, 200, 2500 },
+	    { Terran_EMP_Shockwave, "Terran EMP Shockwave", 200, 200, 1800 },
+	    { Terran_Irradiate, "Terran Irradiate", 200, 200, 1200 },
+	    { Terran_Titan_Reactor, "Terran Titan Reactor", 150, 150, 2500 },
+	    { Terran_Lockdown, "Terran Lockdown", 200, 200, 1500 },
+	    { Terran_Personnel_Cloaking, "Terran Personnel Cloaking", 100, 100, 1200 },
+	    { Terran_Ocular_Implants, "Terran Ocular Implants", 100, 100, 2500 },
+	    { Terran_Moebius_Reactor, "Terran Moebius Reactor", 150, 150, 2500 },
+	    { Terran_Yamato_Gun, "Terran Yamato Gun", 100, 100, 1800 },
+	    { Terran_Colossus_Reactor, "Terran Colossus Reactor", 150, 150, 2500 },
+	    { Terran_Infantry_Weapons_1, "Terran Infantry Weapons 1", 100, 100, 4000 },
+	    { Terran_Infantry_Weapons_2, "Terran Infantry Weapons 2", 175, 175, 4480 },
+	    { Terran_Infantry_Weapons_3, "Terran Infantry Weapons 3", 250, 250, 4960 },
+	    { Terran_Infantry_Armor_1, "Terran Infantry Armor 1", 100, 100, 4000 },
+	    { Terran_Infantry_Armor_2, "Terran Infantry Armor 2", 175, 175, 4480 },
+	    { Terran_Infantry_Armor_3, "Terran Infantry Armor 3", 250, 250, 4960 },
+	    { Terran_Vehicle_Weapons_1, "Terran Vehicle Weapons 1", 100, 100, 4000 },
+	    { Terran_Vehicle_Weapons_2, "Terran Vehicle Weapons 2", 175, 175, 4480 },
+	    { Terran_Vehicle_Weapons_3, "Terran Vehicle Weapons 3", 250, 250, 4960 },
+	    { Terran_Vehicle_Plating_1, "Terran Vehicle Plating 1", 100, 100, 4000 },
+	    { Terran_Vehicle_Plating_2, "Terran Vehicle Plating 2", 175, 175, 4480 },
+	    { Terran_Vehicle_Plating_3, "Terran Vehicle Plating 3", 250, 250, 4960 },
+	    { Terran_Ship_Weapons_1, "Terran Ship Weapons 1", 100, 100, 4000 },
+	    { Terran_Ship_Weapons_2, "Terran Ship Weapons 2", 175, 175, 4480 },
+	    { Terran_Ship_Weapons_3, "Terran Ship Weapons 3", 250, 250, 4960 },
+	    { Terran_Ship_Plating_1, "Terran Ship Plating 1", 100, 100, 4000 },
+	    { Terran_Ship_Plating_2, "Terran Ship Plating 2", 175, 175, 4480 },
+	    { Terran_Ship_Plating_3, "Terran Ship Plating 3", 250, 250, 4960 }
+    };
 
-    build.emplace(Unit::Terran_SCV, Unit::Terran_Command_Center);
-    build.emplace(Unit::Terran_Marine, Unit::Terran_Barracks);
-    build.emplace(Unit::Terran_Firebat, Unit::Terran_Barracks);
-    build.emplace(Unit::Terran_Ghost, Unit::Terran_Barracks);
-    build.emplace(Unit::Terran_Medic, Unit::Terran_Barracks);
-    build.emplace(Unit::Terran_Vulture, Unit::Terran_Factory);
-    build.emplace(Unit::Terran_Goliath, Unit::Terran_Factory);
-    build.emplace(Unit::Terran_Siege_Tank, Unit::Terran_Factory);
-    build.emplace(Unit::Terran_Wraith, Unit::Terran_Starport);
-    build.emplace(Unit::Terran_Dropship, Unit::Terran_Starport);
-    build.emplace(Unit::Terran_Valkyrie, Unit::Terran_Starport);
-    build.emplace(Unit::Terran_Science_Vessel, Unit::Terran_Starport);
-    build.emplace(Unit::Terran_Battlecruiser, Unit::Terran_Starport);
-    build.emplace(Unit::Terran_Command_Center, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Supply_Depot, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Refinery, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Barracks, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Engineering_Bay, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Missile_Turret, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Academy, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Bunker, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Factory, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Armory, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Science_Facility, Unit::Terran_SCV);
-    build.emplace(Unit::Terran_Starport, Unit::Terran_SCV);
-	build.emplace(Unit::Terran_Machine_Shop, Unit::Terran_Factory);
-	build.emplace(Unit::Terran_Control_Tower, Unit::Terran_Starport);
-	build.emplace(Unit::Terran_Comsat_Station, Unit::Terran_Command_Center);
-	build.emplace(Unit::Terran_Nuclear_Silo, Unit::Terran_Command_Center);
-	build.emplace(Unit::Terran_Physics_Lab, Unit::Terran_Science_Facility);
-	build.emplace(Unit::Terran_Covert_Ops, Unit::Terran_Science_Facility);
-	build.emplace(Unit::Terran_Nuclear_Missile, Unit::Terran_Nuclear_Silo);
-	build.emplace(Unit::Terran_U238_Shells, Unit::Terran_Academy);
-	build.emplace(Unit::Terran_Stim_Pack, Unit::Terran_Academy);
-	build.emplace(Unit::Terran_Restoration, Unit::Terran_Academy);
-	build.emplace(Unit::Terran_Optical_Flare, Unit::Terran_Academy);
-	build.emplace(Unit::Terran_Caduceus_Reactor, Unit::Terran_Academy);
-	build.emplace(Unit::Terran_Ion_Thrusters, Unit::Terran_Machine_Shop);
-	build.emplace(Unit::Terran_Spider_Mines, Unit::Terran_Machine_Shop);
-	build.emplace(Unit::Terran_Siege_Tech, Unit::Terran_Machine_Shop);
-	build.emplace(Unit::Terran_Charon_Boosters, Unit::Terran_Machine_Shop);
-	build.emplace(Unit::Terran_Cloaking_Field, Unit::Terran_Control_Tower);
-	build.emplace(Unit::Terran_Apollo_Reactor, Unit::Terran_Control_Tower);
-	build.emplace(Unit::Terran_EMP_Shockwave, Unit::Terran_Science_Facility);
-	build.emplace(Unit::Terran_Irradiate, Unit::Terran_Science_Facility);
-	build.emplace(Unit::Terran_Titan_Reactor, Unit::Terran_Science_Facility);
-	build.emplace(Unit::Terran_Lockdown, Unit::Terran_Covert_Ops);
-	build.emplace(Unit::Terran_Personnel_Cloaking, Unit::Terran_Covert_Ops);
-	build.emplace(Unit::Terran_Ocular_Implants, Unit::Terran_Covert_Ops);
-	build.emplace(Unit::Terran_Moebius_Reactor, Unit::Terran_Covert_Ops);
-	build.emplace(Unit::Terran_Yamato_Gun, Unit::Terran_Physics_Lab);
-	build.emplace(Unit::Terran_Colossus_Reactor, Unit::Terran_Physics_Lab);
-	build.emplace(Unit::Terran_Infantry_Weapons_1, Unit::Terran_Engineering_Bay);
-	build.emplace(Unit::Terran_Infantry_Weapons_2, Unit::Terran_Engineering_Bay);
-	build.emplace(Unit::Terran_Infantry_Weapons_3, Unit::Terran_Engineering_Bay);
-	build.emplace(Unit::Terran_Infantry_Armor_1, Unit::Terran_Engineering_Bay);
-	build.emplace(Unit::Terran_Infantry_Armor_2, Unit::Terran_Engineering_Bay);
-	build.emplace(Unit::Terran_Infantry_Armor_3, Unit::Terran_Engineering_Bay);
-	build.emplace(Unit::Terran_Vehicle_Weapons_1, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Vehicle_Weapons_2, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Vehicle_Weapons_3, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Vehicle_Plating_1, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Vehicle_Plating_2, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Vehicle_Plating_3, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Ship_Weapons_1, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Ship_Weapons_2, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Ship_Weapons_3, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Ship_Plating_1, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Ship_Plating_2, Unit::Terran_Armory);
-	build.emplace(Unit::Terran_Ship_Plating_3, Unit::Terran_Armory);
+    std::map <UnitName, UnitName> unit_builder {
+        { Terran_SCV, Terran_Command_Center },
+        { Terran_Marine, Terran_Barracks },
+        { Terran_Firebat, Terran_Barracks },
+        { Terran_Ghost, Terran_Barracks },
+        { Terran_Medic, Terran_Barracks },
+        { Terran_Vulture, Terran_Factory },
+        { Terran_Goliath, Terran_Factory },
+        { Terran_Siege_Tank, Terran_Factory },
+        { Terran_Wraith, Terran_Starport },
+        { Terran_Dropship, Terran_Starport },
+        { Terran_Valkyrie, Terran_Starport },
+        { Terran_Science_Vessel, Terran_Starport },
+        { Terran_Battlecruiser, Terran_Starport },
+        { Terran_Command_Center, Terran_SCV },
+        { Terran_Supply_Depot, Terran_SCV },
+        { Terran_Refinery, Terran_SCV },
+        { Terran_Barracks, Terran_SCV },
+        { Terran_Engineering_Bay, Terran_SCV },
+        { Terran_Missile_Turret, Terran_SCV },
+        { Terran_Academy, Terran_SCV },
+        { Terran_Bunker, Terran_SCV },
+        { Terran_Factory, Terran_SCV },
+        { Terran_Armory, Terran_SCV },
+        { Terran_Science_Facility, Terran_SCV },
+        { Terran_Starport, Terran_SCV },
+        { Terran_Machine_Shop, Terran_Factory },
+        { Terran_Control_Tower, Terran_Starport },
+        { Terran_Comsat_Station, Terran_Command_Center },
+        { Terran_Nuclear_Silo, Terran_Command_Center },
+        { Terran_Physics_Lab, Terran_Science_Facility },
+        { Terran_Covert_Ops, Terran_Science_Facility },
+        { Terran_Nuclear_Missile, Terran_Nuclear_Silo },
+        { Terran_U238_Shells, Terran_Academy },
+        { Terran_Stim_Pack, Terran_Academy },
+        { Terran_Restoration, Terran_Academy },
+        { Terran_Optical_Flare, Terran_Academy },
+        { Terran_Caduceus_Reactor, Terran_Academy },
+        { Terran_Ion_Thrusters, Terran_Machine_Shop },
+        { Terran_Spider_Mines, Terran_Machine_Shop },
+        { Terran_Siege_Tech, Terran_Machine_Shop },
+        { Terran_Charon_Boosters, Terran_Machine_Shop },
+        { Terran_Cloaking_Field, Terran_Control_Tower },
+        { Terran_Apollo_Reactor, Terran_Control_Tower },
+        { Terran_EMP_Shockwave, Terran_Science_Facility },
+        { Terran_Irradiate, Terran_Science_Facility },
+        { Terran_Titan_Reactor, Terran_Science_Facility },
+        { Terran_Lockdown, Terran_Covert_Ops },
+        { Terran_Personnel_Cloaking, Terran_Covert_Ops },
+        { Terran_Ocular_Implants, Terran_Covert_Ops },
+        { Terran_Moebius_Reactor, Terran_Covert_Ops },
+        { Terran_Yamato_Gun, Terran_Physics_Lab },
+        { Terran_Colossus_Reactor, Terran_Physics_Lab },
+        { Terran_Infantry_Weapons_1, Terran_Engineering_Bay },
+        { Terran_Infantry_Weapons_2, Terran_Engineering_Bay },
+        { Terran_Infantry_Weapons_3, Terran_Engineering_Bay },
+        { Terran_Infantry_Armor_1, Terran_Engineering_Bay },
+        { Terran_Infantry_Armor_2, Terran_Engineering_Bay },
+        { Terran_Infantry_Armor_3, Terran_Engineering_Bay },
+        { Terran_Vehicle_Weapons_1, Terran_Armory },
+        { Terran_Vehicle_Weapons_2, Terran_Armory },
+        { Terran_Vehicle_Weapons_3, Terran_Armory },
+        { Terran_Vehicle_Plating_1, Terran_Armory },
+        { Terran_Vehicle_Plating_2, Terran_Armory },
+        { Terran_Vehicle_Plating_3, Terran_Armory },
+        { Terran_Ship_Weapons_1, Terran_Armory },
+        { Terran_Ship_Weapons_2, Terran_Armory },
+        { Terran_Ship_Weapons_3, Terran_Armory },
+        { Terran_Ship_Plating_1, Terran_Armory },
+        { Terran_Ship_Plating_2, Terran_Armory },
+        { Terran_Ship_Plating_3, Terran_Armory }
+    };
 
-    prereq.emplace(Unit::Terran_SCV, Unit::Terran_Command_Center);
-    prereq.emplace(Unit::Terran_Marine, Unit::Terran_Barracks);
-    prereq.emplace(Unit::Terran_Firebat, Unit::Terran_Academy);
-    prereq.emplace(Unit::Terran_Ghost, Unit::Terran_Academy);
-    prereq.emplace(Unit::Terran_Ghost, Unit::Terran_Covert_Ops);
-    prereq.emplace(Unit::Terran_Medic, Unit::Terran_Academy);
-    prereq.emplace(Unit::Terran_Vulture, Unit::Terran_Factory);
-    prereq.emplace(Unit::Terran_Goliath, Unit::Terran_Armory);
-    prereq.emplace(Unit::Terran_Siege_Tank, Unit::Terran_Machine_Shop);
-    prereq.emplace(Unit::Terran_Wraith, Unit::Terran_Starport);
-    prereq.emplace(Unit::Terran_Dropship, Unit::Terran_Control_Tower);
-    prereq.emplace(Unit::Terran_Valkyrie, Unit::Terran_Armory);
-    prereq.emplace(Unit::Terran_Valkyrie, Unit::Terran_Control_Tower);
-    prereq.emplace(Unit::Terran_Science_Vessel, Unit::Terran_Science_Facility);
-    prereq.emplace(Unit::Terran_Science_Vessel, Unit::Terran_Control_Tower);
-    prereq.emplace(Unit::Terran_Battlecruiser, Unit::Terran_Physics_Lab);
-    prereq.emplace(Unit::Terran_Battlecruiser, Unit::Terran_Control_Tower);
-    prereq.emplace(Unit::Terran_Command_Center, Unit::Terran_SCV);
-    prereq.emplace(Unit::Terran_Supply_Depot, Unit::Terran_SCV);
-    prereq.emplace(Unit::Terran_Refinery, Unit::Terran_SCV);
-    prereq.emplace(Unit::Terran_Barracks, Unit::Terran_Command_Center);
-    prereq.emplace(Unit::Terran_Engineering_Bay, Unit::Terran_Command_Center);
-    prereq.emplace(Unit::Terran_Missile_Turret, Unit::Terran_Engineering_Bay);
-    prereq.emplace(Unit::Terran_Academy, Unit::Terran_Barracks);
-    prereq.emplace(Unit::Terran_Bunker, Unit::Terran_Barracks);
-    prereq.emplace(Unit::Terran_Factory, Unit::Terran_Barracks);
-    prereq.emplace(Unit::Terran_Armory, Unit::Terran_Factory);
-    prereq.emplace(Unit::Terran_Science_Facility, Unit::Terran_Starport);
-    prereq.emplace(Unit::Terran_Starport, Unit::Terran_Factory);
-	prereq.emplace(Unit::Terran_Machine_Shop, Unit::Terran_Factory);
-	prereq.emplace(Unit::Terran_Control_Tower, Unit::Terran_Starport);
-	prereq.emplace(Unit::Terran_Comsat_Station, Unit::Terran_Academy);
-	prereq.emplace(Unit::Terran_Nuclear_Silo, Unit::Terran_Covert_Ops);
-	prereq.emplace(Unit::Terran_Physics_Lab, Unit::Terran_Science_Facility);
-	prereq.emplace(Unit::Terran_Covert_Ops, Unit::Terran_Science_Facility);
-	prereq.emplace(Unit::Terran_Nuclear_Missile, Unit::Terran_Covert_Ops);
-	prereq.emplace(Unit::Terran_U238_Shells, Unit::Terran_Academy);
-	prereq.emplace(Unit::Terran_Stim_Pack, Unit::Terran_Academy);
-	prereq.emplace(Unit::Terran_Restoration, Unit::Terran_Academy);
-	prereq.emplace(Unit::Terran_Optical_Flare, Unit::Terran_Academy);
-	prereq.emplace(Unit::Terran_Caduceus_Reactor, Unit::Terran_Academy);
-	prereq.emplace(Unit::Terran_Ion_Thrusters, Unit::Terran_Machine_Shop);
-	prereq.emplace(Unit::Terran_Spider_Mines, Unit::Terran_Machine_Shop);
-	prereq.emplace(Unit::Terran_Siege_Tech, Unit::Terran_Machine_Shop);
-	prereq.emplace(Unit::Terran_Charon_Boosters, Unit::Terran_Machine_Shop);
-	prereq.emplace(Unit::Terran_Cloaking_Field, Unit::Terran_Control_Tower);
-	prereq.emplace(Unit::Terran_Apollo_Reactor, Unit::Terran_Control_Tower);
-	prereq.emplace(Unit::Terran_EMP_Shockwave, Unit::Terran_Science_Facility);
-	prereq.emplace(Unit::Terran_Irradiate, Unit::Terran_Science_Facility);
-	prereq.emplace(Unit::Terran_Titan_Reactor, Unit::Terran_Science_Facility);
-	prereq.emplace(Unit::Terran_Lockdown, Unit::Terran_Covert_Ops);
-	prereq.emplace(Unit::Terran_Personnel_Cloaking, Unit::Terran_Covert_Ops);
-	prereq.emplace(Unit::Terran_Ocular_Implants, Unit::Terran_Covert_Ops);
-	prereq.emplace(Unit::Terran_Moebius_Reactor, Unit::Terran_Covert_Ops);
-	prereq.emplace(Unit::Terran_Yamato_Gun, Unit::Terran_Physics_Lab);
-	prereq.emplace(Unit::Terran_Colossus_Reactor, Unit::Terran_Physics_Lab);
-	prereq.emplace(Unit::Terran_Infantry_Weapons_1, Unit::Terran_Engineering_Bay);
-	prereq.emplace(Unit::Terran_Infantry_Weapons_2, Unit::Terran_Infantry_Weapons_1);
-	prereq.emplace(Unit::Terran_Infantry_Weapons_3, Unit::Terran_Infantry_Weapons_2);
-	prereq.emplace(Unit::Terran_Infantry_Armor_1, Unit::Terran_Engineering_Bay);
-	prereq.emplace(Unit::Terran_Infantry_Armor_2, Unit::Terran_Infantry_Armor_1);
-	prereq.emplace(Unit::Terran_Infantry_Armor_3, Unit::Terran_Infantry_Armor_2);
-	prereq.emplace(Unit::Terran_Vehicle_Weapons_1, Unit::Terran_Armory);
-	prereq.emplace(Unit::Terran_Vehicle_Weapons_2, Unit::Terran_Vehicle_Weapons_1);
-	prereq.emplace(Unit::Terran_Vehicle_Weapons_3, Unit::Terran_Vehicle_Weapons_2);
-	prereq.emplace(Unit::Terran_Vehicle_Plating_1, Unit::Terran_Armory);
-	prereq.emplace(Unit::Terran_Vehicle_Plating_2, Unit::Terran_Vehicle_Plating_1);
-	prereq.emplace(Unit::Terran_Vehicle_Plating_3, Unit::Terran_Vehicle_Plating_2);
-	prereq.emplace(Unit::Terran_Ship_Weapons_1, Unit::Terran_Armory);
-	prereq.emplace(Unit::Terran_Ship_Weapons_2, Unit::Terran_Ship_Weapons_1);
-	prereq.emplace(Unit::Terran_Ship_Weapons_3, Unit::Terran_Ship_Weapons_2);
-	prereq.emplace(Unit::Terran_Ship_Plating_1, Unit::Terran_Armory);
-	prereq.emplace(Unit::Terran_Ship_Plating_2, Unit::Terran_Ship_Plating_1);
-	prereq.emplace(Unit::Terran_Ship_Plating_3, Unit::Terran_Ship_Plating_2);
+    std::multimap <UnitName, UnitName> unit_prereq {
+        { Terran_SCV, Terran_Command_Center },
+        { Terran_Marine, Terran_Barracks },
+        { Terran_Firebat, Terran_Academy },
+        { Terran_Ghost, Terran_Academy },
+        { Terran_Ghost, Terran_Covert_Ops },
+        { Terran_Medic, Terran_Academy },
+        { Terran_Vulture, Terran_Factory },
+        { Terran_Goliath, Terran_Armory },
+        { Terran_Siege_Tank, Terran_Machine_Shop },
+        { Terran_Wraith, Terran_Starport },
+        { Terran_Dropship, Terran_Control_Tower },
+        { Terran_Valkyrie, Terran_Armory },
+        { Terran_Valkyrie, Terran_Control_Tower },
+        { Terran_Science_Vessel, Terran_Science_Facility },
+        { Terran_Science_Vessel, Terran_Control_Tower },
+        { Terran_Battlecruiser, Terran_Physics_Lab },
+        { Terran_Battlecruiser, Terran_Control_Tower },
+        { Terran_Command_Center, Terran_SCV },
+        { Terran_Supply_Depot, Terran_SCV },
+        { Terran_Refinery, Terran_SCV },
+        { Terran_Barracks, Terran_Command_Center },
+        { Terran_Engineering_Bay, Terran_Command_Center },
+        { Terran_Missile_Turret, Terran_Engineering_Bay },
+        { Terran_Academy, Terran_Barracks },
+        { Terran_Bunker, Terran_Barracks },
+        { Terran_Factory, Terran_Barracks },
+        { Terran_Armory, Terran_Factory },
+        { Terran_Science_Facility, Terran_Starport },
+        { Terran_Starport, Terran_Factory },
+	    { Terran_Machine_Shop, Terran_Factory },
+	    { Terran_Control_Tower, Terran_Starport },
+	    { Terran_Comsat_Station, Terran_Academy },
+	    { Terran_Nuclear_Silo, Terran_Covert_Ops },
+	    { Terran_Physics_Lab, Terran_Science_Facility },
+	    { Terran_Covert_Ops, Terran_Science_Facility },
+	    { Terran_Nuclear_Missile, Terran_Covert_Ops },
+	    { Terran_U238_Shells, Terran_Academy },
+	    { Terran_Stim_Pack, Terran_Academy },
+	    { Terran_Restoration, Terran_Academy },
+	    { Terran_Optical_Flare, Terran_Academy },
+	    { Terran_Caduceus_Reactor, Terran_Academy },
+	    { Terran_Ion_Thrusters, Terran_Machine_Shop },
+	    { Terran_Spider_Mines, Terran_Machine_Shop },
+	    { Terran_Siege_Tech, Terran_Machine_Shop },
+	    { Terran_Charon_Boosters, Terran_Machine_Shop },
+	    { Terran_Cloaking_Field, Terran_Control_Tower },
+	    { Terran_Apollo_Reactor, Terran_Control_Tower },
+	    { Terran_EMP_Shockwave, Terran_Science_Facility },
+	    { Terran_Irradiate, Terran_Science_Facility },
+	    { Terran_Titan_Reactor, Terran_Science_Facility },
+	    { Terran_Lockdown, Terran_Covert_Ops },
+	    { Terran_Personnel_Cloaking, Terran_Covert_Ops },
+	    { Terran_Ocular_Implants, Terran_Covert_Ops },
+	    { Terran_Moebius_Reactor, Terran_Covert_Ops },
+	    { Terran_Yamato_Gun, Terran_Physics_Lab },
+	    { Terran_Colossus_Reactor, Terran_Physics_Lab },
+	    { Terran_Infantry_Weapons_1, Terran_Engineering_Bay },
+	    { Terran_Infantry_Weapons_2, Terran_Infantry_Weapons_1 },
+	    { Terran_Infantry_Weapons_3, Terran_Infantry_Weapons_2 },
+	    { Terran_Infantry_Armor_1, Terran_Engineering_Bay },
+	    { Terran_Infantry_Armor_2, Terran_Infantry_Armor_1 },
+	    { Terran_Infantry_Armor_3, Terran_Infantry_Armor_2 },
+	    { Terran_Vehicle_Weapons_1, Terran_Armory },
+	    { Terran_Vehicle_Weapons_2, Terran_Vehicle_Weapons_1 },
+	    { Terran_Vehicle_Weapons_3, Terran_Vehicle_Weapons_2 },
+	    { Terran_Vehicle_Plating_1, Terran_Armory },
+	    { Terran_Vehicle_Plating_2, Terran_Vehicle_Plating_1 },
+	    { Terran_Vehicle_Plating_3, Terran_Vehicle_Plating_2 },
+	    { Terran_Ship_Weapons_1, Terran_Armory },
+	    { Terran_Ship_Weapons_2, Terran_Ship_Weapons_1 },
+	    { Terran_Ship_Weapons_3, Terran_Ship_Weapons_2 },
+	    { Terran_Ship_Plating_1, Terran_Armory },
+	    { Terran_Ship_Plating_2, Terran_Ship_Plating_1 },
+	    { Terran_Ship_Plating_3, Terran_Ship_Plating_2 }
+    };
+}
 }

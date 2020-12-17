@@ -3,38 +3,23 @@
 #include <vector>
 #include "unit.h"
 
-// invariant: always positive?
-// or maybe just replace this with a struct
-class Resources {
-public:
-    int get_min() const { return min; }
-    void use_min(int m) { min -= m; }
-    void add_min(int m = 8) { min += m; }
+struct Resources {
+    Resources() : min{50}, gas{0}, sup{4}, sup_max{} { }
+    void reset() { min = 50; gas = 0; sup = 4; sup_max = 0; }
 
-    int get_gas() const { return gas; }
-    void use_gas(int g) { gas -= g; }
-    void add_gas(int g = 8) { gas += g; }
-
-    int get_sup() const { return sup; }
-    void use_sup(int s) { sup += s; }
-
-    int get_sup_max() const { return sup_max; }
-    void add_sup_max(int s) { sup_max += s; }
-private:
-    int min = 50, gas = 0;
-    int sup = 4, sup_max = 0;
+    int min, gas, sup, sup_max;
 };
 
 class ResourceHandler {
 public:
-    ResourceHandler();
+    ResourceHandler() { }
     void next_frame();
 
     void add_min_worker(int delay = 0) { min_workers.push_back(get_mineral_frames() + delay); }
-    void rem_min_worker();
+    void rem_min_worker() { pop_highest(min_workers); }
 
     void add_gas_worker();
-    void rem_gas_worker();
+    void rem_gas_worker() { pop_highest(gas_workers); }
 
     void print(); //DEBUG
 
@@ -43,10 +28,10 @@ public:
     void spawn_unit(Unit::UnitName u);
 private:
     void pop_highest(std::vector<int>& v);
+    int get_mineral_frames();
 
     Resources resources;
     int min_count = 9;
     std::vector <int> min_workers;
     std::vector <int> gas_workers;
-    int get_mineral_frames();
 };

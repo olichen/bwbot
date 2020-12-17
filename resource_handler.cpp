@@ -1,9 +1,5 @@
 #include "resource_handler.h"
 
-void ResourceHandler::rem_min_worker() {
-    pop_highest(min_workers);
-}
-
 void ResourceHandler::add_gas_worker() {
     int max = -1;
     for (const int& g : gas_workers) {
@@ -13,22 +9,18 @@ void ResourceHandler::add_gas_worker() {
     else gas_workers.push_back(111);
 }
 
-void ResourceHandler::rem_gas_worker() {
-    pop_highest(gas_workers);
-}
-
 void ResourceHandler::next_frame() {
     for (int &w : min_workers) {
         w--;
         if (w == 0) {
-            resources.add_min();
+            resources.min += 8;
             w = get_mineral_frames();
         }
     }
     for (int &g : gas_workers) {
         g--;
         if (g == 0) {
-            resources.add_gas();
+            resources.gas += 8;
             g = 111;
         }
     }
@@ -43,23 +35,20 @@ int ResourceHandler::get_mineral_frames() {
     return (240 * worker_count) / (min_count * 3);
 }
 
-ResourceHandler::ResourceHandler() {
-}
-
 bool ResourceHandler::can_build(Unit::UnitName un) {
-    return (resources.get_min() >= Unit::get_min(un)
-            && resources.get_gas() >= Unit::get_gas(un)
-            && (resources.get_sup_max() - resources.get_sup()) >= Unit::get_sup(un));
+    return (resources.min >= Unit::get_min(un)
+            && resources.gas >= Unit::get_gas(un)
+            && (resources.gas - resources.sup) >= Unit::get_sup(un));
 }
 
 void ResourceHandler::build_unit(Unit::UnitName un) {
-    resources.use_min(Unit::get_min(un));
-    resources.use_gas(Unit::get_gas(un));
-    resources.use_sup(Unit::get_sup(un));
+    resources.min -= Unit::get_min(un);
+    resources.gas -= Unit::get_gas(un);
+    resources.sup -= Unit::get_sup(un);
 }
 
 void ResourceHandler::spawn_unit(Unit::UnitName un) {
-    resources.add_sup_max(Unit::get_sup_max(un));
+    resources.sup_max += Unit::get_sup_max(un);
 }
 
 void ResourceHandler::pop_highest(std::vector<int>& v) {
@@ -78,8 +67,8 @@ void ResourceHandler::pop_highest(std::vector<int>& v) {
 #include <iomanip> // DEBUG
 
 void ResourceHandler::print() {
-    std::cout << "M" << std::setw(5) << resources.get_min() << " | G" << std::setw(5) << resources.get_gas();
-    std::cout << " | S" << std::setw(3) << resources.get_sup() << "/" << std::setw(3) << resources.get_sup_max();
+    std::cout << "M" << std::setw(5) << resources.min << " | G" << std::setw(5) << resources.gas;
+    std::cout << " | S" << std::setw(3) << resources.sup << "/" << std::setw(3) << resources.sup_max;
     std::cout << " | W" << std::setw(3) << min_workers.size() << " | G" << std::setw(3) << gas_workers.size();
     std::cout << " |";
 }

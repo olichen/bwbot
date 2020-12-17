@@ -4,6 +4,7 @@
 #include "unit.h"
 
 // invariant: always positive?
+// or maybe just replace this with a struct
 class Resources {
 public:
     int get_min() const { return min; }

@@ -1,54 +1,6 @@
-#include "unit_handler.h"
+#include "build_handler.h"
 
-#include <iostream> // DEBUG
-#include <iomanip> // DEBUG
-
-UnitHandler::UnitHandler() {
-    // DEBUG
-    spawn_unit(Unit::Terran_SCV);
-    spawn_unit(Unit::Terran_SCV);
-    spawn_unit(Unit::Terran_SCV);
-    spawn_unit(Unit::Terran_SCV);
-    spawn_unit(Unit::Terran_Command_Center);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_Supply_Depot);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_Barracks);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_Refinery);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::SEARCH);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_Supply_Depot);
-    build_order.push_back(Unit::Terran_Factory);
-    build_order.push_back(Unit::OFF_GAS);
-    build_order.push_back(Unit::OFF_GAS);
-    build_order.push_back(Unit::OFF_GAS);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_Marine);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_Marine);
-    build_order.push_back(Unit::Terran_Command_Center);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_Vulture);
-    build_order.push_back(Unit::ON_GAS);
-    build_order.push_back(Unit::ON_GAS);
-    build_order.push_back(Unit::ON_GAS);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_Supply_Depot);
-    build_order.push_back(Unit::Terran_Machine_Shop);
-    build_order.push_back(Unit::Terran_SCV);
-    build_order.push_back(Unit::Terran_Factory);
-}
-
-void UnitHandler::next_frame() {
+void BuildHandler::next_frame() {
     resource_handler.next_frame();
     // update unit queue
     for (auto it = queue.begin(); it != queue.end();) {
@@ -71,7 +23,7 @@ void UnitHandler::next_frame() {
     }
 }
 
-void UnitHandler::try_to_build() {
+void BuildHandler::try_to_build() {
     if (build_order.empty()) return;
     // get next unit from build order
     Unit::UnitName next_unit = build_order.front();
@@ -95,7 +47,7 @@ void UnitHandler::try_to_build() {
     }
 }
 
-bool UnitHandler::can_build(Unit::UnitName un) {
+bool BuildHandler::can_build(Unit::UnitName un) {
     if (!resource_handler.can_build(un))
         return false;
     Unit::UnitName builder = Unit::get_builder(un);
@@ -105,7 +57,7 @@ bool UnitHandler::can_build(Unit::UnitName un) {
     return false;
 }
 
-void UnitHandler::build_unit(Unit::UnitName un) {
+void BuildHandler::build_unit(Unit::UnitName un) {
     resource_handler.build_unit(un);
     Unit::UnitName builder = Unit::get_builder(un);
     for (auto [start, end] = units.equal_range(builder); start != end; start++) {
@@ -119,7 +71,7 @@ void UnitHandler::build_unit(Unit::UnitName un) {
     queue.emplace(un, Unit::get_time(un));
 }
 
-void UnitHandler::spawn_unit(Unit::UnitName un) {
+void BuildHandler::spawn_unit(Unit::UnitName un) {
     resource_handler.spawn_unit(un);
     if (Unit::is_worker(un)) resource_handler.add_min_worker(32);
     if (Unit::is_gas(un)) {
@@ -132,9 +84,12 @@ void UnitHandler::spawn_unit(Unit::UnitName un) {
 }
 
 // DEBUG
+#include <iostream> // DEBUG
+#include <iomanip> // DEBUG
 
+/*
 int main() {
-    UnitHandler uh;
+    BuildHandler uh;
     for (int f = 0; f < 10000; f++) {
         int s = f * 42 / 1000;
         std::cout << std::setw(4) << f << std::setw(4) << s << " : ";
@@ -144,8 +99,9 @@ int main() {
     }
     return 0;
 }
+*/
 
-void UnitHandler::print() {
+void BuildHandler::print() {
     resource_handler.print();
     for (const auto [u, t] : units)
         std::cout << ' ' << u;

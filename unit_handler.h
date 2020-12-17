@@ -13,14 +13,14 @@ public:
     void next_frame();
     void print();
 
-    bool can_build(Unit);
-    void build_unit(Unit);
-    void spawn_unit(Unit);
+    bool can_build(Unit::UnitName);
+    void build_unit(Unit::UnitName);
+    void spawn_unit(Unit::UnitName);
     void try_to_build();
 
 private:
     ResourceHandler resource_handler;
-    std::deque <Unit> build_order;
-    std::multimap <Unit, int> units; // units to current task
-    std::multimap <Unit, int> queue; // unit, build time
+    std::deque <Unit::UnitName> build_order;
+    std::multimap <Unit::UnitName, int> units; // units to current task
+    std::multimap <Unit::UnitName, int> queue; // unit, build time
 };

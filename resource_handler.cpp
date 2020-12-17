@@ -60,7 +60,6 @@ void ResourceHandler::build_unit(Unit::UnitName un) {
 
 void ResourceHandler::spawn_unit(Unit::UnitName un) {
     resources.add_sup_max(Unit::get_sup_max(un));
-    //if (Unit::is_worker(un)) add_min_worker(32);
 }
 
 void ResourceHandler::pop_highest(std::vector<int>& v) {

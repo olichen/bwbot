@@ -64,7 +64,7 @@ void UnitHandler::next_frame() {
     try_to_build();
     // update busy units
     for (auto it = units.begin(); it != units.end(); it++) {
-        if (it->second == 1 && (it->first).is_worker())
+        if (it->second == 1 && Unit::is_worker(it->first))
             resource_handler.add_min_worker(64); // 64 is time to return to mins
         if (it->second > 0)
             it->second--;
@@ -74,8 +74,8 @@ void UnitHandler::next_frame() {
 void UnitHandler::try_to_build() {
     if (build_order.empty()) return;
     // get next unit from build order
-    Unit next_unit = build_order.front();
-    if (next_unit.is_action()) {
+    Unit::UnitName next_unit = build_order.front();
+    if (Unit::is_action(next_unit)) {
         if (next_unit == Unit::SEARCH) {
             resource_handler.rem_min_worker();
         }
@@ -95,39 +95,40 @@ void UnitHandler::try_to_build() {
     }
 }
 
-bool UnitHandler::can_build(Unit u) {
-    if (!resource_handler.can_build(u))
+bool UnitHandler::can_build(Unit::UnitName un) {
+    if (!resource_handler.can_build(un))
         return false;
-    Unit builder = u.get_builder();
+    Unit::UnitName builder = Unit::get_builder(un);
     for (auto [start, end] = units.equal_range(builder); start != end; start++)
         if (start->second == 0)
             return true;
     return false;
 }
 
-void UnitHandler::build_unit(Unit u) {
-    resource_handler.build_unit(u);
-    Unit builder = u.get_builder();
+void UnitHandler::build_unit(Unit::UnitName un) {
+    resource_handler.build_unit(un);
+    Unit::UnitName builder = Unit::get_builder(un);
     for (auto [start, end] = units.equal_range(builder); start != end; start++) {
         if (start->second == 0) {
-            start->second = u.get_time();
+            start->second = Unit::get_time(un);
             break;
         }
     }
-    if (builder.is_worker())
+    if (Unit::is_worker(builder))
         resource_handler.rem_min_worker();
-    queue.emplace(u, u.get_time());
+    queue.emplace(un, Unit::get_time(un));
 }
 
-void UnitHandler::spawn_unit(Unit u) {
-    resource_handler.spawn_unit(u);
-    if (u.is_gas()) {
+void UnitHandler::spawn_unit(Unit::UnitName un) {
+    resource_handler.spawn_unit(un);
+    if (Unit::is_worker(un)) resource_handler.add_min_worker(32);
+    if (Unit::is_gas(un)) {
         for (int i = 0; i < 3; i++) {
             resource_handler.add_gas_worker();
             resource_handler.rem_min_worker();
         }
     }
-    units.emplace(u, 0);
+    units.emplace(un, 0);
 }
 
 // DEBUG
@@ -147,5 +148,5 @@ int main() {
 void UnitHandler::print() {
     resource_handler.print();
     for (const auto [u, t] : units)
-        std::cout << ' ' << u.get_id();
+        std::cout << ' ' << u;
 }

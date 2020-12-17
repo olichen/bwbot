@@ -1,12 +1,9 @@
 #include "resource_handler.h"
 
-void ResourceHandler::add_gas_worker() {
-    int max = -1;
-    for (const int& g : gas_workers) {
-        if (g > max) max = g;
-    }
-    if (max > -1) gas_workers.push_back(max + 37);
-    else gas_workers.push_back(111);
+void ResourceHandler::reset() {
+    resources.reset();
+    min_workers.clear();
+    gas_workers.clear();
 }
 
 void ResourceHandler::next_frame() {
@@ -14,25 +11,34 @@ void ResourceHandler::next_frame() {
         w--;
         if (w == 0) {
             resources.min += 8;
-            w = get_mineral_frames();
+            w = get_min_frames();
         }
     }
     for (int &g : gas_workers) {
         g--;
         if (g == 0) {
             resources.gas += 8;
-            g = 111;
+            g = get_gas_frames();
         }
     }
 }
 
-int ResourceHandler::get_mineral_frames() {
+int ResourceHandler::get_min_frames() {
     int worker_count = min_workers.size();
     if (worker_count <= min_count) return 176;
     if (worker_count <= min_count * 3) {
         return 144 + 32 * worker_count / min_count;
     }
     return (240 * worker_count) / (min_count * 3);
+}
+
+int ResourceHandler::get_gas_frames() {
+    int max = -1;
+    for (const int& g : gas_workers) {
+        if (g > max) max = g;
+    }
+    if (max > -1) return max + 37;
+    return 111;
 }
 
 bool ResourceHandler::can_build(Unit::UnitName un) {
@@ -45,10 +51,6 @@ void ResourceHandler::build_unit(Unit::UnitName un) {
     resources.min -= Unit::get_min(un);
     resources.gas -= Unit::get_gas(un);
     resources.sup -= Unit::get_sup(un);
-}
-
-void ResourceHandler::spawn_unit(Unit::UnitName un) {
-    resources.sup_max += Unit::get_sup_max(un);
 }
 
 void ResourceHandler::pop_highest(std::vector<int>& v) {

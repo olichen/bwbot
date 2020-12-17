@@ -84,9 +84,3 @@ void ResourceHandler::print() {
     std::cout << " | W" << std::setw(3) << min_workers.size() << " | G" << std::setw(3) << gas_workers.size();
     std::cout << " |";
 }
-
-int main() {
-    std::cout << Unit::Terran_SCV;
-    std::cout << Unit::get_name(Unit::Terran_SCV);
-    return 0;
-}

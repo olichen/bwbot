@@ -8,12 +8,14 @@
 
 class BuildHandler {
 public:
-    BuildHandler() { }
-
-    void add_unit(Unit::UnitName);
-
+    BuildHandler() : build_step{0}, frame{0} { reset(); }
     void run();
-    void clear();
+    void reset();
+    void clear() { reset(); build_order.clear(); units.clear(); queue.clear(); }
+
+    void add_unit(Unit::UnitName un) { build_order.push_back(un); }
+    void rem_unit() { build_order.pop_back(); reset(); }
+
     void next_frame();
     void print(); // DEBUG
 
@@ -25,6 +27,7 @@ private:
 
     ResourceHandler resource_handler;
     std::deque <Unit::UnitName> build_order;
+    int build_step, frame;
     std::multimap <Unit::UnitName, int> units; // units to current task
     std::multimap <Unit::UnitName, int> queue; // unit, build time
 };

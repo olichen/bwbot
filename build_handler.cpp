@@ -1,6 +1,18 @@
 #include "build_handler.h"
 
+void BuildHandler::reset() {
+    resource_handler.reset();
+    build_step = 0;
+    frame = 0;
+    spawn_unit(Unit::Terran_SCV);
+    spawn_unit(Unit::Terran_SCV);
+    spawn_unit(Unit::Terran_SCV);
+    spawn_unit(Unit::Terran_SCV);
+    spawn_unit(Unit::Terran_Command_Center);
+}
+
 void BuildHandler::next_frame() {
+    frame++;
     resource_handler.next_frame();
     // update unit queue
     for (auto it = queue.begin(); it != queue.end();) {
@@ -24,9 +36,9 @@ void BuildHandler::next_frame() {
 }
 
 void BuildHandler::try_to_build() {
-    if (build_order.empty()) return;
+    if (build_step == build_order.size()) return;
     // get next unit from build order
-    Unit::UnitName next_unit = build_order.front();
+    Unit::UnitName next_unit = build_order[build_step];
     if (Unit::is_action(next_unit)) {
         if (next_unit == Unit::SEARCH) {
             resource_handler.rem_min_worker();
@@ -39,10 +51,10 @@ void BuildHandler::try_to_build() {
             resource_handler.rem_min_worker();
             resource_handler.add_gas_worker();
         }
-        build_order.pop_front();
+        build_step++;
     }
     else if (can_build(next_unit)) {
-        build_order.pop_front();
+        build_step++;
         build_unit(next_unit);
     }
 }
@@ -100,9 +112,19 @@ int main() {
     return 0;
 }
 */
+void BuildHandler::run() {
+    while (build_step < build_order.size()) {
+        print();
+        next_frame();
+    }
+    print();
+}
 
 void BuildHandler::print() {
+    int s = frame * 42 / 1000;
+    std::cout << std::setw(4) << frame << std::setw(4) << s << " : ";
     resource_handler.print();
     for (const auto [u, t] : units)
         std::cout << ' ' << u;
+    std::cout << std::endl;
 }

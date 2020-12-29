@@ -44,13 +44,13 @@ int ResourceHandler::get_gas_frames() {
 bool ResourceHandler::can_build(Unit::UnitName un) {
     return (resources.min >= Unit::get_min(un)
             && resources.gas >= Unit::get_gas(un)
-            && (resources.gas - resources.sup) >= Unit::get_sup(un));
+            && (resources.sup_max - resources.sup) >= Unit::get_sup(un));
 }
 
 void ResourceHandler::build_unit(Unit::UnitName un) {
     resources.min -= Unit::get_min(un);
     resources.gas -= Unit::get_gas(un);
-    resources.sup -= Unit::get_sup(un);
+    resources.sup += Unit::get_sup(un);
 }
 
 void ResourceHandler::pop_highest(std::vector<int>& v) {

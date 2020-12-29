@@ -1,14 +1,33 @@
 #include "build_handler.h"
 
 void BuildHandler::reset() {
+    units.clear();
+    queue.clear();
     resource_handler.reset();
     build_step = 0;
     frame = 0;
-    spawn_unit(Unit::Terran_SCV);
-    spawn_unit(Unit::Terran_SCV);
-    spawn_unit(Unit::Terran_SCV);
-    spawn_unit(Unit::Terran_SCV);
-    spawn_unit(Unit::Terran_Command_Center);
+    if (race == Race::Terran) {
+        spawn_unit(Unit::Terran_Command_Center);
+        spawn_unit(Unit::Terran_SCV);
+        spawn_unit(Unit::Terran_SCV);
+        spawn_unit(Unit::Terran_SCV);
+        spawn_unit(Unit::Terran_SCV);
+    }
+    if (race == Race::Protoss) {
+        spawn_unit(Unit::Protoss_Nexus);
+        spawn_unit(Unit::Protoss_Probe);
+        spawn_unit(Unit::Protoss_Probe);
+        spawn_unit(Unit::Protoss_Probe);
+        spawn_unit(Unit::Protoss_Probe);
+    }
+    if (race == Race::Zerg) {
+        spawn_unit(Unit::Zerg_Hatchery);
+        spawn_unit(Unit::Zerg_Overlord);
+        spawn_unit(Unit::Zerg_Drone);
+        spawn_unit(Unit::Zerg_Drone);
+        spawn_unit(Unit::Zerg_Drone);
+        spawn_unit(Unit::Zerg_Drone);
+    }
 }
 
 void BuildHandler::next_frame() {

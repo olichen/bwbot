@@ -8,10 +8,13 @@
 
 class BuildHandler {
 public:
-    BuildHandler() : build_step{0}, frame{0} { reset(); }
+    enum class Race : uint8_t { Terran, Protoss, Zerg };
+
+    BuildHandler(Race r = Race::Terran) : race{r} { reset(); }
+    void set_race(Race r) { race = r; reset(); }
     void run();
     void reset();
-    void clear() { reset(); build_order.clear(); units.clear(); queue.clear(); }
+    void clear() { reset(); build_order.clear(); }
 
     void add_unit(Unit::UnitName un) { build_order.push_back(un); }
     void rem_unit() { build_order.pop_back(); reset(); }
@@ -26,6 +29,7 @@ private:
     void try_to_build();
 
     ResourceHandler resource_handler;
+    Race race;
     std::deque <Unit::UnitName> build_order;
     int build_step, frame;
     std::multimap <Unit::UnitName, int> units; // units to current task

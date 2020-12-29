@@ -4,7 +4,7 @@
 #include "unit.h"
 
 struct Resources {
-    Resources() : min{50}, gas{0}, sup{4}, sup_max{} { }
+    Resources() : min{50}, gas{0}, sup{4}, sup_max{0} { }
     void reset() { min = 50; gas = 0; sup = 4; sup_max = 0; }
 
     int min, gas, sup, sup_max;
@@ -12,7 +12,7 @@ struct Resources {
 
 class ResourceHandler {
 public:
-    ResourceHandler() { }
+    ResourceHandler() : min_count{9} { }
     void reset();
     void next_frame();
     void print(); //DEBUG
@@ -31,7 +31,7 @@ private:
     int get_gas_frames(); // TODO: fix
 
     Resources resources;
-    int min_count = 9;
+    int min_count;
     std::vector <int> min_workers;
     std::vector <int> gas_workers;
 };

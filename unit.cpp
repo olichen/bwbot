@@ -84,77 +84,77 @@ namespace {
 	    { Unit::Terran_Ship_Plating_3, "Terran Ship Plating 3", 250, 250, 4960 }
     };
 
-    std::map <Unit::UnitName, Unit::UnitName> unit_builder {
-        { Unit::Terran_SCV, Unit::Terran_Command_Center },
-        { Unit::Terran_Marine, Unit::Terran_Barracks },
-        { Unit::Terran_Firebat, Unit::Terran_Barracks },
-        { Unit::Terran_Ghost, Unit::Terran_Barracks },
-        { Unit::Terran_Medic, Unit::Terran_Barracks },
-        { Unit::Terran_Vulture, Unit::Terran_Factory },
-        { Unit::Terran_Goliath, Unit::Terran_Factory },
-        { Unit::Terran_Siege_Tank, Unit::Terran_Factory },
-        { Unit::Terran_Wraith, Unit::Terran_Starport },
-        { Unit::Terran_Dropship, Unit::Terran_Starport },
-        { Unit::Terran_Valkyrie, Unit::Terran_Starport },
-        { Unit::Terran_Science_Vessel, Unit::Terran_Starport },
-        { Unit::Terran_Battlecruiser, Unit::Terran_Starport },
-        { Unit::Terran_Command_Center, Unit::Terran_SCV },
-        { Unit::Terran_Supply_Depot, Unit::Terran_SCV },
-        { Unit::Terran_Refinery, Unit::Terran_SCV },
-        { Unit::Terran_Barracks, Unit::Terran_SCV },
-        { Unit::Terran_Engineering_Bay, Unit::Terran_SCV },
-        { Unit::Terran_Missile_Turret, Unit::Terran_SCV },
-        { Unit::Terran_Academy, Unit::Terran_SCV },
-        { Unit::Terran_Bunker, Unit::Terran_SCV },
-        { Unit::Terran_Factory, Unit::Terran_SCV },
-        { Unit::Terran_Armory, Unit::Terran_SCV },
-        { Unit::Terran_Science_Facility, Unit::Terran_SCV },
-        { Unit::Terran_Starport, Unit::Terran_SCV },
-        { Unit::Terran_Machine_Shop, Unit::Terran_Factory },
-        { Unit::Terran_Control_Tower, Unit::Terran_Starport },
-        { Unit::Terran_Comsat_Station, Unit::Terran_Command_Center },
-        { Unit::Terran_Nuclear_Silo, Unit::Terran_Command_Center },
-        { Unit::Terran_Physics_Lab, Unit::Terran_Science_Facility },
-        { Unit::Terran_Covert_Ops, Unit::Terran_Science_Facility },
-        { Unit::Terran_Nuclear_Missile, Unit::Terran_Nuclear_Silo },
-        { Unit::Terran_U238_Shells, Unit::Terran_Academy },
-        { Unit::Terran_Stim_Pack, Unit::Terran_Academy },
-        { Unit::Terran_Restoration, Unit::Terran_Academy },
-        { Unit::Terran_Optical_Flare, Unit::Terran_Academy },
-        { Unit::Terran_Caduceus_Reactor, Unit::Terran_Academy },
-        { Unit::Terran_Ion_Thrusters, Unit::Terran_Machine_Shop },
-        { Unit::Terran_Spider_Mines, Unit::Terran_Machine_Shop },
-        { Unit::Terran_Siege_Tech, Unit::Terran_Machine_Shop },
-        { Unit::Terran_Charon_Boosters, Unit::Terran_Machine_Shop },
-        { Unit::Terran_Cloaking_Field, Unit::Terran_Control_Tower },
-        { Unit::Terran_Apollo_Reactor, Unit::Terran_Control_Tower },
-        { Unit::Terran_EMP_Shockwave, Unit::Terran_Science_Facility },
-        { Unit::Terran_Irradiate, Unit::Terran_Science_Facility },
-        { Unit::Terran_Titan_Reactor, Unit::Terran_Science_Facility },
-        { Unit::Terran_Lockdown, Unit::Terran_Covert_Ops },
-        { Unit::Terran_Personnel_Cloaking, Unit::Terran_Covert_Ops },
-        { Unit::Terran_Ocular_Implants, Unit::Terran_Covert_Ops },
-        { Unit::Terran_Moebius_Reactor, Unit::Terran_Covert_Ops },
-        { Unit::Terran_Yamato_Gun, Unit::Terran_Physics_Lab },
-        { Unit::Terran_Colossus_Reactor, Unit::Terran_Physics_Lab },
-        { Unit::Terran_Infantry_Weapons_1, Unit::Terran_Engineering_Bay },
-        { Unit::Terran_Infantry_Weapons_2, Unit::Terran_Engineering_Bay },
-        { Unit::Terran_Infantry_Weapons_3, Unit::Terran_Engineering_Bay },
-        { Unit::Terran_Infantry_Armor_1, Unit::Terran_Engineering_Bay },
-        { Unit::Terran_Infantry_Armor_2, Unit::Terran_Engineering_Bay },
-        { Unit::Terran_Infantry_Armor_3, Unit::Terran_Engineering_Bay },
-        { Unit::Terran_Vehicle_Weapons_1, Unit::Terran_Armory },
-        { Unit::Terran_Vehicle_Weapons_2, Unit::Terran_Armory },
-        { Unit::Terran_Vehicle_Weapons_3, Unit::Terran_Armory },
-        { Unit::Terran_Vehicle_Plating_1, Unit::Terran_Armory },
-        { Unit::Terran_Vehicle_Plating_2, Unit::Terran_Armory },
-        { Unit::Terran_Vehicle_Plating_3, Unit::Terran_Armory },
-        { Unit::Terran_Ship_Weapons_1, Unit::Terran_Armory },
-        { Unit::Terran_Ship_Weapons_2, Unit::Terran_Armory },
-        { Unit::Terran_Ship_Weapons_3, Unit::Terran_Armory },
-        { Unit::Terran_Ship_Plating_1, Unit::Terran_Armory },
-        { Unit::Terran_Ship_Plating_2, Unit::Terran_Armory },
-        { Unit::Terran_Ship_Plating_3, Unit::Terran_Armory }
+    std::vector <Unit::UnitName> unit_builder {
+        Unit::Terran_Command_Center, // Unit::Terran_SCV
+        Unit::Terran_Barracks, // Unit::Terran_Marine
+        Unit::Terran_Barracks, // Unit::Terran_Firebat
+        Unit::Terran_Barracks, // Unit::Terran_Ghost
+        Unit::Terran_Barracks, // Unit::Terran_Medic
+        Unit::Terran_Factory, // Unit::Terran_Vulture
+        Unit::Terran_Factory, // Unit::Terran_Goliath
+        Unit::Terran_Factory, // Unit::Terran_Siege_Tank
+        Unit::Terran_Starport, // Unit::Terran_Wraith
+        Unit::Terran_Starport, // Unit::Terran_Dropship
+        Unit::Terran_Starport, // Unit::Terran_Valkyrie
+        Unit::Terran_Starport, // Unit::Terran_Science_Vessel
+        Unit::Terran_Starport, // Unit::Terran_Battlecruiser
+        Unit::Terran_SCV, // Unit::Terran_Command_Center
+        Unit::Terran_SCV, // Unit::Terran_Supply_Depot
+        Unit::Terran_SCV, // Unit::Terran_Refinery
+        Unit::Terran_SCV, // Unit::Terran_Barracks
+        Unit::Terran_SCV, // Unit::Terran_Engineering_Bay
+        Unit::Terran_SCV, // Unit::Terran_Missile_Turret
+        Unit::Terran_SCV, // Unit::Terran_Academy
+        Unit::Terran_SCV, // Unit::Terran_Bunker
+        Unit::Terran_SCV, // Unit::Terran_Factory
+        Unit::Terran_SCV, // Unit::Terran_Armory
+        Unit::Terran_SCV, // Unit::Terran_Science_Facility
+        Unit::Terran_SCV, // Unit::Terran_Starport
+        Unit::Terran_Factory, // Unit::Terran_Machine_Shop
+        Unit::Terran_Starport, // Unit::Terran_Control_Tower
+        Unit::Terran_Command_Center, // Unit::Terran_Comsat_Station
+        Unit::Terran_Command_Center, // Unit::Terran_Nuclear_Silo
+        Unit::Terran_Science_Facility, // Unit::Terran_Physics_Lab
+        Unit::Terran_Science_Facility, // Unit::Terran_Covert_Ops
+        Unit::Terran_Nuclear_Silo, // Unit::Terran_Nuclear_Missile
+        Unit::Terran_Academy, // Unit::Terran_U238_Shells
+        Unit::Terran_Academy, // Unit::Terran_Stim_Pack
+        Unit::Terran_Academy, // Unit::Terran_Restoration
+        Unit::Terran_Academy, // Unit::Terran_Optical_Flare
+        Unit::Terran_Academy, // Unit::Terran_Caduceus_Reactor
+        Unit::Terran_Machine_Shop, // Unit::Terran_Ion_Thrusters
+        Unit::Terran_Machine_Shop, // Unit::Terran_Spider_Mines
+        Unit::Terran_Machine_Shop, // Unit::Terran_Siege_Tech
+        Unit::Terran_Machine_Shop, // Unit::Terran_Charon_Boosters
+        Unit::Terran_Control_Tower, // Unit::Terran_Cloaking_Field
+        Unit::Terran_Control_Tower, // Unit::Terran_Apollo_Reactor
+        Unit::Terran_Science_Facility, // Unit::Terran_EMP_Shockwave
+        Unit::Terran_Science_Facility, // Unit::Terran_Irradiate
+        Unit::Terran_Science_Facility, // Unit::Terran_Titan_Reactor
+        Unit::Terran_Covert_Ops, // Unit::Terran_Lockdown
+        Unit::Terran_Covert_Ops, // Unit::Terran_Personnel_Cloaking
+        Unit::Terran_Covert_Ops, // Unit::Terran_Ocular_Implants
+        Unit::Terran_Covert_Ops, // Unit::Terran_Moebius_Reactor
+        Unit::Terran_Physics_Lab, // Unit::Terran_Yamato_Gun
+        Unit::Terran_Physics_Lab, // Unit::Terran_Colossus_Reactor
+        Unit::Terran_Engineering_Bay, // Unit::Terran_Infantry_Weapons_1
+        Unit::Terran_Engineering_Bay, // Unit::Terran_Infantry_Weapons_2
+        Unit::Terran_Engineering_Bay, // Unit::Terran_Infantry_Weapons_3
+        Unit::Terran_Engineering_Bay, // Unit::Terran_Infantry_Armor_1
+        Unit::Terran_Engineering_Bay, // Unit::Terran_Infantry_Armor_2
+        Unit::Terran_Engineering_Bay, // Unit::Terran_Infantry_Armor_3
+        Unit::Terran_Armory, // Unit::Terran_Vehicle_Weapons_1
+        Unit::Terran_Armory, // Unit::Terran_Vehicle_Weapons_2
+        Unit::Terran_Armory, // Unit::Terran_Vehicle_Weapons_3
+        Unit::Terran_Armory, // Unit::Terran_Vehicle_Plating_1
+        Unit::Terran_Armory, // Unit::Terran_Vehicle_Plating_2
+        Unit::Terran_Armory, // Unit::Terran_Vehicle_Plating_3
+        Unit::Terran_Armory, // Unit::Terran_Ship_Weapons_1
+        Unit::Terran_Armory, // Unit::Terran_Ship_Weapons_2
+        Unit::Terran_Armory, // Unit::Terran_Ship_Weapons_3
+        Unit::Terran_Armory, // Unit::Terran_Ship_Plating_1
+        Unit::Terran_Armory, // Unit::Terran_Ship_Plating_2
+        Unit::Terran_Armory // Unit::Terran_Ship_Plating_3
     };
 
     std::multimap <Unit::UnitName, Unit::UnitName> unit_prereq {
@@ -235,34 +235,40 @@ namespace {
     };
 }
 
-namespace Unit {
-bool is_worker(UnitName u) {
-    return u == Terran_SCV;
+bool Unit::is_worker(UnitName u) {
+    return u == Terran_SCV || u == Protoss_Probe || u == Zerg_Drone;
 }
 
-bool is_gas(UnitName u) {
-    return u == Terran_Refinery;
+bool Unit::is_gas(UnitName u) {
+    return u == Terran_Refinery || u == Protoss_Assimilator || u == Zerg_Extractor;
 }
 
-bool is_addon(UnitName u) {
-    return (u >= Terran_Machine_Shop && u <= Terran_Covert_Ops);
+bool Unit::is_addon(UnitName u) {
+    return u >= Terran_Machine_Shop && u <= Terran_Covert_Ops;
 }
 
-bool req_addon(UnitName u) {
-    return ((u == Terran_Siege_Tank)
-            || (u >= Terran_Dropship && u <= Terran_Battlecruiser));
+bool Unit::req_addon(UnitName u) {
+    return (u == Terran_Siege_Tank) || (u >= Terran_Dropship && u <= Terran_Battlecruiser);
 }
 
-bool is_upgrade(UnitName u) {
+bool Unit::is_upgrade(UnitName u) {
     return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3);
 }
 
-bool is_action(UnitName u) { return u > UNIT_NULL; }
-std::string get_name(UnitName u) { return unit_costs[u].name; }
-int get_min(UnitName u) { return unit_costs[u].min; }
-int get_gas(UnitName u) { return unit_costs[u].gas; }
-int get_sup(UnitName u) { return unit_costs[u].sup; }
-int get_time(UnitName u) { return unit_costs[u].time; }
-int get_sup_max(UnitName u) { return unit_costs[u].sup_max; }
-UnitName get_builder(UnitName u) { return unit_builder.find(u)->second; }
+bool Unit::is_action(UnitName u) { return u > UNIT_NULL; }
+std::string Unit::get_name(UnitName u) { return unit_costs[u].name; }
+int Unit::get_min(UnitName u) { return unit_costs[u].min; }
+int Unit::get_gas(UnitName u) { return unit_costs[u].gas; }
+int Unit::get_sup(UnitName u) { return unit_costs[u].sup; }
+int Unit::get_time(UnitName u) {
+    int extra_time = 0;
+    int WARP_TIME = 70;
+    int MORPH_TIME = 18;
+    if (u >= Protoss_Nexus && u <= Protoss_Templar_Archives)
+        extra_time = WARP_TIME;
+    if (u >= Zerg_Drone && u <= Zerg_Greater_Spire)
+        extra_time = MORPH_TIME;
+    return unit_costs[u].time;
 }
+int Unit::get_sup_max(UnitName u) { return unit_costs[u].sup_max; }
+Unit::UnitName Unit::get_builder(UnitName u) { return unit_builder[u]; }

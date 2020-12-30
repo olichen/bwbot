@@ -33,7 +33,12 @@ void BuildHandler::reset() {
 void BuildHandler::next_frame() {
     frame++;
     resource_handler.next_frame();
-    // update unit queue
+    update_queue();
+    try_to_build();
+    update_units();
+}
+
+void BuildHandler::update_queue() {
     for (auto it = queue.begin(); it != queue.end();) {
         it->second--;
         if (it->second == 0) {
@@ -43,22 +48,13 @@ void BuildHandler::next_frame() {
             it++;
         }
     }
-    // try to build
-    try_to_build();
-    // update busy units
-    for (auto it = units.begin(); it != units.end(); it++) {
-        if (it->second == 1 && Unit::is_worker(it->first))
-            resource_handler.add_min_worker(64); // 64 is time to return to mins
-        if (it->second > 0)
-            it->second--;
-    }
 }
 
 void BuildHandler::try_to_build() {
     if (build_step == build_order.size()) return;
     // get next unit from build order
     Unit::UnitName next_unit = build_order[build_step];
-    if (Unit::is_action(next_unit)) {
+    while (Unit::is_action(next_unit)) {
         if (next_unit == Unit::SEARCH) {
             resource_handler.rem_min_worker();
         }
@@ -72,15 +68,25 @@ void BuildHandler::try_to_build() {
         }
         build_step++;
     }
-    else if (can_build(next_unit)) {
-        build_step++;
+    if (can_build(next_unit)) {
         build_unit(next_unit);
+        build_step++;
+    }
+}
+
+void BuildHandler::update_units() {
+    for (auto it = units.begin(); it != units.end(); it++) {
+        if (it->second == 1 && Unit::is_worker(it->first))
+            resource_handler.add_min_worker(64); // 64 is time to return to mins
+        if (it->second > 0)
+            it->second--;
     }
 }
 
 bool BuildHandler::can_build(Unit::UnitName un) {
     if (!resource_handler.can_build(un))
         return false;
+    // check for builder
     Unit::UnitName builder = Unit::get_builder(un);
     for (auto [start, end] = units.equal_range(builder); start != end; start++)
         if (start->second == 0)
@@ -104,7 +110,8 @@ void BuildHandler::build_unit(Unit::UnitName un) {
 
 void BuildHandler::spawn_unit(Unit::UnitName un) {
     resource_handler.spawn_unit(un);
-    if (Unit::is_worker(un)) resource_handler.add_min_worker(32);
+    if (Unit::is_worker(un))
+        resource_handler.add_min_worker(32);
     if (Unit::is_gas(un)) {
         for (int i = 0; i < 3; i++) {
             resource_handler.add_gas_worker();

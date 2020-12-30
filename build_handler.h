@@ -26,7 +26,10 @@ private:
     bool can_build(Unit::UnitName);
     void build_unit(Unit::UnitName);
     void spawn_unit(Unit::UnitName);
+
+    void update_queue();
     void try_to_build();
+    void update_units();
 
     ResourceHandler resource_handler;
     Race race;

@@ -76,7 +76,8 @@ void BuildHandler::try_to_build() {
 
 void BuildHandler::update_units() {
     for (auto it = units.begin(); it != units.end(); it++) {
-        if (it->second == 1 && Unit::is_worker(it->first))
+        // return scv to minerals
+        if (it->second == 1 && it->first == Unit::Terran_SCV)
             resource_handler.add_min_worker(64); // 64 is time to return to mins
         if (it->second > 0)
             it->second--;
@@ -96,16 +97,24 @@ bool BuildHandler::can_build(Unit::UnitName un) {
 
 void BuildHandler::build_unit(Unit::UnitName un) {
     resource_handler.build_unit(un);
+    queue.push_back({un, Unit::get_time(un)});
+
     Unit::UnitName builder = Unit::get_builder(un);
+    // no build time for probe; pull and return a probe
+    if (builder == Unit::Protoss_Probe) {
+        resource_handler.rem_min_worker();
+        resource_handler.add_min_worker(64); // 64 is travel time
+        return;
+    }
     for (auto [start, end] = units.equal_range(builder); start != end; start++) {
         if (start->second == 0) {
             start->second = Unit::get_time(un);
             break;
         }
     }
-    if (Unit::is_worker(builder))
+    // scv sits out
+    if (builder == Unit::Terran_SCV)
         resource_handler.rem_min_worker();
-    queue.push_back({un, Unit::get_time(un)});
 }
 
 void BuildHandler::spawn_unit(Unit::UnitName un) {

@@ -22,5 +22,10 @@ int main() {
     bh.add_unit(Unit::Protoss_Probe);
     bh.add_unit(Unit::Protoss_Probe);
     bh.add_unit(Unit::Protoss_Gateway);
+    bh.add_unit(Unit::Protoss_Probe);
+    bh.add_unit(Unit::Protoss_Assimilator);
+    bh.add_unit(Unit::Protoss_Probe);
+    bh.add_unit(Unit::Protoss_Probe);
+    bh.add_unit(Unit::Protoss_Cybernetics_Core);
     bh.run();
 }

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <map>
-#include <unordered_map>
-#include <deque>
+#include <list>
+#include <vector>
 #include "unit.h"
 #include "resource_handler.h"
 
@@ -33,8 +33,8 @@ private:
 
     ResourceHandler resource_handler;
     Race race;
-    std::deque <Unit::UnitName> build_order;
+    std::vector <Unit::UnitName> build_order;
     int build_step, frame;
     std::multimap <Unit::UnitName, int> units; // units to current task
-    std::multimap <Unit::UnitName, int> queue; // unit, build time
+    std::list <std::pair<Unit::UnitName, int>> queue; // unit, build time
 };

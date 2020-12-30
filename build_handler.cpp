@@ -105,7 +105,7 @@ void BuildHandler::build_unit(Unit::UnitName un) {
     }
     if (Unit::is_worker(builder))
         resource_handler.rem_min_worker();
-    queue.emplace(un, Unit::get_time(un));
+    queue.push_back({un, Unit::get_time(un)});
 }
 
 void BuildHandler::spawn_unit(Unit::UnitName un) {

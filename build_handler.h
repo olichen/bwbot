@@ -11,7 +11,7 @@ public:
     enum class Race : uint8_t { Terran, Protoss, Zerg };
 
     BuildHandler(Race r = Race::Terran) : race{r} { reset(); }
-    void set_race(Race r) { race = r; reset(); }
+    void set_race(Race r) { race = r; clear(); }
     void run();
     void reset();
     void clear() { reset(); build_order.clear(); }

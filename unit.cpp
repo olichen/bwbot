@@ -352,11 +352,11 @@ namespace {
         { Zerg_Burrowing, Zerg_Hatchery, {},
             "Zerg Burrowing", 100, 100, 1200 },
         { Zerg_Ventral_Sacs, Zerg_Lair, {},
-            "Zerg Ventral Sacs", 200, 200, 9999 }, // TODO
+            "Zerg Ventral Sacs", 200, 200, 2400 },
         { Zerg_Antennae, Zerg_Lair, {},
-            "Zerg Antennae", 150, 150, 9999 }, // TODO
+            "Zerg Antennae", 150, 150, 2000 },
         { Zerg_Pneumatized_Carapace, Zerg_Lair, {},
-            "Zerg Pneumatized Carapace", 150, 150, 9999 }, // TODO
+            "Zerg Pneumatized Carapace", 150, 150, 2000 },
         { Zerg_Metabolic_Boost, Zerg_Spawning_Pool, {},
             "Zerg Metabolic Boost", 100, 100, 1500 },
         { Zerg_Adrenal_Glands, Zerg_Spawning_Pool, { Zerg_Hive },
@@ -372,17 +372,17 @@ namespace {
         { Zerg_Ensnare, Zerg_Queens_Nest, {},
             "Zerg Ensnare", 100, 100, 1200 },
         { Zerg_Gamete_Meiosis, Zerg_Queens_Nest, {},
-            "Zerg Gamete Meiosis", 100, 100, 9999 }, // TODO
+            "Zerg Gamete Meiosis", 100, 100, 2500 },
         { Zerg_Anabolic_Synthesis, Zerg_Ultralisk_Cavern, {},
-            "Zerg Anabolic Synthesis", 200, 200, 9999 }, // TODO
+            "Zerg Anabolic Synthesis", 200, 200, 2000 },
         { Zerg_Chitinous_Plating, Zerg_Ultralisk_Cavern, {},
-            "Zerg Chitinous Plating", 150, 150, 9999 }, // TODO
+            "Zerg Chitinous Plating", 150, 150, 2000 },
         { Zerg_Plague, Zerg_Defiler_Mound, {},
             "Zerg Plague", 200, 200, 1500 },
         { Zerg_Consume, Zerg_Defiler_Mound, {},
             "Zerg Consume", 100, 100, 1500 },
         { Zerg_Metasynaptic_Node, Zerg_Defiler_Mound, {},
-            "Zerg Metasynaptic Node", 150, 150, 9999 }, // TODO
+            "Zerg Metasynaptic Node", 150, 150, 2500 },
         { Zerg_Melee_Attacks_1, Zerg_Evolution_Chamber, {},
             "Zerg Melee Attacks 1", 100, 100, 4000 },
         { Zerg_Melee_Attacks_2, Zerg_Evolution_Chamber, { Zerg_Melee_Attacks_1, Zerg_Lair },

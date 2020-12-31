@@ -15,12 +15,13 @@ namespace Unit {
     bool is_action(UnitName u);
 
     std::string get_name(UnitName u);
+    UnitName get_builder(UnitName u);
+    std::vector<UnitName> get_prereq(UnitName u);
     int get_min(UnitName u);
     int get_gas(UnitName u);
     int get_sup(UnitName u);
     int get_time(UnitName u);
     int get_sup_max(UnitName u);
-    UnitName get_builder(UnitName u);
 };
 
 namespace Unit {

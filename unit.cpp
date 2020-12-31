@@ -438,9 +438,12 @@ bool Unit::is_upgrade(UnitName u) {
 
 bool Unit::is_action(UnitName u) { return u > UNIT_NULL; }
 std::string Unit::get_name(UnitName u) { return unit_data[u].name; }
+UnitName Unit::get_builder(UnitName u) { return unit_data[u].builder; }
+std::vector<UnitName> Unit::get_prereq(UnitName u) { return unit_data[u].prereq; }
 int Unit::get_min(UnitName u) { return unit_data[u].min; }
 int Unit::get_gas(UnitName u) { return unit_data[u].gas; }
 int Unit::get_sup(UnitName u) { return unit_data[u].sup; }
+
 int Unit::get_time(UnitName u) {
     int extra_time = 0;
     int WARP_TIME = 70;
@@ -452,4 +455,3 @@ int Unit::get_time(UnitName u) {
     return unit_data[u].time + extra_time;
 }
 int Unit::get_sup_max(UnitName u) { return unit_data[u].sup_max; }
-UnitName Unit::get_builder(UnitName u) { return unit_data[u].builder; }

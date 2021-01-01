@@ -48,7 +48,7 @@ int ResourceHandler::get_gas_frames() {
     for (const int& g : gas_workers) {
         if (g > max) max = g;
     }
-    if (max > -1) return max + 37;
+    if (max + 37 > 111) return max + 37;
     return 111;
 }
 

@@ -429,7 +429,9 @@ bool Unit::req_addon(UnitName u) {
     return (u == Terran_Siege_Tank) || (u >= Terran_Dropship && u <= Terran_Battlecruiser);
 }
 bool Unit::is_upgrade(UnitName u) {
-    return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3);
+    return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3)
+        || (u >= Protoss_Singularity_Charge && u <= Protoss_Air_Armor_3)
+        || (u >= Zerg_Burrowing && u <= Zerg_Flyer_Carapace_3);
 }
 bool Unit::is_action(UnitName u) {
     return u > UNIT_NULL;

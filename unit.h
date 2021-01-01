@@ -230,6 +230,7 @@ namespace Unit {
         UNIT_NULL,
         SEARCH,
         ON_GAS,
-        OFF_GAS
+        OFF_GAS,
+        EXPAND
     };
 }

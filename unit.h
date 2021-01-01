@@ -13,6 +13,8 @@ namespace Unit {
     bool req_addon(UnitName u);
     bool is_upgrade(UnitName u);
     bool is_action(UnitName u);
+    bool is_warp(UnitName u);
+    bool is_morph(UnitName u);
 
     std::string get_name(UnitName u);
     UnitName get_builder(UnitName u);
@@ -20,8 +22,8 @@ namespace Unit {
     int get_min(UnitName u);
     int get_gas(UnitName u);
     int get_sup(UnitName u);
-    int get_time(UnitName u);
     int get_sup_max(UnitName u);
+    int get_time(UnitName u);
 };
 
 namespace Unit {

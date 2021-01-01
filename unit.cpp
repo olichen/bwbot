@@ -419,39 +419,42 @@ namespace {
 bool Unit::is_worker(UnitName u) {
     return u == Terran_SCV || u == Protoss_Probe || u == Zerg_Drone;
 }
-
 bool Unit::is_gas(UnitName u) {
     return u == Terran_Refinery || u == Protoss_Assimilator || u == Zerg_Extractor;
 }
-
 bool Unit::is_addon(UnitName u) {
     return u >= Terran_Machine_Shop && u <= Terran_Covert_Ops;
 }
-
 bool Unit::req_addon(UnitName u) {
     return (u == Terran_Siege_Tank) || (u >= Terran_Dropship && u <= Terran_Battlecruiser);
 }
-
 bool Unit::is_upgrade(UnitName u) {
     return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3);
 }
+bool Unit::is_action(UnitName u) {
+    return u > UNIT_NULL;
+}
+bool Unit::is_warp(UnitName u) {
+    return u >= Protoss_Nexus && u <= Protoss_Templar_Archives;
+}
+bool Unit::is_morph(UnitName u) {
+    return u >= Zerg_Drone && u <= Zerg_Greater_Spire;
+}
 
-bool Unit::is_action(UnitName u) { return u > UNIT_NULL; }
 std::string Unit::get_name(UnitName u) { return unit_data[u].name; }
 UnitName Unit::get_builder(UnitName u) { return unit_data[u].builder; }
 std::vector<UnitName> Unit::get_prereq(UnitName u) { return unit_data[u].prereq; }
 int Unit::get_min(UnitName u) { return unit_data[u].min; }
 int Unit::get_gas(UnitName u) { return unit_data[u].gas; }
 int Unit::get_sup(UnitName u) { return unit_data[u].sup; }
-
+int Unit::get_sup_max(UnitName u) { return unit_data[u].sup_max; }
 int Unit::get_time(UnitName u) {
     int extra_time = 0;
     int WARP_TIME = 70;
     int MORPH_TIME = 18;
-    if (u >= Protoss_Nexus && u <= Protoss_Templar_Archives)
+    if (is_warp(u))
         extra_time = WARP_TIME;
-    if (u >= Zerg_Drone && u <= Zerg_Greater_Spire)
+    if (is_morph(u))
         extra_time = MORPH_TIME;
     return unit_data[u].time + extra_time;
 }
-int Unit::get_sup_max(UnitName u) { return unit_data[u].sup_max; }

@@ -8,6 +8,7 @@ void BuildHandler::reset() {
     build_step = 0;
     frame = 0;
     if (race == Race::Terran) {
+        resource_handler.set_mineral_rate(175);
         spawn_unit(Unit::Terran_Command_Center);
         spawn_unit(Unit::Terran_SCV);
         spawn_unit(Unit::Terran_SCV);
@@ -15,6 +16,7 @@ void BuildHandler::reset() {
         spawn_unit(Unit::Terran_SCV);
     }
     if (race == Race::Protoss) {
+        resource_handler.set_mineral_rate(171);
         spawn_unit(Unit::Protoss_Nexus);
         spawn_unit(Unit::Protoss_Probe);
         spawn_unit(Unit::Protoss_Probe);
@@ -22,6 +24,7 @@ void BuildHandler::reset() {
         spawn_unit(Unit::Protoss_Probe);
     }
     if (race == Race::Zerg) {
+        resource_handler.set_mineral_rate(173);
         spawn_unit(Unit::Zerg_Hatchery);
         spawn_unit(Unit::Zerg_Overlord);
         spawn_unit(Unit::Zerg_Drone);

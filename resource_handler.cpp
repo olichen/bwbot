@@ -45,11 +45,10 @@ void ResourceHandler::expand(int min, int gas) {
 }
 
 int ResourceHandler::get_min_frames() {
-    int MINERAL_RATE = 170;
     int worker_count = min_workers.size();
-    if (worker_count <= min_count) return MINERAL_RATE;
+    if (worker_count <= min_count) return mineral_rate;
     if (worker_count <= min_count * 3) {
-        return (240 - MINERAL_RATE) * 2 / 3 + (240 - MINERAL_RATE) / 2 * worker_count / min_count;
+        return (240 - mineral_rate) * 2 / 3 + (240 - mineral_rate) / 2 * worker_count / min_count;
     }
     return (240 * worker_count) / (min_count * 3);
 }

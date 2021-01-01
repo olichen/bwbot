@@ -1,9 +1,10 @@
 #include "build_handler.h"
 
 void BuildHandler::reset() {
-    units.clear();
     queue.clear();
     resource_handler.reset();
+    unit_handler.reset();
+
     build_step = 0;
     frame = 0;
     if (race == Race::Terran) {
@@ -33,9 +34,9 @@ void BuildHandler::reset() {
 void BuildHandler::next_frame() {
     frame++;
     resource_handler.next_frame();
+    unit_handler.next_frame();
     update_queue();
     try_to_build();
-    update_units();
 }
 
 void BuildHandler::update_queue() {
@@ -55,17 +56,12 @@ void BuildHandler::try_to_build() {
     // get next unit from build order
     Unit::UnitName next_unit = build_order[build_step];
     while (Unit::is_action(next_unit)) {
-        if (next_unit == Unit::SEARCH) {
-            resource_handler.rem_min_worker();
-        }
-        else if (next_unit == Unit::OFF_GAS) {
-            resource_handler.rem_gas_worker();
-            resource_handler.add_min_worker();
-        }
-        else if (next_unit == Unit::ON_GAS) {
-            resource_handler.rem_min_worker();
-            resource_handler.add_gas_worker();
-        }
+        if (next_unit == Unit::SEARCH)
+            resource_handler.use_worker(9999);
+        else if (next_unit == Unit::OFF_GAS)
+            resource_handler.gas_to_min();
+        else if (next_unit == Unit::ON_GAS)
+            resource_handler.min_to_gas();
         build_step++;
     }
     if (can_build(next_unit)) {
@@ -74,79 +70,40 @@ void BuildHandler::try_to_build() {
     }
 }
 
-void BuildHandler::update_units() {
-    for (auto it = units.begin(); it != units.end(); it++) {
-        // return scv to minerals
-        if (it->second == 1 && it->first == Unit::Terran_SCV)
-            resource_handler.add_min_worker(64); // 64 is time to return to mins
-        if (it->second > 0)
-            it->second--;
-    }
+bool BuildHandler::can_build(Unit::UnitName u) {
+    return resource_handler.can_build(u) && unit_handler.can_build(u);
 }
 
-bool BuildHandler::can_build(Unit::UnitName un) {
-    if (!resource_handler.can_build(un))
-        return false;
-    // check for builder
-    Unit::UnitName builder = Unit::get_builder(un);
-    for (auto [start, end] = units.equal_range(builder); start != end; start++)
-        if (start->second == 0)
-            return true;
-    return false;
-}
+void BuildHandler::build_unit(Unit::UnitName u) {
+    resource_handler.build_unit(u);
+    unit_handler.build_unit(u);
+    queue.push_back({u, Unit::get_time(u)});
 
-void BuildHandler::build_unit(Unit::UnitName un) {
-    resource_handler.build_unit(un);
-    queue.push_back({un, Unit::get_time(un)});
-
-    Unit::UnitName builder = Unit::get_builder(un);
+    Unit::UnitName builder = Unit::get_builder(u);
     // no build time for probe; pull and return a probe
-    if (builder == Unit::Protoss_Probe) {
-        resource_handler.rem_min_worker();
-        resource_handler.add_min_worker(64); // 64 is travel time
-        return;
-    }
-    for (auto [start, end] = units.equal_range(builder); start != end; start++) {
-        if (start->second == 0) {
-            start->second = Unit::get_time(un);
-            break;
-        }
-    }
-    // scv sits out
+    if (builder == Unit::Protoss_Probe)
+        resource_handler.use_worker(64);
+    // scv sits out TODO
     if (builder == Unit::Terran_SCV)
-        resource_handler.rem_min_worker();
+        resource_handler.use_worker(Unit::get_time(u) + 64);
 }
 
-void BuildHandler::spawn_unit(Unit::UnitName un) {
-    resource_handler.spawn_unit(un);
-    if (Unit::is_worker(un))
+void BuildHandler::spawn_unit(Unit::UnitName u) {
+    resource_handler.spawn_unit(u);
+    unit_handler.spawn_unit(u);
+    if (Unit::is_worker(u))
         resource_handler.add_min_worker(32);
-    if (Unit::is_gas(un)) {
+    if (Unit::is_gas(u)) {
         for (int i = 0; i < 3; i++) {
-            resource_handler.add_gas_worker();
-            resource_handler.rem_min_worker();
+            resource_handler.min_to_gas();
         }
     }
-    units.emplace(un, 0);
 }
 
 // DEBUG
 #include <iostream> // DEBUG
 #include <iomanip> // DEBUG
 
-/*
-int main() {
-    BuildHandler uh;
-    for (int f = 0; f < 10000; f++) {
-        int s = f * 42 / 1000;
-        std::cout << std::setw(4) << f << std::setw(4) << s << " : ";
-        uh.print();
-        std::cout << std::endl;
-        uh.next_frame();
-    }
-    return 0;
-}
-*/
 void BuildHandler::run() {
     while (build_step < build_order.size()) {
         print();
@@ -159,7 +116,6 @@ void BuildHandler::print() {
     int s = frame * 42 / 1000;
     std::cout << std::setw(4) << frame << std::setw(4) << s << " : ";
     resource_handler.print();
-    for (const auto [u, t] : units)
-        std::cout << ' ' << u;
+    unit_handler.print();
     std::cout << std::endl;
 }

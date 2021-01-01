@@ -5,6 +5,7 @@
 #include <vector>
 #include "unit.h"
 #include "resource_handler.h"
+#include "unit_handler.h"
 
 class BuildHandler {
 public:
@@ -23,18 +24,18 @@ public:
     void print(); // DEBUG
 
 private:
-    bool can_build(Unit::UnitName);
+    bool can_build(Unit::UnitName u);
     void build_unit(Unit::UnitName);
     void spawn_unit(Unit::UnitName);
 
     void update_queue();
     void try_to_build();
-    void update_units();
 
     ResourceHandler resource_handler;
+    UnitHandler unit_handler;
     Race race;
     std::vector <Unit::UnitName> build_order;
     int build_step, frame;
-    std::multimap <Unit::UnitName, int> units; // units to current task
+
     std::list <std::pair<Unit::UnitName, int>> queue; // unit, build time
 };

@@ -4,23 +4,34 @@ void ResourceHandler::reset() {
     resources.reset();
     min_workers.clear();
     gas_workers.clear();
+    busy_workers.clear();
 }
 
 void ResourceHandler::next_frame() {
     for (int &w : min_workers) {
-        w--;
-        if (w == 0) {
+        if (--w == 0) {
             resources.min += 8;
             w = get_min_frames();
         }
     }
     for (int &g : gas_workers) {
-        g--;
-        if (g == 0) {
+        if (--g == 0) {
             resources.gas += 8;
             g = get_gas_frames();
         }
     }
+    for (auto it = busy_workers.begin(); it != busy_workers.end();) {
+        if (--(*it) == 0) {
+            add_min_worker();
+            busy_workers.erase(it++);
+        } else {
+            it++;
+        }
+    }
+}
+void ResourceHandler::use_worker(int delay) {
+    pop_highest(min_workers);
+    busy_workers.push_back(delay);
 }
 
 int ResourceHandler::get_min_frames() {

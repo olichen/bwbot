@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <list>
 #include "unit.h"
 
 struct Resources {
@@ -19,8 +20,9 @@ public:
 
     void add_min_worker(int delay = 0) { min_workers.push_back(get_min_frames() + delay); }
     void rem_min_worker() { pop_highest(min_workers); }
-    void add_gas_worker() { gas_workers.push_back(get_gas_frames()); }
-    void rem_gas_worker() { pop_highest(gas_workers); }
+    void use_worker(int delay);
+    void min_to_gas() { rem_min_worker(); gas_workers.push_back(get_gas_frames()); }
+    void gas_to_min() { add_min_worker(); pop_highest(gas_workers); }
 
     bool can_build(Unit::UnitName u);
     void build_unit(Unit::UnitName u);
@@ -32,6 +34,7 @@ private:
 
     Resources resources;
     int min_count;
-    std::vector <int> min_workers;
-    std::vector <int> gas_workers;
+    std::vector<int> min_workers;
+    std::vector<int> gas_workers;
+    std::list<int> busy_workers;
 };

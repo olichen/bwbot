@@ -22,8 +22,10 @@ void UnitHandler::build_unit(Unit::UnitName u) {
     // use unit builder
     Unit::UnitName builder = Unit::get_builder(u);
     for (auto& t : units[builder])
-        if (t == 0)
+        if (t == 0) {
             t = Unit::get_time(u);
+            return;
+        }
 }
 
 void UnitHandler::spawn_unit(Unit::UnitName u) {

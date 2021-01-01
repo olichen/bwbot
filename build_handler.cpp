@@ -44,7 +44,10 @@ void BuildHandler::update_queue() {
     for (auto it = queue.begin(); it != queue.end();) {
         it->second--;
         if (it->second == 0) {
-            spawn_unit(it->first);
+            if (it->first == Unit::EXPAND)
+                resource_handler.expand();
+            else
+                spawn_unit(it->first);
             queue.erase(it++);
         } else {
             it++;
@@ -64,6 +67,8 @@ bool BuildHandler::build_next_unit() {
             resource_handler.gas_to_min();
         else if (next_unit == Unit::ON_GAS)
             resource_handler.min_to_gas();
+        else if (next_unit == Unit::EXPAND)
+            queue.push_back({Unit::EXPAND, 1800});
         build_step++;
         return true;
     }

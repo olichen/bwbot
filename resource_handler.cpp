@@ -29,16 +29,27 @@ void ResourceHandler::next_frame() {
         }
     }
 }
+
 void ResourceHandler::use_worker(int delay) {
     pop_highest(min_workers);
     busy_workers.push_back(delay);
 }
 
+void ResourceHandler::expand(int min, int gas) {
+    int transfer_count = (min_workers.size() * min) / (min_count + min);
+    int TRANSFER_TIME = 240; // roughly 10 seconds
+    for (int i = 0; i < transfer_count; i++)
+        min_workers[i] += TRANSFER_TIME;
+    min_count += min;
+    gas_count += gas;
+}
+
 int ResourceHandler::get_min_frames() {
+    int MINERAL_RATE = 170;
     int worker_count = min_workers.size();
-    if (worker_count <= min_count) return 176;
+    if (worker_count <= min_count) return MINERAL_RATE;
     if (worker_count <= min_count * 3) {
-        return 144 + 32 * worker_count / min_count;
+        return (240 - MINERAL_RATE) * 2 / 3 + (240 - MINERAL_RATE) / 2 * worker_count / min_count;
     }
     return (240 * worker_count) / (min_count * 3);
 }
@@ -80,8 +91,11 @@ void ResourceHandler::pop_highest(std::vector<int>& v) {
 #include <iomanip> // DEBUG
 
 void ResourceHandler::print() {
-    std::cout << "M" << std::setw(5) << resources.min << " | G" << std::setw(5) << resources.gas;
-    std::cout << " | S" << std::setw(3) << resources.sup << "/" << std::setw(3) << resources.sup_max;
-    std::cout << " | W" << std::setw(3) << min_workers.size() << " | G" << std::setw(3) << gas_workers.size();
-    std::cout << " |";
+    std::cout << "M" << std::setw(3) << resources.min << "|G" << std::setw(3) << resources.gas;
+    std::cout << "|S" << std::setw(2) << resources.sup << "/" << std::setw(2) << resources.sup_max;
+    std::cout << "|W" << std::setw(2) << min_workers.size() << "|G" << std::setw(2) << gas_workers.size();
+    std::cout << "|";
+    for (auto w : min_workers)
+        std::cout << " " << w;
+    std::cout << "|";
 }

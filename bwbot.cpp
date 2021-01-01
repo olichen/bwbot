@@ -10,7 +10,19 @@ int main() {
     bh.add_unit(Unit::Terran_Supply_Depot);
     bh.add_unit(Unit::Terran_SCV);
     bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
     bh.add_unit(Unit::Terran_Barracks);
+    bh.add_unit(Unit::Terran_Refinery);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::SEARCH);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_Supply_Depot);
+    bh.add_unit(Unit::Terran_Marine);
+    bh.add_unit(Unit::OFF_GAS);
+    bh.add_unit(Unit::OFF_GAS);
+    bh.add_unit(Unit::Terran_Factory);
     bh.run();
 
     bh.set_race(BuildHandler::Race::Protoss);

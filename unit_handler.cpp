@@ -1,18 +1,18 @@
 #include "unit_handler.h"
 
 void UnitHandler::reset() {
-    for (auto u : units)
+    for (auto& u : units)
         u.clear();
 }
 
 bool UnitHandler::can_build(Unit::UnitName u) {
     // check prereqs
-    for (auto u : Unit::get_prereq(u))
+    for (const auto& u : Unit::get_prereq(u))
         if (units[u].size() == 0)
             return false;
     // check builder
     Unit::UnitName builder = Unit::get_builder(u);
-    for (auto t : units[builder])
+    for (const auto t : units[builder])
         if (t == 0)
             return true;
     return false;
@@ -21,7 +21,7 @@ bool UnitHandler::can_build(Unit::UnitName u) {
 void UnitHandler::build_unit(Unit::UnitName u) {
     // use unit builder
     Unit::UnitName builder = Unit::get_builder(u);
-    for (auto t : units[builder])
+    for (auto& t : units[builder])
         if (t == 0)
             t = Unit::get_time(u);
 }
@@ -32,8 +32,8 @@ void UnitHandler::spawn_unit(Unit::UnitName u) {
 }
 
 void UnitHandler::next_frame() {
-    for (auto v : units)
-        for (auto t : v)
+    for (auto& v : units)
+        for (auto& t : v)
             if (t > 0)
                 t--;
 }
@@ -46,5 +46,3 @@ void UnitHandler::print() {
         for (const auto u : units[i])
             std::cout << ' ' << i;
 }
-
-int main() {}

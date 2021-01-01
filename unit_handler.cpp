@@ -45,6 +45,6 @@ void UnitHandler::next_frame() {
 
 void UnitHandler::print() {
     for (int i = 0; i < Unit::UNIT_NULL; i++)
-        for (const auto u : units[i])
-            std::cout << ' ' << i;
+        if (units[i].size() > 0)
+            std::cout << i << ":" << units[i].size() << " ";
 }

@@ -36,7 +36,8 @@ void BuildHandler::next_frame() {
     resource_handler.next_frame();
     unit_handler.next_frame();
     update_queue();
-    try_to_build();
+    while (build_next_unit())
+        ;
 }
 
 void BuildHandler::update_queue() {
@@ -51,11 +52,12 @@ void BuildHandler::update_queue() {
     }
 }
 
-void BuildHandler::try_to_build() {
-    if (build_step == build_order.size()) return;
-    // get next unit from build order
+bool BuildHandler::build_next_unit() {
+    if (build_step == build_order.size()) return false;
+
     Unit::UnitName next_unit = build_order[build_step];
-    while (Unit::is_action(next_unit)) {
+    if (Unit::is_action(next_unit)) {
+        Unit::UnitName next_unit = build_order[build_step];
         if (next_unit == Unit::SEARCH)
             resource_handler.use_worker(9999);
         else if (next_unit == Unit::OFF_GAS)
@@ -63,11 +65,14 @@ void BuildHandler::try_to_build() {
         else if (next_unit == Unit::ON_GAS)
             resource_handler.min_to_gas();
         build_step++;
+        return true;
     }
-    if (can_build(next_unit)) {
+    else if (can_build(next_unit)) {
         build_unit(next_unit);
         build_step++;
+        return true;
     }
+    return false;
 }
 
 bool BuildHandler::can_build(Unit::UnitName u) {
@@ -83,7 +88,7 @@ void BuildHandler::build_unit(Unit::UnitName u) {
     // no build time for probe; pull and return a probe
     if (builder == Unit::Protoss_Probe)
         resource_handler.use_worker(64);
-    // scv sits out TODO
+    // scv sits out
     if (builder == Unit::Terran_SCV)
         resource_handler.use_worker(Unit::get_time(u) + 64);
 }

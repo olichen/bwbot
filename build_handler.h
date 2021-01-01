@@ -29,7 +29,7 @@ private:
     void spawn_unit(Unit::UnitName);
 
     void update_queue();
-    void try_to_build();
+    bool build_next_unit();
 
     ResourceHandler resource_handler;
     UnitHandler unit_handler;

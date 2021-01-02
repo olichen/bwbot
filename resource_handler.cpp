@@ -48,9 +48,9 @@ int ResourceHandler::get_min_frames() {
     int worker_count = min_workers.size();
     if (worker_count <= min_count) return mineral_rate;
     if (worker_count <= min_count * 3) {
-        return (240 - mineral_rate) * 2 / 3 + (240 - mineral_rate) / 2 * worker_count / min_count;
+        return mineral_rate + (240 - mineral_rate) * (worker_count - min_count) / min_count;
     }
-    return (240 * worker_count) / (min_count * 3);
+    return 240 * (worker_count / (min_count * 3));
 }
 
 int ResourceHandler::get_gas_frames() {

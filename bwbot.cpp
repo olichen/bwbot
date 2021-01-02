@@ -2,6 +2,33 @@
 
 int main() {
     BuildHandler bh;
+    bh.set_race(BuildHandler::Race::Terran);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_Supply_Depot);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_Refinery);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_Barracks);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_Supply_Depot);
+    bh.add_unit(Unit::Terran_SCV);
+    bh.add_unit(Unit::Terran_Factory);
+    bh.add_unit(Unit::Terran_Factory);
+    bh.add_unit(Unit::Terran_Machine_Shop);
+    bh.add_unit(Unit::Terran_Machine_Shop);
+    bh.add_unit(Unit::Terran_Siege_Tank);
+    bh.add_unit(Unit::Terran_Siege_Tank);
+    bh.run();
+
+    bh.set_race(BuildHandler::Race::Terran);
     bh.add_unit(Unit::Terran_SCV);
     bh.add_unit(Unit::Terran_SCV);
     bh.add_unit(Unit::Terran_SCV);

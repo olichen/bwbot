@@ -15,5 +15,7 @@ public:
     void print(); // DEBUG
 
 private:
-    std::vector <std::vector<int>> units; // unitname to current task
+    std::vector<std::vector<int>> units; // unitname to current task
+
+    bool enough_addon_parents(Unit::UnitName);
 };

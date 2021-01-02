@@ -11,6 +11,9 @@ namespace Unit {
     bool is_gas(UnitName u);
     bool is_addon(UnitName u);
     bool req_addon(UnitName u);
+    UnitName get_addon(UnitName u);
+    UnitName get_addon_parent(UnitName u);
+    UnitName get_addon_sibling(UnitName u);
     bool is_upgrade(UnitName u);
     bool is_action(UnitName u);
     bool is_warp(UnitName u);

@@ -428,6 +428,46 @@ bool Unit::is_addon(UnitName u) {
 bool Unit::req_addon(UnitName u) {
     return (u == Terran_Siege_Tank) || (u >= Terran_Dropship && u <= Terran_Battlecruiser);
 }
+UnitName Unit::get_addon(UnitName u) {
+    switch (u) {
+        case Terran_Factory:
+            return Terran_Machine_Shop;
+        case Terran_Starport:
+            return Terran_Control_Tower;
+    }
+    throw "no addon";
+}
+UnitName Unit::get_addon_parent(UnitName u) {
+    switch (u) {
+        case Terran_Machine_Shop:
+            return Terran_Factory;
+        case Terran_Control_Tower:
+            return Terran_Starport;
+        case Terran_Comsat_Station:
+        case Terran_Nuclear_Silo:
+            return Terran_Command_Center;
+        case Terran_Physics_Lab:
+        case Terran_Covert_Ops:
+            return Terran_Science_Facility;
+    }
+    throw "no addon parent";
+}
+UnitName Unit::get_addon_sibling(UnitName u) {
+    switch (u) {
+        case Terran_Comsat_Station:
+            return Terran_Nuclear_Silo;
+        case Terran_Nuclear_Silo:
+            return Terran_Comsat_Station;
+        case Terran_Physics_Lab:
+            return Terran_Covert_Ops;
+        case Terran_Covert_Ops:
+            return Terran_Physics_Lab;
+        case Terran_Machine_Shop:
+        case Terran_Control_Tower:
+            return UNIT_NULL;
+    }
+    throw "no addon sibling";
+}
 bool Unit::is_upgrade(UnitName u) {
     return (u >= Terran_U238_Shells && u <= Terran_Ship_Plating_3)
         || (u >= Protoss_Singularity_Charge && u <= Protoss_Air_Armor_3)

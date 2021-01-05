@@ -8,6 +8,11 @@ struct Resources {
     Resources() : min{50}, gas{0}, sup{4}, sup_max{0} { }
     void reset() { min = 50; gas = 0; sup = 4; sup_max = 0; }
 
+    bool operator==(const Resources& r) {
+        return min == r.min && gas == r.gas && sup == r.sup && sup_max == r.sup_max;
+    }
+    bool operator!=(const Resources& r) { return !operator==(r); }
+
     int min, gas, sup, sup_max;
 };
 
@@ -15,7 +20,7 @@ class ResourceHandler {
 public:
     ResourceHandler() : min_count{9}, gas_count{1}, mineral_rate{176} { }
     void reset();
-    void next_frame();
+    void next_frame(int frame);
     void print(); //DEBUG
 
     void add_min_worker(int delay = 0) { min_workers.push_back(get_min_frames() + delay); }
@@ -30,6 +35,8 @@ public:
     bool can_build(Unit::UnitName u);
     void build_unit(Unit::UnitName u);
     void spawn_unit(Unit::UnitName un) { resources.sup_max += Unit::get_sup_max(un); }
+
+    std::vector<std::pair<int, Resources>> get_resource_frames() const { return resource_frames; }
 private:
     void pop_highest(std::vector<int>& v);
     int get_min_frames();
@@ -40,4 +47,6 @@ private:
     std::vector<int> min_workers;
     std::vector<int> gas_workers;
     std::list<int> busy_workers;
+
+    std::vector<std::pair<int, Resources>> resource_frames;
 };

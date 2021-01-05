@@ -38,4 +38,5 @@ private:
     int build_step, frame;
 
     std::list <std::pair<Unit::UnitName, int>> queue; // unit, build time
+    std::vector<std::pair<int, Unit::UnitName>> unit_frames;
 };

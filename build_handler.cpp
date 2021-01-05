@@ -2,6 +2,7 @@
 
 void BuildHandler::reset() {
     queue.clear();
+    unit_frames.clear();
     resource_handler.reset();
     unit_handler.reset();
 
@@ -36,11 +37,11 @@ void BuildHandler::reset() {
 
 void BuildHandler::next_frame() {
     frame++;
-    resource_handler.next_frame();
+    resource_handler.next_frame(frame);
     unit_handler.next_frame();
     update_queue();
     while (build_next_unit())
-        ;
+        unit_frames.push_back({frame, build_order[build_step-1]});
 }
 
 void BuildHandler::update_queue() {
@@ -119,10 +120,32 @@ void BuildHandler::spawn_unit(Unit::UnitName u) {
 
 void BuildHandler::run() {
     while (build_step < build_order.size()) {
-        print();
+        //print();
         next_frame();
     }
-    print();
+    //print();
+    const auto &rf = resource_handler.get_resource_frames();
+    int i = 0, j = 0;
+    while (i + j < rf.size() + unit_frames.size()) {
+        if (j == unit_frames.size() || (i < rf.size() && rf[i].first <= unit_frames[j].first)) {
+            int f = rf[i].first;
+            int s = f * 42 / 1000;
+            std::cout << std::setw(4) << f << std::setw(4) << s << " : ";
+            auto r = rf[i++].second;
+            std::cout << "M" << std::setw(3) << r.min << "|G" << std::setw(3) << r.gas;
+            std::cout << "|S" << std::setw(2) << r.sup << "/" << std::setw(2) << r.sup_max;
+        } else {
+            int f = unit_frames[j].first;
+            int s = f * 42 / 1000;
+            std::cout << std::setw(4) << f << std::setw(4) << s << " : ";
+            auto u = unit_frames[j++].second;
+            if (!Unit::is_action(u))
+                std::cout << Unit::get_name(u);
+            else
+                std::cout << u;
+        }
+        std::cout << std::endl;
+    }
 }
 
 void BuildHandler::print() {

@@ -5,9 +5,11 @@ void ResourceHandler::reset() {
     min_workers.clear();
     gas_workers.clear();
     busy_workers.clear();
+    resource_frames.clear();
+    resource_frames.push_back({0, resources});
 }
 
-void ResourceHandler::next_frame() {
+void ResourceHandler::next_frame(int frame) {
     for (int &w : min_workers) {
         if (--w == 0) {
             resources.min += 8;
@@ -28,6 +30,8 @@ void ResourceHandler::next_frame() {
             it++;
         }
     }
+    if (resources != resource_frames.back().second)
+        resource_frames.push_back({frame, resources});
 }
 
 void ResourceHandler::use_worker(int delay) {
